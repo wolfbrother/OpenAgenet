@@ -1,0 +1,44 @@
+[root]
+host = "127.0.0.1"
+port = 8000
+endpoint = "http://localhost:8000"
+did_semantic_code = "AGRT"
+database_url = "sqlite:./data/root/root.db"
+
+[registrar]
+host = "127.0.0.1"
+port = 8001
+endpoint = "http://localhost:8001"
+did_semantic_code = "AGRG"
+database_url = "sqlite:./data/registrar/registrar.db"
+
+[discovery]
+host = "127.0.0.1"
+port = 8002
+endpoint = "http://localhost:8002"
+did_semantic_code = "AGDS"
+database_url = "sqlite:./data/discovery/discovery.db"
+
+[cdn]
+host = "127.0.0.1"
+port = 8003
+endpoint = "http://localhost:8003"
+provider = "local"
+database_url = "sqlite:./data/cdn/cdn.db"
+
+[service_agent]
+host = "127.0.0.1"
+port = 9001
+endpoint = "http://localhost:9001"
+invoke_endpoint = "http://localhost:9001/agent/invoke"
+mcp_endpoint = "http://localhost:9001/mcp"
+a2a_endpoint = "http://localhost:9001/a2a"
+did_semantic_code = "AGDM"
+
+[user_agent]
+did_semantic_code = "AGUS"
+
+[web_console]
+host = "127.0.0.1"
+port = 3000
+endpoint = "http://localhost:3000"

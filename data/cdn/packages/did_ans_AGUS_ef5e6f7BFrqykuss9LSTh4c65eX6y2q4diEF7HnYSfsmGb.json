@@ -1,0 +1,77 @@
+{
+  "packageVersion": "0.1.0",
+  "did": "did:ans:AGUS:ef5e6f7BFrqykuss9LSTh4c65eX6y2q4diEF7HnYSfsmGb",
+  "didDocument": {
+    "@context": [
+      "https://www.w3.org/ns/did/v1",
+      "https://w3id.org/ans/v1"
+    ],
+    "id": "did:ans:AGUS:ef5e6f7BFrqykuss9LSTh4c65eX6y2q4diEF7HnYSfsmGb",
+    "verificationMethod": [
+      {
+        "id": "did:ans:AGUS:ef5e6f7BFrqykuss9LSTh4c65eX6y2q4diEF7HnYSfsmGb#key-1",
+        "type": "Ed25519VerificationKey2020",
+        "controller": "did:ans:AGUS:ef5e6f7BFrqykuss9LSTh4c65eX6y2q4diEF7HnYSfsmGb",
+        "publicKeyMultibase": "z5e6f7BFrqykuss9LSTh4c65eX6y2q4diEF7HnYSfsmGb",
+        "publicKeyJwk": {
+          "crv": "Ed25519",
+          "x": "RO-iUIWjyIcnD5GEh6lA_A6EsbAZfpWSNEaERthuZMg",
+          "kty": "OKP"
+        }
+      }
+    ],
+    "authentication": [
+      "did:ans:AGUS:ef5e6f7BFrqykuss9LSTh4c65eX6y2q4diEF7HnYSfsmGb#key-1"
+    ],
+    "assertionMethod": [
+      "did:ans:AGUS:ef5e6f7BFrqykuss9LSTh4c65eX6y2q4diEF7HnYSfsmGb#key-1"
+    ],
+    "service": [],
+    "ansMetadata": {
+      "subjectType": "agent",
+      "identityType": "user-agent",
+      "ttl": 300,
+      "addressBindings": [],
+      "agentDescription": {
+        "capabilityDescription": "A local demo User Agent that discovers Service Agents, resolves DID Documents, verifies signatures, and performs trusted invocation.",
+        "capabilityTags": [
+          "user-agent",
+          "discovery-client",
+          "trusted-invocation",
+          "mcp-client",
+          "a2a-client"
+        ],
+        "useCaseExamples": [
+          "Discover a Service Agent by capability.",
+          "Invoke a Service Agent with a signed request."
+        ]
+      },
+      "servicePolicy": "public-local-resolution",
+      "networkScope": "openagentnet-local"
+    }
+  },
+  "didDocumentHash": "c43ad9782707fed008a1ebe0cd9732f6f6bfdd80dba6c1086f562de6b55bc34b",
+  "metadata": {
+    "did": "did:ans:AGUS:ef5e6f7BFrqykuss9LSTh4c65eX6y2q4diEF7HnYSfsmGb",
+    "role": "User Agent",
+    "identityType": "user-agent",
+    "didDocumentHash": "c43ad9782707fed008a1ebe0cd9732f6f6bfdd80dba6c1086f562de6b55bc34b",
+    "subjectType": "agent",
+    "capabilityTags": [
+      "user-agent",
+      "discovery-client",
+      "trusted-invocation",
+      "mcp-client",
+      "a2a-client"
+    ],
+    "services": [],
+    "status": "active",
+    "updatedAt": "2026-05-20T00:00:00.000Z"
+  },
+  "rootProof": {
+    "rootDid": "did:ans:AGRT:efHKg7V5cjoWEQcCQdHqpEBpB4ZDqHVHm6eKBbQoQd78HH",
+    "bulletinEventHash": null,
+    "signature": null
+  },
+  "createdAt": "2026-05-20T00:00:00.000Z"
+}

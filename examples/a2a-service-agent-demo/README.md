@@ -4,4 +4,6 @@ Author: JINLIANG XU
 Email: xujinliang@caict.ac.cn; jlxufly@gmail.com
 -->
 
-# OpenAgentNet
+# A2A Service Agent Demo
+
+A2A-compatible Service Agent demo.

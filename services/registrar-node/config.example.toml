@@ -1,0 +1,17 @@
+[server]
+host = "127.0.0.1"
+port = 8001
+endpoint = "http://localhost:8001"
+
+[node]
+name = "Registrar Node"
+role = "registrar"
+did_semantic_code = "AGRG"
+
+[upstream]
+root_endpoint = "http://localhost:8000"
+
+[paths]
+data_dir = "../../data/registrar"
+records_dir = "../../data/registrar/records"
+database_url = "sqlite:../../data/registrar/registrar.db"

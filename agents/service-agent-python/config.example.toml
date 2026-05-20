@@ -1,0 +1,22 @@
+[server]
+host = "127.0.0.1"
+port = 9001
+endpoint = "http://localhost:9001"
+invoke_endpoint = "http://localhost:9001/agent/invoke"
+mcp_endpoint = "http://localhost:9001/mcp"
+a2a_endpoint = "http://localhost:9001/a2a"
+
+[agent]
+name = "Demo Service Agent"
+role = "service-agent"
+did_semantic_code = "AGDM"
+capability_tags = ["echo", "translation", "summarization"]
+
+[upstream]
+registrar_endpoint = "http://localhost:8001"
+cdn_endpoint = "http://localhost:8003"
+
+[paths]
+data_dir = "../../data/demo-service-agent"
+keys_dir = "../../data/demo-service-agent/keys"
+did_document_file = "../../data/demo-service-agent/did-document.json"

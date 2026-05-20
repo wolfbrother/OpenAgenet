@@ -4,4 +4,6 @@ Author: JINLIANG XU
 Email: xujinliang@caict.ac.cn; jlxufly@gmail.com
 -->
 
-# OpenAgentNet
+# TypeScript Packages
+
+TypeScript SDK, generated protocol types, and client helpers.

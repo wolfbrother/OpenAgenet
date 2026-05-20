@@ -1,0 +1,20 @@
+{
+  "warning": "Development key only. Do not use in production.",
+  "did": "did:ans:AGDM:ef7Qse3ynni4MnLQHXvaHUS8Ac3RJqGWRFRwfiBsWW6SxV",
+  "keyId": "did:ans:AGDM:ef7Qse3ynni4MnLQHXvaHUS8Ac3RJqGWRFRwfiBsWW6SxV#key-1",
+  "algorithm": "Ed25519",
+  "publicKeyMultibase": "z7Qse3ynni4MnLQHXvaHUS8Ac3RJqGWRFRwfiBsWW6SxV",
+  "publicKeyJwk": {
+    "crv": "Ed25519",
+    "x": "X0O81z4O65prUMHyNoTBtscOOLfcEac3e0fuzCXr5E4",
+    "kty": "OKP"
+  },
+  "privateKeyJwk": {
+    "crv": "Ed25519",
+    "d": "xEKrOXbWl1RbgxMY770wK8yS2WaAYEPqGE6amuHV1mg",
+    "x": "X0O81z4O65prUMHyNoTBtscOOLfcEac3e0fuzCXr5E4",
+    "kty": "OKP"
+  },
+  "publicKeyPem": "-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEAX0O81z4O65prUMHyNoTBtscOOLfcEac3e0fuzCXr5E4=\n-----END PUBLIC KEY-----\n",
+  "privateKeyPem": "-----BEGIN PRIVATE KEY-----\nMC4CAQAwBQYDK2VwBCIEIMRCqzl21pdUW4MTGO+9MCvMktlmgGBD6hhOmprh1dZo\n-----END PRIVATE KEY-----\n"
+}

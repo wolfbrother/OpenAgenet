@@ -4,4 +4,6 @@ Author: JINLIANG XU
 Email: xujinliang@caict.ac.cn; jlxufly@gmail.com
 -->
 
-# OpenAgentNet
+# Discover Agent
+
+Discovery query example.

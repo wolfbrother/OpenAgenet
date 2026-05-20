@@ -4,4 +4,6 @@ Author: JINLIANG XU
 Email: xujinliang@caict.ac.cn; jlxufly@gmail.com
 -->
 
-# OpenAgentNet
+# Examples
+
+Runnable examples for registration, discovery, MCP/A2A demos, and trusted invocation.

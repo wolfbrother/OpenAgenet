@@ -1,0 +1,84 @@
+{
+  "@context": [
+    "https://www.w3.org/ns/did/v1",
+    "https://w3id.org/ans/v1"
+  ],
+  "id": "did:ans:AGRT:efHKg7V5cjoWEQcCQdHqpEBpB4ZDqHVHm6eKBbQoQd78HH",
+  "verificationMethod": [
+    {
+      "id": "did:ans:AGRT:efHKg7V5cjoWEQcCQdHqpEBpB4ZDqHVHm6eKBbQoQd78HH#key-1",
+      "type": "Ed25519VerificationKey2020",
+      "controller": "did:ans:AGRT:efHKg7V5cjoWEQcCQdHqpEBpB4ZDqHVHm6eKBbQoQd78HH",
+      "publicKeyMultibase": "zHKg7V5cjoWEQcCQdHqpEBpB4ZDqHVHm6eKBbQoQd78HH",
+      "publicKeyJwk": {
+        "crv": "Ed25519",
+        "x": "8oOrUtprx3iY5JVpT8PbBn9KXNxzrNo507LRbIVv2zw",
+        "kty": "OKP"
+      }
+    }
+  ],
+  "authentication": [
+    "did:ans:AGRT:efHKg7V5cjoWEQcCQdHqpEBpB4ZDqHVHm6eKBbQoQd78HH#key-1"
+  ],
+  "assertionMethod": [
+    "did:ans:AGRT:efHKg7V5cjoWEQcCQdHqpEBpB4ZDqHVHm6eKBbQoQd78HH#key-1"
+  ],
+  "service": [
+    {
+      "id": "did:ans:AGRT:efHKg7V5cjoWEQcCQdHqpEBpB4ZDqHVHm6eKBbQoQd78HH#root-api",
+      "type": "RootAuthorityService",
+      "serviceEndpoint": "http://localhost:8000",
+      "version": "1.0.0",
+      "protocol": "http",
+      "serverType": "local-root",
+      "port": 8000
+    },
+    {
+      "id": "did:ans:AGRT:efHKg7V5cjoWEQcCQdHqpEBpB4ZDqHVHm6eKBbQoQd78HH#bulletin",
+      "type": "TrustBulletinService",
+      "serviceEndpoint": "http://localhost:8000/bulletin",
+      "version": "1.0.0",
+      "protocol": "http",
+      "serverType": "local-root",
+      "port": 8000
+    }
+  ],
+  "ansMetadata": {
+    "subjectType": "infrastructure-node",
+    "identityType": "root-node",
+    "ttl": 300,
+    "addressBindings": [
+      {
+        "id": "did:ans:AGRT:efHKg7V5cjoWEQcCQdHqpEBpB4ZDqHVHm6eKBbQoQd78HH#addr-root-api",
+        "addressType": "endpoint",
+        "network": "local-http",
+        "address": "http://localhost:8000",
+        "controller": "did:ans:AGRT:efHKg7V5cjoWEQcCQdHqpEBpB4ZDqHVHm6eKBbQoQd78HH",
+        "purpose": "service"
+      },
+      {
+        "id": "did:ans:AGRT:efHKg7V5cjoWEQcCQdHqpEBpB4ZDqHVHm6eKBbQoQd78HH#addr-bulletin",
+        "addressType": "endpoint",
+        "network": "local-http",
+        "address": "http://localhost:8000/bulletin",
+        "controller": "did:ans:AGRT:efHKg7V5cjoWEQcCQdHqpEBpB4ZDqHVHm6eKBbQoQd78HH",
+        "purpose": "service"
+      }
+    ],
+    "agentDescription": {
+      "capabilityDescription": "Local OpenAgentNet trust anchor for authorization, bulletin anchoring, DID Document verification, and verified package publishing.",
+      "capabilityTags": [
+        "root-authority",
+        "authorization",
+        "bulletin",
+        "verification"
+      ],
+      "useCaseExamples": [
+        "Authorize infrastructure nodes.",
+        "Anchor DID Document hashes to the local bulletin."
+      ]
+    },
+    "servicePolicy": "public-local-resolution",
+    "networkScope": "openagentnet-local"
+  }
+}

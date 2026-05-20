@@ -1,0 +1,12 @@
+[package]
+name = "oan-protocol"
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+version.workspace = true
+
+[dependencies]
+chrono.workspace = true
+oan-core = { path = "../oan-core" }
+serde.workspace = true
+serde_json.workspace = true

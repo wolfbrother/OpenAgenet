@@ -4,4 +4,8 @@ Author: JINLIANG XU
 Email: xujinliang@caict.ac.cn; jlxufly@gmail.com
 -->
 
-# OpenAgentNet
+# Root Node
+
+Trust anchor for local OpenAgentNet deployments.
+
+Detailed module design: [docs/design.md](docs/design.md)

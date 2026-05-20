@@ -1,0 +1,25 @@
+{
+  "did": "did:ans:AGDS:efAAwpkMEA3HESX6cuAkGA5CEWWbZttBZFVHxoWYkWqncC",
+  "role": "Discovery Node",
+  "identityType": "discovery-node",
+  "didDocumentHash": "31369f95975e903b53c8e091a8bc086168c1d8eaddd1e283b11c868d40c7be48",
+  "subjectType": "infrastructure-node",
+  "capabilityTags": [
+    "discovery",
+    "capability-index",
+    "routing"
+  ],
+  "services": [
+    {
+      "id": "did:ans:AGDS:efAAwpkMEA3HESX6cuAkGA5CEWWbZttBZFVHxoWYkWqncC#discovery-api",
+      "type": "AgentDiscoveryService",
+      "serviceEndpoint": "http://localhost:8002",
+      "version": "1.0.0",
+      "protocol": "http",
+      "serverType": "local-discovery",
+      "port": 8002
+    }
+  ],
+  "status": "active",
+  "updatedAt": "2026-05-20T00:00:00.000Z"
+}

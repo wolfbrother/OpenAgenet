@@ -4,4 +4,6 @@ Author: JINLIANG XU
 Email: xujinliang@caict.ac.cn; jlxufly@gmail.com
 -->
 
-# OpenAgentNet
+# Apps
+
+Developer-facing applications: CLI, web console, and playground.

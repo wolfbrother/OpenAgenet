@@ -1,0 +1,102 @@
+{
+  "packageVersion": "0.1.0",
+  "did": "did:ans:AGDS:efAAwpkMEA3HESX6cuAkGA5CEWWbZttBZFVHxoWYkWqncC",
+  "didDocument": {
+    "@context": [
+      "https://www.w3.org/ns/did/v1",
+      "https://w3id.org/ans/v1"
+    ],
+    "id": "did:ans:AGDS:efAAwpkMEA3HESX6cuAkGA5CEWWbZttBZFVHxoWYkWqncC",
+    "verificationMethod": [
+      {
+        "id": "did:ans:AGDS:efAAwpkMEA3HESX6cuAkGA5CEWWbZttBZFVHxoWYkWqncC#key-1",
+        "type": "Ed25519VerificationKey2020",
+        "controller": "did:ans:AGDS:efAAwpkMEA3HESX6cuAkGA5CEWWbZttBZFVHxoWYkWqncC",
+        "publicKeyMultibase": "zAAwpkMEA3HESX6cuAkGA5CEWWbZttBZFVHxoWYkWqncC",
+        "publicKeyJwk": {
+          "crv": "Ed25519",
+          "x": "iEVmAGccX8Tm-EA7C4ONDF9qqSak8WJfjiONCiIucb0",
+          "kty": "OKP"
+        }
+      }
+    ],
+    "authentication": [
+      "did:ans:AGDS:efAAwpkMEA3HESX6cuAkGA5CEWWbZttBZFVHxoWYkWqncC#key-1"
+    ],
+    "assertionMethod": [
+      "did:ans:AGDS:efAAwpkMEA3HESX6cuAkGA5CEWWbZttBZFVHxoWYkWqncC#key-1"
+    ],
+    "service": [
+      {
+        "id": "did:ans:AGDS:efAAwpkMEA3HESX6cuAkGA5CEWWbZttBZFVHxoWYkWqncC#discovery-api",
+        "type": "AgentDiscoveryService",
+        "serviceEndpoint": "http://localhost:8002",
+        "version": "1.0.0",
+        "protocol": "http",
+        "serverType": "local-discovery",
+        "port": 8002
+      }
+    ],
+    "ansMetadata": {
+      "subjectType": "infrastructure-node",
+      "identityType": "discovery-node",
+      "ttl": 300,
+      "addressBindings": [
+        {
+          "id": "did:ans:AGDS:efAAwpkMEA3HESX6cuAkGA5CEWWbZttBZFVHxoWYkWqncC#addr-discovery-api",
+          "addressType": "endpoint",
+          "network": "local-http",
+          "address": "http://localhost:8002",
+          "controller": "did:ans:AGDS:efAAwpkMEA3HESX6cuAkGA5CEWWbZttBZFVHxoWYkWqncC",
+          "purpose": "service"
+        }
+      ],
+      "agentDescription": {
+        "capabilityDescription": "Synchronizes verified metadata from CDN Service, builds a capability index, and returns signed discovery results.",
+        "capabilityTags": [
+          "discovery",
+          "capability-index",
+          "routing"
+        ],
+        "useCaseExamples": [
+          "Find Service Agents by capability tag.",
+          "Return signed candidate Agent records."
+        ]
+      },
+      "servicePolicy": "public-local-resolution",
+      "networkScope": "openagentnet-local"
+    }
+  },
+  "didDocumentHash": "31369f95975e903b53c8e091a8bc086168c1d8eaddd1e283b11c868d40c7be48",
+  "metadata": {
+    "did": "did:ans:AGDS:efAAwpkMEA3HESX6cuAkGA5CEWWbZttBZFVHxoWYkWqncC",
+    "role": "Discovery Node",
+    "identityType": "discovery-node",
+    "didDocumentHash": "31369f95975e903b53c8e091a8bc086168c1d8eaddd1e283b11c868d40c7be48",
+    "subjectType": "infrastructure-node",
+    "capabilityTags": [
+      "discovery",
+      "capability-index",
+      "routing"
+    ],
+    "services": [
+      {
+        "id": "did:ans:AGDS:efAAwpkMEA3HESX6cuAkGA5CEWWbZttBZFVHxoWYkWqncC#discovery-api",
+        "type": "AgentDiscoveryService",
+        "serviceEndpoint": "http://localhost:8002",
+        "version": "1.0.0",
+        "protocol": "http",
+        "serverType": "local-discovery",
+        "port": 8002
+      }
+    ],
+    "status": "active",
+    "updatedAt": "2026-05-20T00:00:00.000Z"
+  },
+  "rootProof": {
+    "rootDid": "did:ans:AGRT:efHKg7V5cjoWEQcCQdHqpEBpB4ZDqHVHm6eKBbQoQd78HH",
+    "bulletinEventHash": "ac2e50487a7fa6427e9012f3d699726f1008c095ed69780032ea5dbeb23d3797",
+    "signature": "Ru6ivqcIpMOW-aiHelKWpEdgAmYXuCSGvmf_UEl9uWswlRl8se4X0HQGAWceW6gsoVTcy0Yu0XJC6H8YXz68Aw"
+  },
+  "createdAt": "2026-05-20T00:00:00.000Z"
+}

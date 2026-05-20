@@ -1,0 +1,52 @@
+{
+  "version": "0.1.0",
+  "generatedAt": "2026-05-20T00:00:00.000Z",
+  "rootDid": "did:ans:AGRT:efHKg7V5cjoWEQcCQdHqpEBpB4ZDqHVHm6eKBbQoQd78HH",
+  "packages": [
+    {
+      "did": "did:ans:AGRT:efHKg7V5cjoWEQcCQdHqpEBpB4ZDqHVHm6eKBbQoQd78HH",
+      "role": "Root Node",
+      "documentPath": "/cdn/documents/did%3Aans%3AAGRT%3AefHKg7V5cjoWEQcCQdHqpEBpB4ZDqHVHm6eKBbQoQd78HH",
+      "metadataPath": "/cdn/metadata/did%3Aans%3AAGRT%3AefHKg7V5cjoWEQcCQdHqpEBpB4ZDqHVHm6eKBbQoQd78HH",
+      "packagePath": "/cdn/packages/did%3Aans%3AAGRT%3AefHKg7V5cjoWEQcCQdHqpEBpB4ZDqHVHm6eKBbQoQd78HH",
+      "didDocumentHash": "7bbd237f692c6877526359d2ffd28b6e1a5f94f7e54822cb402461aa8d28abb7",
+      "updatedAt": "2026-05-20T00:00:00.000Z"
+    },
+    {
+      "did": "did:ans:AGRG:efFkK6cY6Dox6hWkmw28jkomLK4EqFi7ue6YVKp7ytSFdh",
+      "role": "Registrar Node",
+      "documentPath": "/cdn/documents/did%3Aans%3AAGRG%3AefFkK6cY6Dox6hWkmw28jkomLK4EqFi7ue6YVKp7ytSFdh",
+      "metadataPath": "/cdn/metadata/did%3Aans%3AAGRG%3AefFkK6cY6Dox6hWkmw28jkomLK4EqFi7ue6YVKp7ytSFdh",
+      "packagePath": "/cdn/packages/did%3Aans%3AAGRG%3AefFkK6cY6Dox6hWkmw28jkomLK4EqFi7ue6YVKp7ytSFdh",
+      "didDocumentHash": "311e15cfd6249259a987efc3538894b61d92721405961357f82e304ed536c07d",
+      "updatedAt": "2026-05-20T00:00:00.000Z"
+    },
+    {
+      "did": "did:ans:AGDS:efAAwpkMEA3HESX6cuAkGA5CEWWbZttBZFVHxoWYkWqncC",
+      "role": "Discovery Node",
+      "documentPath": "/cdn/documents/did%3Aans%3AAGDS%3AefAAwpkMEA3HESX6cuAkGA5CEWWbZttBZFVHxoWYkWqncC",
+      "metadataPath": "/cdn/metadata/did%3Aans%3AAGDS%3AefAAwpkMEA3HESX6cuAkGA5CEWWbZttBZFVHxoWYkWqncC",
+      "packagePath": "/cdn/packages/did%3Aans%3AAGDS%3AefAAwpkMEA3HESX6cuAkGA5CEWWbZttBZFVHxoWYkWqncC",
+      "didDocumentHash": "31369f95975e903b53c8e091a8bc086168c1d8eaddd1e283b11c868d40c7be48",
+      "updatedAt": "2026-05-20T00:00:00.000Z"
+    },
+    {
+      "did": "did:ans:AGDM:ef7Qse3ynni4MnLQHXvaHUS8Ac3RJqGWRFRwfiBsWW6SxV",
+      "role": "Demo Service Agent",
+      "documentPath": "/cdn/documents/did%3Aans%3AAGDM%3Aef7Qse3ynni4MnLQHXvaHUS8Ac3RJqGWRFRwfiBsWW6SxV",
+      "metadataPath": "/cdn/metadata/did%3Aans%3AAGDM%3Aef7Qse3ynni4MnLQHXvaHUS8Ac3RJqGWRFRwfiBsWW6SxV",
+      "packagePath": "/cdn/packages/did%3Aans%3AAGDM%3Aef7Qse3ynni4MnLQHXvaHUS8Ac3RJqGWRFRwfiBsWW6SxV",
+      "didDocumentHash": "96aefb5ad0e8c93b64b0a455f2f17cdf9f2b9aaa587186821611f083f073ab25",
+      "updatedAt": "2026-05-20T00:00:00.000Z"
+    },
+    {
+      "did": "did:ans:AGUS:ef5e6f7BFrqykuss9LSTh4c65eX6y2q4diEF7HnYSfsmGb",
+      "role": "User Agent",
+      "documentPath": "/cdn/documents/did%3Aans%3AAGUS%3Aef5e6f7BFrqykuss9LSTh4c65eX6y2q4diEF7HnYSfsmGb",
+      "metadataPath": "/cdn/metadata/did%3Aans%3AAGUS%3Aef5e6f7BFrqykuss9LSTh4c65eX6y2q4diEF7HnYSfsmGb",
+      "packagePath": "/cdn/packages/did%3Aans%3AAGUS%3Aef5e6f7BFrqykuss9LSTh4c65eX6y2q4diEF7HnYSfsmGb",
+      "didDocumentHash": "c43ad9782707fed008a1ebe0cd9732f6f6bfdd80dba6c1086f562de6b55bc34b",
+      "updatedAt": "2026-05-20T00:00:00.000Z"
+    }
+  ]
+}

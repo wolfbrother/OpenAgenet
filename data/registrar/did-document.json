@@ -1,0 +1,66 @@
+{
+  "@context": [
+    "https://www.w3.org/ns/did/v1",
+    "https://w3id.org/ans/v1"
+  ],
+  "id": "did:ans:AGRG:efFkK6cY6Dox6hWkmw28jkomLK4EqFi7ue6YVKp7ytSFdh",
+  "verificationMethod": [
+    {
+      "id": "did:ans:AGRG:efFkK6cY6Dox6hWkmw28jkomLK4EqFi7ue6YVKp7ytSFdh#key-1",
+      "type": "Ed25519VerificationKey2020",
+      "controller": "did:ans:AGRG:efFkK6cY6Dox6hWkmw28jkomLK4EqFi7ue6YVKp7ytSFdh",
+      "publicKeyMultibase": "zFkK6cY6Dox6hWkmw28jkomLK4EqFi7ue6YVKp7ytSFdh",
+      "publicKeyJwk": {
+        "crv": "Ed25519",
+        "x": "2xwNyKSr9vBl1KJqJ1BSYa_uLN3EdIEIRpm4zP-KtGA",
+        "kty": "OKP"
+      }
+    }
+  ],
+  "authentication": [
+    "did:ans:AGRG:efFkK6cY6Dox6hWkmw28jkomLK4EqFi7ue6YVKp7ytSFdh#key-1"
+  ],
+  "assertionMethod": [
+    "did:ans:AGRG:efFkK6cY6Dox6hWkmw28jkomLK4EqFi7ue6YVKp7ytSFdh#key-1"
+  ],
+  "service": [
+    {
+      "id": "did:ans:AGRG:efFkK6cY6Dox6hWkmw28jkomLK4EqFi7ue6YVKp7ytSFdh#registrar-api",
+      "type": "AgentRegistrarService",
+      "serviceEndpoint": "http://localhost:8001",
+      "version": "1.0.0",
+      "protocol": "http",
+      "serverType": "local-registrar",
+      "port": 8001
+    }
+  ],
+  "ansMetadata": {
+    "subjectType": "infrastructure-node",
+    "identityType": "registrar-node",
+    "ttl": 300,
+    "addressBindings": [
+      {
+        "id": "did:ans:AGRG:efFkK6cY6Dox6hWkmw28jkomLK4EqFi7ue6YVKp7ytSFdh#addr-registrar-api",
+        "addressType": "endpoint",
+        "network": "local-http",
+        "address": "http://localhost:8001",
+        "controller": "did:ans:AGRG:efFkK6cY6Dox6hWkmw28jkomLK4EqFi7ue6YVKp7ytSFdh",
+        "purpose": "service"
+      }
+    ],
+    "agentDescription": {
+      "capabilityDescription": "Registers Service Agents, validates DID Documents, and issues local AgentRegistrationCredential records.",
+      "capabilityTags": [
+        "registration",
+        "credential-issuance",
+        "did-document-validation"
+      ],
+      "useCaseExamples": [
+        "Register a demo Service Agent.",
+        "Submit a verified DID Document to Root Node."
+      ]
+    },
+    "servicePolicy": "public-local-resolution",
+    "networkScope": "openagentnet-local"
+  }
+}

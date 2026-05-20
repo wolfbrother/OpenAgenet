@@ -1,0 +1,49 @@
+{
+  "@context": [
+    "https://www.w3.org/ns/did/v1",
+    "https://w3id.org/ans/v1"
+  ],
+  "id": "did:ans:AGUS:ef5e6f7BFrqykuss9LSTh4c65eX6y2q4diEF7HnYSfsmGb",
+  "verificationMethod": [
+    {
+      "id": "did:ans:AGUS:ef5e6f7BFrqykuss9LSTh4c65eX6y2q4diEF7HnYSfsmGb#key-1",
+      "type": "Ed25519VerificationKey2020",
+      "controller": "did:ans:AGUS:ef5e6f7BFrqykuss9LSTh4c65eX6y2q4diEF7HnYSfsmGb",
+      "publicKeyMultibase": "z5e6f7BFrqykuss9LSTh4c65eX6y2q4diEF7HnYSfsmGb",
+      "publicKeyJwk": {
+        "crv": "Ed25519",
+        "x": "RO-iUIWjyIcnD5GEh6lA_A6EsbAZfpWSNEaERthuZMg",
+        "kty": "OKP"
+      }
+    }
+  ],
+  "authentication": [
+    "did:ans:AGUS:ef5e6f7BFrqykuss9LSTh4c65eX6y2q4diEF7HnYSfsmGb#key-1"
+  ],
+  "assertionMethod": [
+    "did:ans:AGUS:ef5e6f7BFrqykuss9LSTh4c65eX6y2q4diEF7HnYSfsmGb#key-1"
+  ],
+  "service": [],
+  "ansMetadata": {
+    "subjectType": "agent",
+    "identityType": "user-agent",
+    "ttl": 300,
+    "addressBindings": [],
+    "agentDescription": {
+      "capabilityDescription": "A local demo User Agent that discovers Service Agents, resolves DID Documents, verifies signatures, and performs trusted invocation.",
+      "capabilityTags": [
+        "user-agent",
+        "discovery-client",
+        "trusted-invocation",
+        "mcp-client",
+        "a2a-client"
+      ],
+      "useCaseExamples": [
+        "Discover a Service Agent by capability.",
+        "Invoke a Service Agent with a signed request."
+      ]
+    },
+    "servicePolicy": "public-local-resolution",
+    "networkScope": "openagentnet-local"
+  }
+}

@@ -1,0 +1,104 @@
+{
+  "@context": [
+    "https://www.w3.org/ns/did/v1",
+    "https://w3id.org/ans/v1"
+  ],
+  "id": "did:ans:AGDM:ef7Qse3ynni4MnLQHXvaHUS8Ac3RJqGWRFRwfiBsWW6SxV",
+  "verificationMethod": [
+    {
+      "id": "did:ans:AGDM:ef7Qse3ynni4MnLQHXvaHUS8Ac3RJqGWRFRwfiBsWW6SxV#key-1",
+      "type": "Ed25519VerificationKey2020",
+      "controller": "did:ans:AGDM:ef7Qse3ynni4MnLQHXvaHUS8Ac3RJqGWRFRwfiBsWW6SxV",
+      "publicKeyMultibase": "z7Qse3ynni4MnLQHXvaHUS8Ac3RJqGWRFRwfiBsWW6SxV",
+      "publicKeyJwk": {
+        "crv": "Ed25519",
+        "x": "X0O81z4O65prUMHyNoTBtscOOLfcEac3e0fuzCXr5E4",
+        "kty": "OKP"
+      }
+    }
+  ],
+  "authentication": [
+    "did:ans:AGDM:ef7Qse3ynni4MnLQHXvaHUS8Ac3RJqGWRFRwfiBsWW6SxV#key-1"
+  ],
+  "assertionMethod": [
+    "did:ans:AGDM:ef7Qse3ynni4MnLQHXvaHUS8Ac3RJqGWRFRwfiBsWW6SxV#key-1"
+  ],
+  "service": [
+    {
+      "id": "did:ans:AGDM:ef7Qse3ynni4MnLQHXvaHUS8Ac3RJqGWRFRwfiBsWW6SxV#agent-endpoint",
+      "type": "AgentService",
+      "serviceEndpoint": "http://localhost:9001/agent/invoke",
+      "version": "1.0.0",
+      "protocol": "http",
+      "serverType": "local-demo-agent",
+      "port": 9001
+    },
+    {
+      "id": "did:ans:AGDM:ef7Qse3ynni4MnLQHXvaHUS8Ac3RJqGWRFRwfiBsWW6SxV#mcp-endpoint",
+      "type": "MCPService",
+      "serviceEndpoint": "http://localhost:9001/mcp",
+      "version": "1.0.0",
+      "protocol": "http",
+      "serverType": "local-demo-agent",
+      "port": 9001
+    },
+    {
+      "id": "did:ans:AGDM:ef7Qse3ynni4MnLQHXvaHUS8Ac3RJqGWRFRwfiBsWW6SxV#a2a-endpoint",
+      "type": "A2AService",
+      "serviceEndpoint": "http://localhost:9001/a2a",
+      "version": "1.0.0",
+      "protocol": "http",
+      "serverType": "local-demo-agent",
+      "port": 9001
+    }
+  ],
+  "ansMetadata": {
+    "subjectType": "agent",
+    "identityType": "demo-service-agent",
+    "ttl": 300,
+    "addressBindings": [
+      {
+        "id": "did:ans:AGDM:ef7Qse3ynni4MnLQHXvaHUS8Ac3RJqGWRFRwfiBsWW6SxV#addr-agent-endpoint",
+        "addressType": "endpoint",
+        "network": "local-http",
+        "address": "http://localhost:9001/agent/invoke",
+        "controller": "did:ans:AGDM:ef7Qse3ynni4MnLQHXvaHUS8Ac3RJqGWRFRwfiBsWW6SxV",
+        "purpose": "service"
+      },
+      {
+        "id": "did:ans:AGDM:ef7Qse3ynni4MnLQHXvaHUS8Ac3RJqGWRFRwfiBsWW6SxV#addr-mcp-endpoint",
+        "addressType": "endpoint",
+        "network": "local-http",
+        "address": "http://localhost:9001/mcp",
+        "controller": "did:ans:AGDM:ef7Qse3ynni4MnLQHXvaHUS8Ac3RJqGWRFRwfiBsWW6SxV",
+        "purpose": "service"
+      },
+      {
+        "id": "did:ans:AGDM:ef7Qse3ynni4MnLQHXvaHUS8Ac3RJqGWRFRwfiBsWW6SxV#addr-a2a-endpoint",
+        "addressType": "endpoint",
+        "network": "local-http",
+        "address": "http://localhost:9001/a2a",
+        "controller": "did:ans:AGDM:ef7Qse3ynni4MnLQHXvaHUS8Ac3RJqGWRFRwfiBsWW6SxV",
+        "purpose": "service"
+      }
+    ],
+    "agentDescription": {
+      "capabilityDescription": "A local demo Service Agent with echo, translation, and summarization capabilities exposed through trusted invocation, MCP, and A2A endpoints.",
+      "capabilityTags": [
+        "echo",
+        "translation",
+        "summarization",
+        "mcp",
+        "a2a",
+        "text-processing"
+      ],
+      "useCaseExamples": [
+        "Echo a signed request.",
+        "Translate English text into Chinese.",
+        "Summarize a short paragraph."
+      ]
+    },
+    "servicePolicy": "public-local-resolution",
+    "networkScope": "openagentnet-local"
+  }
+}

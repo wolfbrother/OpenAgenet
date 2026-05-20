@@ -1,0 +1,17 @@
+{
+  "did": "did:ans:AGUS:ef5e6f7BFrqykuss9LSTh4c65eX6y2q4diEF7HnYSfsmGb",
+  "role": "User Agent",
+  "identityType": "user-agent",
+  "didDocumentHash": "c43ad9782707fed008a1ebe0cd9732f6f6bfdd80dba6c1086f562de6b55bc34b",
+  "subjectType": "agent",
+  "capabilityTags": [
+    "user-agent",
+    "discovery-client",
+    "trusted-invocation",
+    "mcp-client",
+    "a2a-client"
+  ],
+  "services": [],
+  "status": "active",
+  "updatedAt": "2026-05-20T00:00:00.000Z"
+}

@@ -1,0 +1,46 @@
+{
+  "did": "did:ans:AGDM:ef7Qse3ynni4MnLQHXvaHUS8Ac3RJqGWRFRwfiBsWW6SxV",
+  "role": "Demo Service Agent",
+  "identityType": "demo-service-agent",
+  "didDocumentHash": "96aefb5ad0e8c93b64b0a455f2f17cdf9f2b9aaa587186821611f083f073ab25",
+  "subjectType": "agent",
+  "capabilityTags": [
+    "echo",
+    "translation",
+    "summarization",
+    "mcp",
+    "a2a",
+    "text-processing"
+  ],
+  "services": [
+    {
+      "id": "did:ans:AGDM:ef7Qse3ynni4MnLQHXvaHUS8Ac3RJqGWRFRwfiBsWW6SxV#agent-endpoint",
+      "type": "AgentService",
+      "serviceEndpoint": "http://localhost:9001/agent/invoke",
+      "version": "1.0.0",
+      "protocol": "http",
+      "serverType": "local-demo-agent",
+      "port": 9001
+    },
+    {
+      "id": "did:ans:AGDM:ef7Qse3ynni4MnLQHXvaHUS8Ac3RJqGWRFRwfiBsWW6SxV#mcp-endpoint",
+      "type": "MCPService",
+      "serviceEndpoint": "http://localhost:9001/mcp",
+      "version": "1.0.0",
+      "protocol": "http",
+      "serverType": "local-demo-agent",
+      "port": 9001
+    },
+    {
+      "id": "did:ans:AGDM:ef7Qse3ynni4MnLQHXvaHUS8Ac3RJqGWRFRwfiBsWW6SxV#a2a-endpoint",
+      "type": "A2AService",
+      "serviceEndpoint": "http://localhost:9001/a2a",
+      "version": "1.0.0",
+      "protocol": "http",
+      "serverType": "local-demo-agent",
+      "port": 9001
+    }
+  ],
+  "status": "active",
+  "updatedAt": "2026-05-20T00:00:00.000Z"
+}

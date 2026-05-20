@@ -1,0 +1,102 @@
+{
+  "packageVersion": "0.1.0",
+  "did": "did:ans:AGRG:efFkK6cY6Dox6hWkmw28jkomLK4EqFi7ue6YVKp7ytSFdh",
+  "didDocument": {
+    "@context": [
+      "https://www.w3.org/ns/did/v1",
+      "https://w3id.org/ans/v1"
+    ],
+    "id": "did:ans:AGRG:efFkK6cY6Dox6hWkmw28jkomLK4EqFi7ue6YVKp7ytSFdh",
+    "verificationMethod": [
+      {
+        "id": "did:ans:AGRG:efFkK6cY6Dox6hWkmw28jkomLK4EqFi7ue6YVKp7ytSFdh#key-1",
+        "type": "Ed25519VerificationKey2020",
+        "controller": "did:ans:AGRG:efFkK6cY6Dox6hWkmw28jkomLK4EqFi7ue6YVKp7ytSFdh",
+        "publicKeyMultibase": "zFkK6cY6Dox6hWkmw28jkomLK4EqFi7ue6YVKp7ytSFdh",
+        "publicKeyJwk": {
+          "crv": "Ed25519",
+          "x": "2xwNyKSr9vBl1KJqJ1BSYa_uLN3EdIEIRpm4zP-KtGA",
+          "kty": "OKP"
+        }
+      }
+    ],
+    "authentication": [
+      "did:ans:AGRG:efFkK6cY6Dox6hWkmw28jkomLK4EqFi7ue6YVKp7ytSFdh#key-1"
+    ],
+    "assertionMethod": [
+      "did:ans:AGRG:efFkK6cY6Dox6hWkmw28jkomLK4EqFi7ue6YVKp7ytSFdh#key-1"
+    ],
+    "service": [
+      {
+        "id": "did:ans:AGRG:efFkK6cY6Dox6hWkmw28jkomLK4EqFi7ue6YVKp7ytSFdh#registrar-api",
+        "type": "AgentRegistrarService",
+        "serviceEndpoint": "http://localhost:8001",
+        "version": "1.0.0",
+        "protocol": "http",
+        "serverType": "local-registrar",
+        "port": 8001
+      }
+    ],
+    "ansMetadata": {
+      "subjectType": "infrastructure-node",
+      "identityType": "registrar-node",
+      "ttl": 300,
+      "addressBindings": [
+        {
+          "id": "did:ans:AGRG:efFkK6cY6Dox6hWkmw28jkomLK4EqFi7ue6YVKp7ytSFdh#addr-registrar-api",
+          "addressType": "endpoint",
+          "network": "local-http",
+          "address": "http://localhost:8001",
+          "controller": "did:ans:AGRG:efFkK6cY6Dox6hWkmw28jkomLK4EqFi7ue6YVKp7ytSFdh",
+          "purpose": "service"
+        }
+      ],
+      "agentDescription": {
+        "capabilityDescription": "Registers Service Agents, validates DID Documents, and issues local AgentRegistrationCredential records.",
+        "capabilityTags": [
+          "registration",
+          "credential-issuance",
+          "did-document-validation"
+        ],
+        "useCaseExamples": [
+          "Register a demo Service Agent.",
+          "Submit a verified DID Document to Root Node."
+        ]
+      },
+      "servicePolicy": "public-local-resolution",
+      "networkScope": "openagentnet-local"
+    }
+  },
+  "didDocumentHash": "311e15cfd6249259a987efc3538894b61d92721405961357f82e304ed536c07d",
+  "metadata": {
+    "did": "did:ans:AGRG:efFkK6cY6Dox6hWkmw28jkomLK4EqFi7ue6YVKp7ytSFdh",
+    "role": "Registrar Node",
+    "identityType": "registrar-node",
+    "didDocumentHash": "311e15cfd6249259a987efc3538894b61d92721405961357f82e304ed536c07d",
+    "subjectType": "infrastructure-node",
+    "capabilityTags": [
+      "registration",
+      "credential-issuance",
+      "did-document-validation"
+    ],
+    "services": [
+      {
+        "id": "did:ans:AGRG:efFkK6cY6Dox6hWkmw28jkomLK4EqFi7ue6YVKp7ytSFdh#registrar-api",
+        "type": "AgentRegistrarService",
+        "serviceEndpoint": "http://localhost:8001",
+        "version": "1.0.0",
+        "protocol": "http",
+        "serverType": "local-registrar",
+        "port": 8001
+      }
+    ],
+    "status": "active",
+    "updatedAt": "2026-05-20T00:00:00.000Z"
+  },
+  "rootProof": {
+    "rootDid": "did:ans:AGRT:efHKg7V5cjoWEQcCQdHqpEBpB4ZDqHVHm6eKBbQoQd78HH",
+    "bulletinEventHash": "6420ddc2f38b226e3deb4874d3bd25877482a4eafee50b4bd299f3ef46e0f552",
+    "signature": "71Lm1_uw9M2uJE-RN6TdneOssr3NwjcpzbMCDRsAM1qj0dHLisky0iF4jgbBKSf12L8qWZLaBtUAQLW8mNCPBA"
+  },
+  "createdAt": "2026-05-20T00:00:00.000Z"
+}

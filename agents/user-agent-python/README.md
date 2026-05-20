@@ -4,4 +4,6 @@ Author: JINLIANG XU
 Email: xujinliang@caict.ac.cn; jlxufly@gmail.com
 -->
 
-# OpenAgentNet
+# User Agent Python
+
+Python reference implementation of a User Agent compatible with OpenAgentNet, MCP, and A2A.

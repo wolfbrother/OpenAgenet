@@ -1,0 +1,20 @@
+[server]
+host = "127.0.0.1"
+port = 8003
+endpoint = "http://localhost:8003"
+
+[service]
+name = "CDN Service"
+role = "cdn-service"
+provider = "local"
+
+[upstream]
+root_endpoint = "http://localhost:8000"
+
+[paths]
+data_dir = "../../data/cdn"
+manifest_file = "../../data/cdn/manifest.json"
+documents_dir = "../../data/cdn/documents"
+metadata_dir = "../../data/cdn/metadata"
+packages_dir = "../../data/cdn/packages"
+database_url = "sqlite:../../data/cdn/cdn.db"

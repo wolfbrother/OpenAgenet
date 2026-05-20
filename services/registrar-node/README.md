@@ -4,4 +4,8 @@ Author: JINLIANG XU
 Email: xujinliang@caict.ac.cn; jlxufly@gmail.com
 -->
 
-# OpenAgentNet
+# Registrar Node
+
+Registers Service Agents and submits DID Documents to Root Node.
+
+Detailed module design: [docs/design.md](docs/design.md)

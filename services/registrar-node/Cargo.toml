@@ -1,0 +1,23 @@
+[package]
+name = "registrar-node"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[dependencies]
+anyhow.workspace = true
+axum.workspace = true
+chrono.workspace = true
+oan-core = { path = "../../crates/oan-core" }
+oan-crypto = { path = "../../crates/oan-crypto" }
+oan-protocol = { path = "../../crates/oan-protocol" }
+oan-storage = { path = "../../crates/oan-storage" }
+reqwest.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+tokio.workspace = true
+toml.workspace = true
+
+[dev-dependencies]
+tempfile.workspace = true

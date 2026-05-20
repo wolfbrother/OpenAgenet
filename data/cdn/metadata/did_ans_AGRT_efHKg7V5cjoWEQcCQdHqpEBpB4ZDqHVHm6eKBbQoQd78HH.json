@@ -1,0 +1,35 @@
+{
+  "did": "did:ans:AGRT:efHKg7V5cjoWEQcCQdHqpEBpB4ZDqHVHm6eKBbQoQd78HH",
+  "role": "Root Node",
+  "identityType": "root-node",
+  "didDocumentHash": "7bbd237f692c6877526359d2ffd28b6e1a5f94f7e54822cb402461aa8d28abb7",
+  "subjectType": "infrastructure-node",
+  "capabilityTags": [
+    "root-authority",
+    "authorization",
+    "bulletin",
+    "verification"
+  ],
+  "services": [
+    {
+      "id": "did:ans:AGRT:efHKg7V5cjoWEQcCQdHqpEBpB4ZDqHVHm6eKBbQoQd78HH#root-api",
+      "type": "RootAuthorityService",
+      "serviceEndpoint": "http://localhost:8000",
+      "version": "1.0.0",
+      "protocol": "http",
+      "serverType": "local-root",
+      "port": 8000
+    },
+    {
+      "id": "did:ans:AGRT:efHKg7V5cjoWEQcCQdHqpEBpB4ZDqHVHm6eKBbQoQd78HH#bulletin",
+      "type": "TrustBulletinService",
+      "serviceEndpoint": "http://localhost:8000/bulletin",
+      "version": "1.0.0",
+      "protocol": "http",
+      "serverType": "local-root",
+      "port": 8000
+    }
+  ],
+  "status": "active",
+  "updatedAt": "2026-05-20T00:00:00.000Z"
+}

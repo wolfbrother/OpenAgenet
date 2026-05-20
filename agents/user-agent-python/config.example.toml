@@ -1,0 +1,13 @@
+[agent]
+name = "User Agent"
+role = "user-agent"
+did_semantic_code = "AGUS"
+
+[upstream]
+discovery_endpoint = "http://localhost:8002"
+cdn_endpoint = "http://localhost:8003"
+
+[paths]
+data_dir = "../../data/user-agent"
+keys_dir = "../../data/user-agent/keys"
+did_document_file = "../../data/user-agent/did-document.json"

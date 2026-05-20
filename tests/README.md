@@ -4,4 +4,6 @@ Author: JINLIANG XU
 Email: xujinliang@caict.ac.cn; jlxufly@gmail.com
 -->
 
-# OpenAgentNet
+# Tests
+
+Cross-language tests for Rust crates, TypeScript packages, Python agents, integration flows, and end-to-end demos.
