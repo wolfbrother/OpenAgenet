@@ -1,8 +1,8 @@
 {
-  "did": "did:ans:AGUS:ef5e6f7BFrqykuss9LSTh4c65eX6y2q4diEF7HnYSfsmGb",
+  "did": "did:ans:AGUS:efDYS9e8DqpirBGYJNg5BkFwq1hP9QJRwAn7G1P5By5b5F",
   "role": "User Agent",
   "identityType": "user-agent",
-  "didDocumentHash": "c43ad9782707fed008a1ebe0cd9732f6f6bfdd80dba6c1086f562de6b55bc34b",
+  "didDocumentHash": "2bff804ab97c1be22fd4b42f22932a21c2f30b9ee5a5bcdea836e4c633e6e6be",
   "subjectType": "agent",
   "capabilityTags": [
     "user-agent",
@@ -13,5 +13,5 @@
   ],
   "services": [],
   "status": "active",
-  "updatedAt": "2026-05-20T00:00:00.000Z"
+  "updatedAt": "2026-05-20T00:00:00Z"
 }

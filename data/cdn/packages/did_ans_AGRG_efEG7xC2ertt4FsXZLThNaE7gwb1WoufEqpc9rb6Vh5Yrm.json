@@ -1,34 +1,34 @@
 {
   "packageVersion": "0.1.0",
-  "did": "did:ans:AGRG:efFkK6cY6Dox6hWkmw28jkomLK4EqFi7ue6YVKp7ytSFdh",
+  "did": "did:ans:AGRG:efEG7xC2ertt4FsXZLThNaE7gwb1WoufEqpc9rb6Vh5Yrm",
   "didDocument": {
     "@context": [
       "https://www.w3.org/ns/did/v1",
       "https://w3id.org/ans/v1"
     ],
-    "id": "did:ans:AGRG:efFkK6cY6Dox6hWkmw28jkomLK4EqFi7ue6YVKp7ytSFdh",
+    "id": "did:ans:AGRG:efEG7xC2ertt4FsXZLThNaE7gwb1WoufEqpc9rb6Vh5Yrm",
     "verificationMethod": [
       {
-        "id": "did:ans:AGRG:efFkK6cY6Dox6hWkmw28jkomLK4EqFi7ue6YVKp7ytSFdh#key-1",
+        "id": "did:ans:AGRG:efEG7xC2ertt4FsXZLThNaE7gwb1WoufEqpc9rb6Vh5Yrm#key-1",
         "type": "Ed25519VerificationKey2020",
-        "controller": "did:ans:AGRG:efFkK6cY6Dox6hWkmw28jkomLK4EqFi7ue6YVKp7ytSFdh",
-        "publicKeyMultibase": "zFkK6cY6Dox6hWkmw28jkomLK4EqFi7ue6YVKp7ytSFdh",
+        "controller": "did:ans:AGRG:efEG7xC2ertt4FsXZLThNaE7gwb1WoufEqpc9rb6Vh5Yrm",
+        "publicKeyMultibase": "zEG7xC2ertt4FsXZLThNaE7gwb1WoufEqpc9rb6Vh5Yrm",
         "publicKeyJwk": {
           "crv": "Ed25519",
-          "x": "2xwNyKSr9vBl1KJqJ1BSYa_uLN3EdIEIRpm4zP-KtGA",
+          "x": "xQeAmHJoYtenezl1LoeK2fkbZyEtBT9TA7j8MX6n3II",
           "kty": "OKP"
         }
       }
     ],
     "authentication": [
-      "did:ans:AGRG:efFkK6cY6Dox6hWkmw28jkomLK4EqFi7ue6YVKp7ytSFdh#key-1"
+      "did:ans:AGRG:efEG7xC2ertt4FsXZLThNaE7gwb1WoufEqpc9rb6Vh5Yrm#key-1"
     ],
     "assertionMethod": [
-      "did:ans:AGRG:efFkK6cY6Dox6hWkmw28jkomLK4EqFi7ue6YVKp7ytSFdh#key-1"
+      "did:ans:AGRG:efEG7xC2ertt4FsXZLThNaE7gwb1WoufEqpc9rb6Vh5Yrm#key-1"
     ],
     "service": [
       {
-        "id": "did:ans:AGRG:efFkK6cY6Dox6hWkmw28jkomLK4EqFi7ue6YVKp7ytSFdh#registrar-api",
+        "id": "did:ans:AGRG:efEG7xC2ertt4FsXZLThNaE7gwb1WoufEqpc9rb6Vh5Yrm#registrar-api",
         "type": "AgentRegistrarService",
         "serviceEndpoint": "http://localhost:8001",
         "version": "1.0.0",
@@ -43,11 +43,11 @@
       "ttl": 300,
       "addressBindings": [
         {
-          "id": "did:ans:AGRG:efFkK6cY6Dox6hWkmw28jkomLK4EqFi7ue6YVKp7ytSFdh#addr-registrar-api",
+          "id": "did:ans:AGRG:efEG7xC2ertt4FsXZLThNaE7gwb1WoufEqpc9rb6Vh5Yrm#addr-registrar-api",
           "addressType": "endpoint",
           "network": "local-http",
           "address": "http://localhost:8001",
-          "controller": "did:ans:AGRG:efFkK6cY6Dox6hWkmw28jkomLK4EqFi7ue6YVKp7ytSFdh",
+          "controller": "did:ans:AGRG:efEG7xC2ertt4FsXZLThNaE7gwb1WoufEqpc9rb6Vh5Yrm",
           "purpose": "service"
         }
       ],
@@ -67,12 +67,12 @@
       "networkScope": "openagentnet-local"
     }
   },
-  "didDocumentHash": "311e15cfd6249259a987efc3538894b61d92721405961357f82e304ed536c07d",
+  "didDocumentHash": "5c51a461bf6d7bd0a59245d06c351d7d893a2b1c3f1525a064e9babddeada70b",
   "metadata": {
-    "did": "did:ans:AGRG:efFkK6cY6Dox6hWkmw28jkomLK4EqFi7ue6YVKp7ytSFdh",
+    "did": "did:ans:AGRG:efEG7xC2ertt4FsXZLThNaE7gwb1WoufEqpc9rb6Vh5Yrm",
     "role": "Registrar Node",
     "identityType": "registrar-node",
-    "didDocumentHash": "311e15cfd6249259a987efc3538894b61d92721405961357f82e304ed536c07d",
+    "didDocumentHash": "5c51a461bf6d7bd0a59245d06c351d7d893a2b1c3f1525a064e9babddeada70b",
     "subjectType": "infrastructure-node",
     "capabilityTags": [
       "registration",
@@ -81,7 +81,7 @@
     ],
     "services": [
       {
-        "id": "did:ans:AGRG:efFkK6cY6Dox6hWkmw28jkomLK4EqFi7ue6YVKp7ytSFdh#registrar-api",
+        "id": "did:ans:AGRG:efEG7xC2ertt4FsXZLThNaE7gwb1WoufEqpc9rb6Vh5Yrm#registrar-api",
         "type": "AgentRegistrarService",
         "serviceEndpoint": "http://localhost:8001",
         "version": "1.0.0",
@@ -91,12 +91,12 @@
       }
     ],
     "status": "active",
-    "updatedAt": "2026-05-20T00:00:00.000Z"
+    "updatedAt": "2026-05-20T00:00:00Z"
   },
   "rootProof": {
-    "rootDid": "did:ans:AGRT:efHKg7V5cjoWEQcCQdHqpEBpB4ZDqHVHm6eKBbQoQd78HH",
-    "bulletinEventHash": "6420ddc2f38b226e3deb4874d3bd25877482a4eafee50b4bd299f3ef46e0f552",
-    "signature": "71Lm1_uw9M2uJE-RN6TdneOssr3NwjcpzbMCDRsAM1qj0dHLisky0iF4jgbBKSf12L8qWZLaBtUAQLW8mNCPBA"
+    "rootDid": "did:ans:AGRT:ef8mwSoLkuczZefef3cJpUqE7Xqg7WWakUYNXtS7R9CpEm",
+    "bulletinEventHash": "9337df8a6786b25459dac186ec4a7609e06870301a2d31387661d639c5675a1b",
+    "signature": "miiWK6srApnVa3TL9rMywImGom7sQULbuGKim0Wl-_7vgVItx5ehTiiB0UaK_bdOd3zzgoXQTmLdnw2zeqtkBQ"
   },
-  "createdAt": "2026-05-20T00:00:00.000Z"
+  "createdAt": "2026-05-20T00:00:00Z"
 }

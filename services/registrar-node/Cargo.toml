@@ -8,8 +8,11 @@ repository.workspace = true
 [dependencies]
 anyhow.workspace = true
 axum.workspace = true
+base64.workspace = true
 chrono.workspace = true
+ed25519-dalek.workspace = true
 oan-core = { path = "../../crates/oan-core" }
+oan-credentials = { path = "../../crates/oan-credentials" }
 oan-crypto = { path = "../../crates/oan-crypto" }
 oan-protocol = { path = "../../crates/oan-protocol" }
 oan-storage = { path = "../../crates/oan-storage" }

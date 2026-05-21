@@ -135,8 +135,6 @@ fn load_config(path: String) -> Result<Config> {
 fn resolve_relative(base: &Path, path: &Path) -> PathBuf {
     if path.is_absolute() {
         path.to_path_buf()
-    } else if path.exists() {
-        path.to_path_buf()
     } else {
         base.join(path)
     }
@@ -363,6 +361,7 @@ mod tests {
             package_version: "0.1.0".to_owned(),
             did: did.to_owned(),
             did_document_hash: "hash-1".to_owned(),
+            metadata_hash: None,
             metadata: oan_package::AgentMetadata {
                 did: did.to_owned(),
                 role: "Service Agent".to_owned(),

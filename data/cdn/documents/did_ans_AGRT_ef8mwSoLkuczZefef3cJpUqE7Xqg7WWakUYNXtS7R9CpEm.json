@@ -3,29 +3,29 @@
     "https://www.w3.org/ns/did/v1",
     "https://w3id.org/ans/v1"
   ],
-  "id": "did:ans:AGRT:efHKg7V5cjoWEQcCQdHqpEBpB4ZDqHVHm6eKBbQoQd78HH",
+  "id": "did:ans:AGRT:ef8mwSoLkuczZefef3cJpUqE7Xqg7WWakUYNXtS7R9CpEm",
   "verificationMethod": [
     {
-      "id": "did:ans:AGRT:efHKg7V5cjoWEQcCQdHqpEBpB4ZDqHVHm6eKBbQoQd78HH#key-1",
+      "id": "did:ans:AGRT:ef8mwSoLkuczZefef3cJpUqE7Xqg7WWakUYNXtS7R9CpEm#key-1",
       "type": "Ed25519VerificationKey2020",
-      "controller": "did:ans:AGRT:efHKg7V5cjoWEQcCQdHqpEBpB4ZDqHVHm6eKBbQoQd78HH",
-      "publicKeyMultibase": "zHKg7V5cjoWEQcCQdHqpEBpB4ZDqHVHm6eKBbQoQd78HH",
+      "controller": "did:ans:AGRT:ef8mwSoLkuczZefef3cJpUqE7Xqg7WWakUYNXtS7R9CpEm",
+      "publicKeyMultibase": "z8mwSoLkuczZefef3cJpUqE7Xqg7WWakUYNXtS7R9CpEm",
       "publicKeyJwk": {
         "crv": "Ed25519",
-        "x": "8oOrUtprx3iY5JVpT8PbBn9KXNxzrNo507LRbIVv2zw",
+        "x": "c4TszouHfGG-ucs8-ofL312z_LIvoMvGBGEY7ZjmIvI",
         "kty": "OKP"
       }
     }
   ],
   "authentication": [
-    "did:ans:AGRT:efHKg7V5cjoWEQcCQdHqpEBpB4ZDqHVHm6eKBbQoQd78HH#key-1"
+    "did:ans:AGRT:ef8mwSoLkuczZefef3cJpUqE7Xqg7WWakUYNXtS7R9CpEm#key-1"
   ],
   "assertionMethod": [
-    "did:ans:AGRT:efHKg7V5cjoWEQcCQdHqpEBpB4ZDqHVHm6eKBbQoQd78HH#key-1"
+    "did:ans:AGRT:ef8mwSoLkuczZefef3cJpUqE7Xqg7WWakUYNXtS7R9CpEm#key-1"
   ],
   "service": [
     {
-      "id": "did:ans:AGRT:efHKg7V5cjoWEQcCQdHqpEBpB4ZDqHVHm6eKBbQoQd78HH#root-api",
+      "id": "did:ans:AGRT:ef8mwSoLkuczZefef3cJpUqE7Xqg7WWakUYNXtS7R9CpEm#root-api",
       "type": "RootAuthorityService",
       "serviceEndpoint": "http://localhost:8000",
       "version": "1.0.0",
@@ -34,7 +34,7 @@
       "port": 8000
     },
     {
-      "id": "did:ans:AGRT:efHKg7V5cjoWEQcCQdHqpEBpB4ZDqHVHm6eKBbQoQd78HH#bulletin",
+      "id": "did:ans:AGRT:ef8mwSoLkuczZefef3cJpUqE7Xqg7WWakUYNXtS7R9CpEm#bulletin",
       "type": "TrustBulletinService",
       "serviceEndpoint": "http://localhost:8000/bulletin",
       "version": "1.0.0",
@@ -49,19 +49,19 @@
     "ttl": 300,
     "addressBindings": [
       {
-        "id": "did:ans:AGRT:efHKg7V5cjoWEQcCQdHqpEBpB4ZDqHVHm6eKBbQoQd78HH#addr-root-api",
+        "id": "did:ans:AGRT:ef8mwSoLkuczZefef3cJpUqE7Xqg7WWakUYNXtS7R9CpEm#addr-root-api",
         "addressType": "endpoint",
         "network": "local-http",
         "address": "http://localhost:8000",
-        "controller": "did:ans:AGRT:efHKg7V5cjoWEQcCQdHqpEBpB4ZDqHVHm6eKBbQoQd78HH",
+        "controller": "did:ans:AGRT:ef8mwSoLkuczZefef3cJpUqE7Xqg7WWakUYNXtS7R9CpEm",
         "purpose": "service"
       },
       {
-        "id": "did:ans:AGRT:efHKg7V5cjoWEQcCQdHqpEBpB4ZDqHVHm6eKBbQoQd78HH#addr-bulletin",
+        "id": "did:ans:AGRT:ef8mwSoLkuczZefef3cJpUqE7Xqg7WWakUYNXtS7R9CpEm#addr-bulletin",
         "addressType": "endpoint",
         "network": "local-http",
         "address": "http://localhost:8000/bulletin",
-        "controller": "did:ans:AGRT:efHKg7V5cjoWEQcCQdHqpEBpB4ZDqHVHm6eKBbQoQd78HH",
+        "controller": "did:ans:AGRT:ef8mwSoLkuczZefef3cJpUqE7Xqg7WWakUYNXtS7R9CpEm",
         "purpose": "service"
       }
     ],

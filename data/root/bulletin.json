@@ -1,87 +1,215 @@
 {
   "version": "0.1.0",
-  "rootDid": "did:ans:AGRT:efHKg7V5cjoWEQcCQdHqpEBpB4ZDqHVHm6eKBbQoQd78HH",
-  "createdAt": "2026-05-20T00:00:00.000Z",
+  "rootDid": "did:ans:AGRT:ef8mwSoLkuczZefef3cJpUqE7Xqg7WWakUYNXtS7R9CpEm",
+  "createdAt": "2026-05-20T00:00:00Z",
   "events": [
     {
       "sequence": 1,
       "previousHash": null,
       "eventType": "ROOT_INITIALIZED",
-      "subjectDid": "did:ans:AGRT:efHKg7V5cjoWEQcCQdHqpEBpB4ZDqHVHm6eKBbQoQd78HH",
-      "actorDid": "did:ans:AGRT:efHKg7V5cjoWEQcCQdHqpEBpB4ZDqHVHm6eKBbQoQd78HH",
+      "subjectDid": "did:ans:AGRT:ef8mwSoLkuczZefef3cJpUqE7Xqg7WWakUYNXtS7R9CpEm",
+      "actorDid": "did:ans:AGRT:ef8mwSoLkuczZefef3cJpUqE7Xqg7WWakUYNXtS7R9CpEm",
       "payload": {
-        "didDocumentHash": "7bbd237f692c6877526359d2ffd28b6e1a5f94f7e54822cb402461aa8d28abb7"
+        "didDocumentHash": "b9199e745dffc62569a157c362aa48984f6235b26b31a98c1b37c7dca41e4a9a"
       },
-      "createdAt": "2026-05-20T00:00:00.000Z",
-      "eventHash": "b4faa4dba2e25658e21d7fe038c8954ab8a5b3059facd27c1bbfadad92fe327f",
-      "signature": "GoflU9p6cTo3NkecBQUlINi6i1qcR6wBxhYkiCv77SKjHMBhw0mMDBm0Obirruevw1637OwGc0DJ_ZxdjGnPBQ"
+      "createdAt": "2026-05-20T00:00:00Z",
+      "eventHash": "480a9375644d9a8f5be9897c0288b9fba25bd8c13a70deb9e1c9ecdafc43e97e",
+      "signature": "cat3I8yCDRUewTJhikDgHQA9x-cHxffRSGjwsAeNKguPqq3ozPVj2YbqNoRwzAYH-PrsNSviWmT2Ayu8npXmBw"
     },
     {
       "sequence": 2,
+      "previousHash": "480a9375644d9a8f5be9897c0288b9fba25bd8c13a70deb9e1c9ecdafc43e97e",
       "eventType": "CDN_SERVICE_INFO_UPDATED",
-      "subjectDid": "did:ans:AGRT:efHKg7V5cjoWEQcCQdHqpEBpB4ZDqHVHm6eKBbQoQd78HH",
-      "actorDid": "did:ans:AGRT:efHKg7V5cjoWEQcCQdHqpEBpB4ZDqHVHm6eKBbQoQd78HH",
+      "subjectDid": "did:ans:AGRT:ef8mwSoLkuczZefef3cJpUqE7Xqg7WWakUYNXtS7R9CpEm",
+      "actorDid": "did:ans:AGRT:ef8mwSoLkuczZefef3cJpUqE7Xqg7WWakUYNXtS7R9CpEm",
       "payload": {
-        "serviceId": "openagentnet-local-cdn",
-        "providerType": "local",
         "baseUrl": "http://localhost:8003",
-        "manifestUrl": "http://localhost:8003/cdn/manifest",
-        "updatesUrl": "http://localhost:8003/cdn/updates",
         "documentsUrlTemplate": "http://localhost:8003/cdn/documents/{did}",
-        "packagesUrlTemplate": "http://localhost:8003/cdn/packages/{did}",
+        "manifestUrl": "http://localhost:8003/cdn/manifest",
         "metadataUrlTemplate": "http://localhost:8003/cdn/metadata/{did}",
+        "packagesUrlTemplate": "http://localhost:8003/cdn/packages/{did}",
+        "providerType": "local",
+        "serviceId": "openagentnet-local-cdn",
         "status": "active",
-        "validFrom": "2026-05-20T00:00:00.000Z",
+        "updatesUrl": "http://localhost:8003/cdn/updates",
+        "validFrom": "2026-05-20T00:00:00Z",
         "validUntil": null
       },
-      "createdAt": "2026-05-20T00:00:00.000Z",
-      "previousHash": "b4faa4dba2e25658e21d7fe038c8954ab8a5b3059facd27c1bbfadad92fe327f",
-      "eventHash": "743085fb47f818561888d87e8406009e27f5ad7977c3f5d98acdf5f65b57aa9c",
-      "signature": "5NMqeVb7JzGKE-wpxezLShImkai-6F0xpJsjG5YK8mzRVzyJwU-IGmsA-cxWsol2t4kvDAJkKz3l-i5GidVzAw"
+      "createdAt": "2026-05-20T00:00:00Z",
+      "eventHash": "587df06de13e3b5cc7c7b769291431999f8b663adfc8c9eeaf9ad74d97cc4d21",
+      "signature": "BU5BrvypqLdjFdpWhG2LekNCdrF2ZD3wfrDaEyOEe7-LXumn4d9xnlwjPGVsIZFeOOMeI-NSu2lJhgoBX4zXDA"
     },
     {
       "sequence": 3,
+      "previousHash": "587df06de13e3b5cc7c7b769291431999f8b663adfc8c9eeaf9ad74d97cc4d21",
       "eventType": "REGISTRAR_AUTHORIZED",
-      "subjectDid": "did:ans:AGRG:efFkK6cY6Dox6hWkmw28jkomLK4EqFi7ue6YVKp7ytSFdh",
-      "actorDid": "did:ans:AGRT:efHKg7V5cjoWEQcCQdHqpEBpB4ZDqHVHm6eKBbQoQd78HH",
+      "subjectDid": "did:ans:AGRG:efEG7xC2ertt4FsXZLThNaE7gwb1WoufEqpc9rb6Vh5Yrm",
+      "actorDid": "did:ans:AGRT:ef8mwSoLkuczZefef3cJpUqE7Xqg7WWakUYNXtS7R9CpEm",
       "payload": {
-        "didDocumentHash": "311e15cfd6249259a987efc3538894b61d92721405961357f82e304ed536c07d"
+        "didDocumentHash": "5c51a461bf6d7bd0a59245d06c351d7d893a2b1c3f1525a064e9babddeada70b"
       },
-      "createdAt": "2026-05-20T00:00:00.000Z",
-      "previousHash": "743085fb47f818561888d87e8406009e27f5ad7977c3f5d98acdf5f65b57aa9c",
-      "eventHash": "6420ddc2f38b226e3deb4874d3bd25877482a4eafee50b4bd299f3ef46e0f552",
-      "signature": "71Lm1_uw9M2uJE-RN6TdneOssr3NwjcpzbMCDRsAM1qj0dHLisky0iF4jgbBKSf12L8qWZLaBtUAQLW8mNCPBA"
+      "createdAt": "2026-05-20T00:00:00Z",
+      "eventHash": "9337df8a6786b25459dac186ec4a7609e06870301a2d31387661d639c5675a1b",
+      "signature": "miiWK6srApnVa3TL9rMywImGom7sQULbuGKim0Wl-_7vgVItx5ehTiiB0UaK_bdOd3zzgoXQTmLdnw2zeqtkBQ"
     },
     {
       "sequence": 4,
+      "previousHash": "9337df8a6786b25459dac186ec4a7609e06870301a2d31387661d639c5675a1b",
       "eventType": "DISCOVERY_NODE_AUTHORIZED",
-      "subjectDid": "did:ans:AGDS:efAAwpkMEA3HESX6cuAkGA5CEWWbZttBZFVHxoWYkWqncC",
-      "actorDid": "did:ans:AGRT:efHKg7V5cjoWEQcCQdHqpEBpB4ZDqHVHm6eKBbQoQd78HH",
+      "subjectDid": "did:ans:AGDS:ef6eU4rGF17EK5wVXaNoroB29Mnh6S243nqwuqjA8gr84t",
+      "actorDid": "did:ans:AGRT:ef8mwSoLkuczZefef3cJpUqE7Xqg7WWakUYNXtS7R9CpEm",
       "payload": {
-        "didDocumentHash": "31369f95975e903b53c8e091a8bc086168c1d8eaddd1e283b11c868d40c7be48",
+        "authorizedDomains": [
+          "*"
+        ],
+        "didDocumentHash": "5f217f3e1da87fb13e78cc9c9c5d690c3ec93f1a7f3ca37140bc6097f78653f0",
+        "tagTreeVersion": 1
+      },
+      "createdAt": "2026-05-20T00:00:00Z",
+      "eventHash": "8c6d459c04becabbb5f98a4f0bf6880251567303d1bd0d5cc376dade56d5cab1",
+      "signature": "WJJVAyX3JmUlsk6QlfXoFJoAhHeW5FDhVWhvXmay3cMDlEv0mRh5TYn57a9hW8cbgIvJyjvX7QcGaQSq72yWBw"
+    },
+    {
+      "sequence": 5,
+      "previousHash": "8c6d459c04becabbb5f98a4f0bf6880251567303d1bd0d5cc376dade56d5cab1",
+      "eventType": "AGENT_DID_DOCUMENT_ANCHORED",
+      "subjectDid": "did:ans:AGDM:efGyxDoPcm8SgEkFbHfyXSX1PTaKWfDH1Ltw2piFebYLgj",
+      "actorDid": "did:ans:AGRT:ef8mwSoLkuczZefef3cJpUqE7Xqg7WWakUYNXtS7R9CpEm",
+      "payload": {
+        "didDocumentHash": "f01fa54414a257fa9669ef5a2f735e7a90487f7851ddf90c08c35d3135f52f85",
+        "registrarDid": "did:ans:AGRG:efEG7xC2ertt4FsXZLThNaE7gwb1WoufEqpc9rb6Vh5Yrm"
+      },
+      "createdAt": "2026-05-20T00:00:00Z",
+      "eventHash": "341b98f4c30ca7a4ea632a6711964c1846bf1ed85d0aa4367532079b3190619e",
+      "signature": "1RAazeQq3vTQGVMx5_Mdcbp0has5qoaE5jWueZ_LWEmLE4WynsMcWvn7FkFG9nwzidIMvZVvWptPF1NDMqhHBw"
+    },
+    {
+      "sequence": 6,
+      "previousHash": "341b98f4c30ca7a4ea632a6711964c1846bf1ed85d0aa4367532079b3190619e",
+      "eventType": "REGISTRAR_AUTHORIZED",
+      "subjectDid": "did:ans:AGRG:efEG7xC2ertt4FsXZLThNaE7gwb1WoufEqpc9rb6Vh5Yrm",
+      "actorDid": "did:ans:AGRT:ef8mwSoLkuczZefef3cJpUqE7Xqg7WWakUYNXtS7R9CpEm",
+      "payload": {
+        "didDocumentHash": "5c51a461bf6d7bd0a59245d06c351d7d893a2b1c3f1525a064e9babddeada70b",
+        "targetRole": "registrar"
+      },
+      "createdAt": "2026-05-21T03:58:36.316390Z",
+      "eventHash": "5e4e41ec2b63da70adaa6d7ac2b65672e013f6e835d1cf8bc5ba5fc4a0e1665c",
+      "signature": "0hrBRs8t0Pf71B2zRNm6OcGU1rIQ6P_Ffv-XvNaZlNzT3M9IGRvezzPbHnwMeuP0Z0oeSthc1UBX2kmyakjTAw"
+    },
+    {
+      "sequence": 7,
+      "previousHash": "5e4e41ec2b63da70adaa6d7ac2b65672e013f6e835d1cf8bc5ba5fc4a0e1665c",
+      "eventType": "DISCOVERY_NODE_AUTHORIZED",
+      "subjectDid": "did:ans:AGDS:ef6eU4rGF17EK5wVXaNoroB29Mnh6S243nqwuqjA8gr84t",
+      "actorDid": "did:ans:AGRT:ef8mwSoLkuczZefef3cJpUqE7Xqg7WWakUYNXtS7R9CpEm",
+      "payload": {
+        "didDocumentHash": "5f217f3e1da87fb13e78cc9c9c5d690c3ec93f1a7f3ca37140bc6097f78653f0",
+        "targetRole": "discovery"
+      },
+      "createdAt": "2026-05-21T03:58:36.348917900Z",
+      "eventHash": "7778387c2f4f4425fdb2b5dc5d55e06e3f36d6785622961aa7814938ae2a5022",
+      "signature": "2M8THJk1wRTXh0AkjfqlexTKapOWSF-4p_thAWSYxeiotROkwg8NgNaZQetYDmddxS2OXlpAuxTwq53nDesIDg"
+    },
+    {
+      "sequence": 8,
+      "previousHash": "7778387c2f4f4425fdb2b5dc5d55e06e3f36d6785622961aa7814938ae2a5022",
+      "eventType": "DISCOVERY_NODE_DOMAINS_UPDATED",
+      "subjectDid": "did:ans:AGDS:ef6eU4rGF17EK5wVXaNoroB29Mnh6S243nqwuqjA8gr84t",
+      "actorDid": "did:ans:AGRT:ef8mwSoLkuczZefef3cJpUqE7Xqg7WWakUYNXtS7R9CpEm",
+      "payload": {
         "authorizedDomains": [
           "*"
         ],
         "tagTreeVersion": 1
       },
-      "createdAt": "2026-05-20T00:00:00.000Z",
-      "previousHash": "6420ddc2f38b226e3deb4874d3bd25877482a4eafee50b4bd299f3ef46e0f552",
-      "eventHash": "ac2e50487a7fa6427e9012f3d699726f1008c095ed69780032ea5dbeb23d3797",
-      "signature": "Ru6ivqcIpMOW-aiHelKWpEdgAmYXuCSGvmf_UEl9uWswlRl8se4X0HQGAWceW6gsoVTcy0Yu0XJC6H8YXz68Aw"
+      "createdAt": "2026-05-21T03:58:36.373883900Z",
+      "eventHash": "5be7d43494e7c9e75813e20954b180ad7397708a2c70ca5949268337befea763",
+      "signature": "eDOyGfJOvWisYT6I2wxfBK3go4WElyPSufZMCTHk1wbQBuv3ZsjLGhvpNdtAFjPWj4QrPTGAhyxBrjrSJ1VFCA"
     },
     {
-      "sequence": 5,
+      "sequence": 9,
+      "previousHash": "5be7d43494e7c9e75813e20954b180ad7397708a2c70ca5949268337befea763",
       "eventType": "AGENT_DID_DOCUMENT_ANCHORED",
-      "subjectDid": "did:ans:AGDM:ef7Qse3ynni4MnLQHXvaHUS8Ac3RJqGWRFRwfiBsWW6SxV",
-      "actorDid": "did:ans:AGRT:efHKg7V5cjoWEQcCQdHqpEBpB4ZDqHVHm6eKBbQoQd78HH",
+      "subjectDid": "did:ans:AGDM:efGyxDoPcm8SgEkFbHfyXSX1PTaKWfDH1Ltw2piFebYLgj",
+      "actorDid": "did:ans:AGRT:ef8mwSoLkuczZefef3cJpUqE7Xqg7WWakUYNXtS7R9CpEm",
       "payload": {
-        "registrarDid": "did:ans:AGRG:efFkK6cY6Dox6hWkmw28jkomLK4EqFi7ue6YVKp7ytSFdh",
-        "didDocumentHash": "96aefb5ad0e8c93b64b0a455f2f17cdf9f2b9aaa587186821611f083f073ab25"
+        "capabilityTags": [
+          "gbt4754-2017.01"
+        ],
+        "didDocumentHash": "f89e271c542aabb39ecf7cc121e882a1adfb15caab41a7120d069c3712c8aa28",
+        "documentVersion": 1,
+        "metadataHash": "5fcd97ddedff740814bf3ed7319f758c20e2ba1ee6c08e23d92328df1753e13f",
+        "operation": "create",
+        "registrarDid": "did:ans:AGRG:efEG7xC2ertt4FsXZLThNaE7gwb1WoufEqpc9rb6Vh5Yrm"
       },
-      "createdAt": "2026-05-20T00:00:00.000Z",
-      "previousHash": "ac2e50487a7fa6427e9012f3d699726f1008c095ed69780032ea5dbeb23d3797",
-      "eventHash": "e784e132c735a3402c1e1b583c7945ee1f49e7b69169f48abf39e834676fa691",
-      "signature": "PlLBt0QO6IRhwm_A6FU0F5taIZ6T_RMl2_R4dbh99AQE9z7aN09ZH1JejYsYv5zbKnG4LQG0iRcc_VnUw8-_CA"
+      "createdAt": "2026-05-21T03:58:37.007591200Z",
+      "eventHash": "f4427d83625e19c4506edc3d242d698302debc027a4a6e072c1d791e6a88e458",
+      "signature": "okzEvLQvWu-EzBs0lhBH7xnVpSd5k-3IqAWeHiLJdznkjU73aeqcLr4g2aHTY_51P4LYcAGNZyptvldIO9yKAw"
+    },
+    {
+      "sequence": 10,
+      "previousHash": "f4427d83625e19c4506edc3d242d698302debc027a4a6e072c1d791e6a88e458",
+      "eventType": "REGISTRAR_AUTHORIZED",
+      "subjectDid": "did:ans:AGRG:efEG7xC2ertt4FsXZLThNaE7gwb1WoufEqpc9rb6Vh5Yrm",
+      "actorDid": "did:ans:AGRT:ef8mwSoLkuczZefef3cJpUqE7Xqg7WWakUYNXtS7R9CpEm",
+      "payload": {
+        "didDocumentHash": "5c51a461bf6d7bd0a59245d06c351d7d893a2b1c3f1525a064e9babddeada70b",
+        "targetRole": "registrar"
+      },
+      "createdAt": "2026-05-21T04:12:00.424024500Z",
+      "eventHash": "7594e56c10c4c899ee0187c4fb0fbf915c0e68b6ffe52e13e0e05e2043d6c3e6",
+      "signature": "Q_myD9U5VW4NF1B2YiyVDLWmPH5rIlYBVcYehx7Ys4NnO9ivuXSQ26MHiaLDKgpkYnBLJr8xil30lhUs2AFmCQ"
+    },
+    {
+      "sequence": 11,
+      "previousHash": "7594e56c10c4c899ee0187c4fb0fbf915c0e68b6ffe52e13e0e05e2043d6c3e6",
+      "eventType": "DISCOVERY_NODE_AUTHORIZED",
+      "subjectDid": "did:ans:AGDS:ef6eU4rGF17EK5wVXaNoroB29Mnh6S243nqwuqjA8gr84t",
+      "actorDid": "did:ans:AGRT:ef8mwSoLkuczZefef3cJpUqE7Xqg7WWakUYNXtS7R9CpEm",
+      "payload": {
+        "didDocumentHash": "5f217f3e1da87fb13e78cc9c9c5d690c3ec93f1a7f3ca37140bc6097f78653f0",
+        "targetRole": "discovery"
+      },
+      "createdAt": "2026-05-21T04:12:00.477521400Z",
+      "eventHash": "3ea8cd1fe0aaa1b7bd72c7a67a1a082e5e3c974aaf5bb1b416ce4abe9b656283",
+      "signature": "A-tI0nC7XPksBNopX8-AxYwoM7J8G982AQOLWeeIIwhYOlPbs4DxSWeKF1nujnkHDdsbbA5kL6Hx6L_PsrVLAA"
+    },
+    {
+      "sequence": 12,
+      "previousHash": "3ea8cd1fe0aaa1b7bd72c7a67a1a082e5e3c974aaf5bb1b416ce4abe9b656283",
+      "eventType": "DISCOVERY_NODE_DOMAINS_UPDATED",
+      "subjectDid": "did:ans:AGDS:ef6eU4rGF17EK5wVXaNoroB29Mnh6S243nqwuqjA8gr84t",
+      "actorDid": "did:ans:AGRT:ef8mwSoLkuczZefef3cJpUqE7Xqg7WWakUYNXtS7R9CpEm",
+      "payload": {
+        "authorizedDomains": [
+          "*"
+        ],
+        "tagTreeVersion": 1
+      },
+      "createdAt": "2026-05-21T04:12:00.523596800Z",
+      "eventHash": "60579725a7e94c60d62a2181e586e5ea3e1512ed17a49632a5175150d201bd6a",
+      "signature": "pW02Xha0mSlXi3BSNxFVm51IqpcBeBg4l2NseUl6H9S7sqmohDpXQ_v5YbxBd1BUN7HDqyKQCUTHmzrkTz_8Cg"
+    },
+    {
+      "sequence": 13,
+      "previousHash": "60579725a7e94c60d62a2181e586e5ea3e1512ed17a49632a5175150d201bd6a",
+      "eventType": "AGENT_DID_DOCUMENT_ANCHORED",
+      "subjectDid": "did:ans:AGDM:efGyxDoPcm8SgEkFbHfyXSX1PTaKWfDH1Ltw2piFebYLgj",
+      "actorDid": "did:ans:AGRT:ef8mwSoLkuczZefef3cJpUqE7Xqg7WWakUYNXtS7R9CpEm",
+      "payload": {
+        "capabilityTags": [
+          "gbt4754-2017.01"
+        ],
+        "didDocumentHash": "f89e271c542aabb39ecf7cc121e882a1adfb15caab41a7120d069c3712c8aa28",
+        "documentVersion": 1,
+        "metadataHash": "620f41b7c6392d57078d147998d599cc7665ef520a6db4bd8085cd39b1c2c639",
+        "operation": "create",
+        "registrarDid": "did:ans:AGRG:efEG7xC2ertt4FsXZLThNaE7gwb1WoufEqpc9rb6Vh5Yrm"
+      },
+      "createdAt": "2026-05-21T04:12:01.300559300Z",
+      "eventHash": "3b18148e990975b7d49e9302e9552ce446ef5ee9168582cbc4b1e1787b486ffb",
+      "signature": "see91_QEuFZwi0raq7EEvammq1M-yUgVO9CHv5MN70Kac5-9vMnw_jpP8BWhuOqjSU0xsX-O1mUY5B-ETbGPCw"
     }
   ]
 }

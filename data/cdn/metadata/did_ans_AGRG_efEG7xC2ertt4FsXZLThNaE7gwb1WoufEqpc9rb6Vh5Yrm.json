@@ -1,8 +1,8 @@
 {
-  "did": "did:ans:AGRG:efFkK6cY6Dox6hWkmw28jkomLK4EqFi7ue6YVKp7ytSFdh",
+  "did": "did:ans:AGRG:efEG7xC2ertt4FsXZLThNaE7gwb1WoufEqpc9rb6Vh5Yrm",
   "role": "Registrar Node",
   "identityType": "registrar-node",
-  "didDocumentHash": "311e15cfd6249259a987efc3538894b61d92721405961357f82e304ed536c07d",
+  "didDocumentHash": "5c51a461bf6d7bd0a59245d06c351d7d893a2b1c3f1525a064e9babddeada70b",
   "subjectType": "infrastructure-node",
   "capabilityTags": [
     "registration",
@@ -11,7 +11,7 @@
   ],
   "services": [
     {
-      "id": "did:ans:AGRG:efFkK6cY6Dox6hWkmw28jkomLK4EqFi7ue6YVKp7ytSFdh#registrar-api",
+      "id": "did:ans:AGRG:efEG7xC2ertt4FsXZLThNaE7gwb1WoufEqpc9rb6Vh5Yrm#registrar-api",
       "type": "AgentRegistrarService",
       "serviceEndpoint": "http://localhost:8001",
       "version": "1.0.0",
@@ -21,5 +21,5 @@
     }
   ],
   "status": "active",
-  "updatedAt": "2026-05-20T00:00:00.000Z"
+  "updatedAt": "2026-05-20T00:00:00Z"
 }

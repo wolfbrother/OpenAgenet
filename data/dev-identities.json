@@ -1,19 +1,19 @@
 {
-  "generatedAt": "2026-05-20T00:00:00.000Z",
+  "generatedAt": "2026-05-20T00:00:00Z",
   "warning": "Development identities only. Do not use these keys in production.",
   "identities": {
     "root": {
       "role": "Root Node",
-      "did": "did:ans:AGRT:efHKg7V5cjoWEQcCQdHqpEBpB4ZDqHVHm6eKBbQoQd78HH",
+      "did": "did:ans:AGRT:ef8mwSoLkuczZefef3cJpUqE7Xqg7WWakUYNXtS7R9CpEm",
       "didSemanticCode": "AGRT",
       "subjectType": "infrastructure-node",
       "identityType": "root-node",
       "didDocumentPath": "data/root/did-document.json",
       "keypairPath": "data/root/keys/keypair.json",
-      "didDocumentHash": "7bbd237f692c6877526359d2ffd28b6e1a5f94f7e54822cb402461aa8d28abb7",
+      "didDocumentHash": "b9199e745dffc62569a157c362aa48984f6235b26b31a98c1b37c7dca41e4a9a",
       "services": [
         {
-          "id": "did:ans:AGRT:efHKg7V5cjoWEQcCQdHqpEBpB4ZDqHVHm6eKBbQoQd78HH#root-api",
+          "id": "did:ans:AGRT:ef8mwSoLkuczZefef3cJpUqE7Xqg7WWakUYNXtS7R9CpEm#root-api",
           "type": "RootAuthorityService",
           "serviceEndpoint": "http://localhost:8000",
           "version": "1.0.0",
@@ -22,7 +22,7 @@
           "port": 8000
         },
         {
-          "id": "did:ans:AGRT:efHKg7V5cjoWEQcCQdHqpEBpB4ZDqHVHm6eKBbQoQd78HH#bulletin",
+          "id": "did:ans:AGRT:ef8mwSoLkuczZefef3cJpUqE7Xqg7WWakUYNXtS7R9CpEm#bulletin",
           "type": "TrustBulletinService",
           "serviceEndpoint": "http://localhost:8000/bulletin",
           "version": "1.0.0",
@@ -34,16 +34,16 @@
     },
     "registrar": {
       "role": "Registrar Node",
-      "did": "did:ans:AGRG:efFkK6cY6Dox6hWkmw28jkomLK4EqFi7ue6YVKp7ytSFdh",
+      "did": "did:ans:AGRG:efEG7xC2ertt4FsXZLThNaE7gwb1WoufEqpc9rb6Vh5Yrm",
       "didSemanticCode": "AGRG",
       "subjectType": "infrastructure-node",
       "identityType": "registrar-node",
       "didDocumentPath": "data/registrar/did-document.json",
       "keypairPath": "data/registrar/keys/keypair.json",
-      "didDocumentHash": "311e15cfd6249259a987efc3538894b61d92721405961357f82e304ed536c07d",
+      "didDocumentHash": "5c51a461bf6d7bd0a59245d06c351d7d893a2b1c3f1525a064e9babddeada70b",
       "services": [
         {
-          "id": "did:ans:AGRG:efFkK6cY6Dox6hWkmw28jkomLK4EqFi7ue6YVKp7ytSFdh#registrar-api",
+          "id": "did:ans:AGRG:efEG7xC2ertt4FsXZLThNaE7gwb1WoufEqpc9rb6Vh5Yrm#registrar-api",
           "type": "AgentRegistrarService",
           "serviceEndpoint": "http://localhost:8001",
           "version": "1.0.0",
@@ -55,16 +55,16 @@
     },
     "discovery": {
       "role": "Discovery Node",
-      "did": "did:ans:AGDS:efAAwpkMEA3HESX6cuAkGA5CEWWbZttBZFVHxoWYkWqncC",
+      "did": "did:ans:AGDS:ef6eU4rGF17EK5wVXaNoroB29Mnh6S243nqwuqjA8gr84t",
       "didSemanticCode": "AGDS",
       "subjectType": "infrastructure-node",
       "identityType": "discovery-node",
       "didDocumentPath": "data/discovery/did-document.json",
       "keypairPath": "data/discovery/keys/keypair.json",
-      "didDocumentHash": "31369f95975e903b53c8e091a8bc086168c1d8eaddd1e283b11c868d40c7be48",
+      "didDocumentHash": "5f217f3e1da87fb13e78cc9c9c5d690c3ec93f1a7f3ca37140bc6097f78653f0",
       "services": [
         {
-          "id": "did:ans:AGDS:efAAwpkMEA3HESX6cuAkGA5CEWWbZttBZFVHxoWYkWqncC#discovery-api",
+          "id": "did:ans:AGDS:ef6eU4rGF17EK5wVXaNoroB29Mnh6S243nqwuqjA8gr84t#discovery-api",
           "type": "AgentDiscoveryService",
           "serviceEndpoint": "http://localhost:8002",
           "version": "1.0.0",
@@ -76,16 +76,16 @@
     },
     "service-agent": {
       "role": "Demo Service Agent",
-      "did": "did:ans:AGDM:ef7Qse3ynni4MnLQHXvaHUS8Ac3RJqGWRFRwfiBsWW6SxV",
+      "did": "did:ans:AGDM:efGyxDoPcm8SgEkFbHfyXSX1PTaKWfDH1Ltw2piFebYLgj",
       "didSemanticCode": "AGDM",
       "subjectType": "agent",
       "identityType": "demo-service-agent",
       "didDocumentPath": "data/demo-service-agent/did-document.json",
       "keypairPath": "data/demo-service-agent/keys/keypair.json",
-      "didDocumentHash": "96aefb5ad0e8c93b64b0a455f2f17cdf9f2b9aaa587186821611f083f073ab25",
+      "didDocumentHash": "f01fa54414a257fa9669ef5a2f735e7a90487f7851ddf90c08c35d3135f52f85",
       "services": [
         {
-          "id": "did:ans:AGDM:ef7Qse3ynni4MnLQHXvaHUS8Ac3RJqGWRFRwfiBsWW6SxV#agent-endpoint",
+          "id": "did:ans:AGDM:efGyxDoPcm8SgEkFbHfyXSX1PTaKWfDH1Ltw2piFebYLgj#agent-endpoint",
           "type": "AgentService",
           "serviceEndpoint": "http://localhost:9001/agent/invoke",
           "version": "1.0.0",
@@ -94,7 +94,7 @@
           "port": 9001
         },
         {
-          "id": "did:ans:AGDM:ef7Qse3ynni4MnLQHXvaHUS8Ac3RJqGWRFRwfiBsWW6SxV#mcp-endpoint",
+          "id": "did:ans:AGDM:efGyxDoPcm8SgEkFbHfyXSX1PTaKWfDH1Ltw2piFebYLgj#mcp-endpoint",
           "type": "MCPService",
           "serviceEndpoint": "http://localhost:9001/mcp",
           "version": "1.0.0",
@@ -103,7 +103,7 @@
           "port": 9001
         },
         {
-          "id": "did:ans:AGDM:ef7Qse3ynni4MnLQHXvaHUS8Ac3RJqGWRFRwfiBsWW6SxV#a2a-endpoint",
+          "id": "did:ans:AGDM:efGyxDoPcm8SgEkFbHfyXSX1PTaKWfDH1Ltw2piFebYLgj#a2a-endpoint",
           "type": "A2AService",
           "serviceEndpoint": "http://localhost:9001/a2a",
           "version": "1.0.0",
@@ -115,13 +115,13 @@
     },
     "user-agent": {
       "role": "User Agent",
-      "did": "did:ans:AGUS:ef5e6f7BFrqykuss9LSTh4c65eX6y2q4diEF7HnYSfsmGb",
+      "did": "did:ans:AGUS:efDYS9e8DqpirBGYJNg5BkFwq1hP9QJRwAn7G1P5By5b5F",
       "didSemanticCode": "AGUS",
       "subjectType": "agent",
       "identityType": "user-agent",
       "didDocumentPath": "data/user-agent/did-document.json",
       "keypairPath": "data/user-agent/keys/keypair.json",
-      "didDocumentHash": "c43ad9782707fed008a1ebe0cd9732f6f6bfdd80dba6c1086f562de6b55bc34b",
+      "didDocumentHash": "2bff804ab97c1be22fd4b42f22932a21c2f30b9ee5a5bcdea836e4c633e6e6be",
       "services": []
     }
   }

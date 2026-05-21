@@ -1,22 +1,46 @@
-﻿<!-- Copyright (c) 2026 China Academy of Information and Communications Technology (CAICT) -->
+<!-- Copyright (c) 2026 China Academy of Information and Communications Technology (CAICT) -->
 <!--
 Author: JINLIANG XU
 Email: xujinliang@caict.ac.cn; jlxufly@gmail.com
 -->
 
-# CDN Service Design
+# CDN Service Detailed Design
 
-## 1. Positioning
+## 1. Role
 
-CDN Service is the traditional content distribution layer for OpenAgentNet. It caches and serves Root-verified DID Documents, metadata, verified packages, and manifests.
+CDN Service is the traditional content distribution layer for OpenAgentNet. It stores and serves Root-verified DID Documents, metadata, verified packages, manifests, and update data.
 
-CDN Service is not an authorized `did:ans` infrastructure node. It is not trusted as a protocol authority. It may be operated by the Root operator or outsourced to a commercial CDN/object-storage provider.
+CDN is not an authorized `did:ans` infrastructure node and is not a protocol trust authority. It may be operated by the Root operator or outsourced to a commercial CDN/object-storage provider.
 
-## 2. Configuration and Storage
+Clients and Discovery Nodes trust Root proofs, DID Document hashes, metadata hashes, and bulletin events, not CDN.
 
-Config file: `services/cdn-node/config.example.toml`
+## 2. Current Implementation
 
-Current inputs:
+The Rust MVP implements:
+
+- local manifest serving
+- DID Document serving by DID
+- metadata serving by DID
+- verified package serving by DID
+- package publish API used by Root batch flow
+- update endpoint
+- status API
+- package list and detail APIs
+- manifest stats API
+- publish history API
+- purge API
+
+CDN accepts Root-published verified packages in the local MVP. Root authentication enforcement is future work.
+
+## 3. Configuration
+
+Config file:
+
+```text
+services/cdn-node/config.example.toml
+```
+
+Important inputs:
 
 ```text
 [server]
@@ -32,20 +56,18 @@ packages_dir
 database_url
 ```
 
-Current Rust MVP reads from `data_dir` and uses the following layout:
+Storage layout:
 
 ```text
-manifest.json
-documents/
-metadata/
-packages/
+data/cdn/manifest.json
+data/cdn/documents/
+data/cdn/metadata/
+data/cdn/packages/
 ```
 
-CDN does not discover other nodes from the bulletin. Root publishes CDN service information into the bulletin so Discovery and clients can find CDN.
+## 4. APIs
 
-## 3. HTTP APIs
-
-Current APIs:
+Protocol APIs:
 
 ```text
 GET  /health
@@ -55,7 +77,11 @@ POST /cdn/packages
 GET  /cdn/packages/{did}
 GET  /cdn/documents/{did}
 GET  /cdn/metadata/{did}
+```
 
+Management APIs:
+
+```text
 GET  /api/v1/cdn/status
 GET  /api/v1/cdn/packages
 GET  /api/v1/cdn/packages/{did}
@@ -66,40 +92,68 @@ GET  /api/v1/cdn/publish/history
 POST /api/v1/cdn/purge
 ```
 
-These APIs are enough for future operator consoles and for Discovery sync logic.
+These APIs are enough for Discovery sync and future CDN/operator consoles.
 
-## 4. Publish Flow
+## 5. Publish Flow
 
-1. Root sends a verified package
-2. CDN stores DID Document, metadata, and package objects
-3. CDN updates the manifest
-4. CDN serves the material by DID
+1. Root verifies an Agent DID Document and creates a verified package.
+2. Root queues the package for CDN publish.
+3. Root batch publish sends the package to CDN.
+4. CDN stores the package, DID Document, and metadata.
+5. CDN updates manifest entries.
+6. Root later notifies Discovery Nodes.
+7. Discovery fetches the package from CDN and verifies Root proof and hashes.
 
-Current MVP does not yet enforce Root allowlists, signed URLs, or token-based access control. That is future work.
+The intended order is Root-to-CDN publish before Root-to-Discovery notification, so Discovery does not receive package notifications before data is available.
 
-## 5. Trust Boundary
+## 6. Trust Boundary
 
-CDN is not the final source of trust. Clients must verify:
+CDN can distribute bytes, but it cannot make bytes trustworthy.
 
-- Root proof
+Relying parties must verify:
+
 - DID Document hash
 - metadata hash
-- bulletin event existence
-- revocation status
+- Root proof
+- Root bulletin event existence
+- bulletin hash chain
+- Root revocation or suspension status
 
-CDN can carry data, but it does not make data trustworthy by itself.
+Future Root-controlled access policy may use tokens or signatures, with CDN executing distribution decisions delegated by Root.
 
-## 6. Test Coverage
+## 7. Local Data
 
-Current codebase status:
+Representative local data:
 
-- `cargo check --workspace` passes
-- `cargo test --workspace` passes
-- CDN has basic storage and publish behavior in code
-- the new management APIs still need direct endpoint tests
+```text
+data/cdn/manifest.json
+data/cdn/documents/<did>.json
+data/cdn/metadata/<did>.json
+data/cdn/packages/<did>.json
+```
 
-## 7. Next Steps
+The current implementation is file-first. SQLite can later store package indexes, publish history, and access logs.
 
-- add API tests for manifest stats, package detail, and purge endpoints
-- add Root authentication enforcement for publishes
-- add update history and incremental manifest support
+## 8. Tests
+
+Current tests cover:
+
+- status API
+- manifest stats
+- package detail shape
+- purge endpoint shape
+
+The repository passes:
+
+```text
+cargo test --workspace
+```
+
+## 9. Next Work
+
+- enforce Root authentication for package publish
+- add signed URL or token-based access control when Root policy requires it
+- add incremental manifest updates
+- add publish history persistence
+- add CDN access logs
+- migrate operational indexes to SQLite schemas

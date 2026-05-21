@@ -126,6 +126,40 @@ impl SqliteJsonStore {
             .collect()
     }
 
+    pub async fn read_json<T: DeserializeOwned>(
+        &self,
+        namespace: &str,
+        key: &str,
+    ) -> Result<Option<T>, StorageError> {
+        let row = sqlx::query_as::<_, (String,)>(
+            "SELECT value_json FROM json_records WHERE namespace = ? AND record_key = ?",
+        )
+        .bind(namespace)
+        .bind(key)
+        .fetch_optional(&self.pool)
+        .await?;
+        row.map(|(value_json,)| serde_json::from_str(&value_json).map_err(StorageError::from))
+            .transpose()
+    }
+
+    pub async fn delete_json(&self, namespace: &str, key: &str) -> Result<(), StorageError> {
+        sqlx::query("DELETE FROM json_records WHERE namespace = ? AND record_key = ?")
+            .bind(namespace)
+            .bind(key)
+            .execute(&self.pool)
+            .await?;
+        Ok(())
+    }
+
+    pub async fn count_namespace(&self, namespace: &str) -> Result<i64, StorageError> {
+        let (count,) =
+            sqlx::query_as::<_, (i64,)>("SELECT COUNT(*) FROM json_records WHERE namespace = ?")
+                .bind(namespace)
+                .fetch_one(&self.pool)
+                .await?;
+        Ok(count)
+    }
+
     pub async fn delete_namespace(&self, namespace: &str) -> Result<(), StorageError> {
         sqlx::query("DELETE FROM json_records WHERE namespace = ?")
             .bind(namespace)
@@ -464,9 +498,14 @@ mod tests {
         assert_eq!(rows, vec![Example {
             value: "updated".to_owned()
         }]);
+        let one: Option<Example> = store.read_json("queue", "a").await.unwrap();
+        assert_eq!(one.unwrap().value, "updated");
+        assert_eq!(store.count_namespace("queue").await.unwrap(), 1);
 
-        store.delete_namespace("queue").await.unwrap();
+        store.delete_json("queue", "a").await.unwrap();
         let rows: Vec<Example> = store.read_namespace("queue").await.unwrap();
         assert!(rows.is_empty());
+        store.delete_namespace("other").await.unwrap();
+        assert_eq!(store.count_namespace("other").await.unwrap(), 0);
     }
 }

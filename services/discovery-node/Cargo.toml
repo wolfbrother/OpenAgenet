@@ -9,6 +9,7 @@ repository.workspace = true
 anyhow.workspace = true
 axum.workspace = true
 chrono.workspace = true
+oan-bulletin = { path = "../../crates/oan-bulletin" }
 oan-core = { path = "../../crates/oan-core" }
 oan-crypto = { path = "../../crates/oan-crypto" }
 oan-package = { path = "../../crates/oan-package" }

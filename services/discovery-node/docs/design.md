@@ -1,31 +1,52 @@
-﻿<!-- Copyright (c) 2026 China Academy of Information and Communications Technology (CAICT) -->
+<!-- Copyright (c) 2026 China Academy of Information and Communications Technology (CAICT) -->
 <!--
 Author: JINLIANG XU
 Email: xujinliang@caict.ac.cn; jlxufly@gmail.com
 -->
 
-# Discovery Node Design
+# Discovery Node Detailed Design
 
-## 1. Positioning
+## 1. Role
 
-Discovery Node serves User Agents, applications, and enterprise orchestration systems. It is not a business Agent. It indexes Root-verified Agent packages and returns queryable candidates.
+Discovery Node serves User Agents, applications, and enterprise orchestration systems. It indexes Root-verified Agent packages and returns queryable candidates.
 
-Discovery Node is also an infrastructure node, so its `ansMetadata.subjectType` must be `infrastructure-node`.
+Discovery Node is not a business Agent. It is an infrastructure node and must use `ansMetadata.subjectType = "infrastructure-node"`.
 
-Current MVP behavior:
+Discovery may maintain local reputation, evaluation, history, or enterprise preference signals. These are local Discovery signals only and do not override Root trust facts.
 
-- reads CDN service information from the Root bulletin
-- downloads manifest and verified packages from CDN
-- verifies package DID Document hash
-- filters to `subjectType = agent`
-- performs simple tag/service/protocol search
-- returns a signed discovery response
+## 2. Current Implementation
 
-## 2. Configuration and Service Discovery
+The Rust MVP implements:
 
-Config file: `services/discovery-node/config.example.toml`
+- Root bulletin fetch
+- CDN service discovery from bulletin
+- CDN manifest and package sync
+- DID Document hash verification
+- metadata hash verification
+- Root proof signature verification
+- bulletin hash-chain verification
+- package bulletin event existence verification
+- Root authorization status extraction
+- `authorizedDomains` filtering
+- local capability index
+- simple discovery query
+- query explain API
+- signed discovery responses
+- rejected package records
+- sync history
+- SQLite-backed index mirrors
 
-Required inputs:
+Discovery indexes both canonical capability-tree tags and custom tags. Canonical tags support coarse discovery and authorization-domain routing. Custom tags support fine filtering after a package is eligible for the Discovery Node.
+
+## 3. Configuration
+
+Config file:
+
+```text
+services/discovery-node/config.example.toml
+```
+
+Important inputs:
 
 ```text
 [server]
@@ -40,23 +61,23 @@ cdn_endpoint
 data_dir
 index_dir
 keys_dir
+credentials_dir
 database_url
 ```
 
-Runtime discovery flow:
+Runtime CDN discovery:
 
-1. read `root_endpoint`
-2. fetch Root bulletin
-3. locate the latest `CDN_SERVICE_INFO_UPDATED` event
-4. extract `manifestUrl`, `packagesUrlTemplate`, and `baseUrl`
-5. connect to CDN from bulletin data
-6. use the config CDN endpoint only as a fallback
+1. fetch Root bulletin from `root_endpoint`
+2. verify or inspect latest CDN service event
+3. extract `manifestUrl`, package URL template, and base URL
+4. use bulletin CDN data first
+5. use configured CDN endpoint only as fallback
 
-The bulletin only tells Discovery where CDN is. It does not trust CDN.
+CDN location data is not CDN trust.
 
-## 3. HTTP APIs
+## 4. APIs
 
-Current APIs:
+Protocol APIs:
 
 ```text
 GET  /health
@@ -64,7 +85,11 @@ GET  /discovery/did
 POST /discovery/sync
 POST /discover/query
 GET  /routes/{did}
+```
 
+Management and web-support APIs:
+
+```text
 GET  /api/v1/discovery/status
 GET  /api/v1/discovery/root-authorization
 GET  /api/v1/discovery/authorized-domains
@@ -79,67 +104,100 @@ GET  /api/v1/discovery/rejected-packages
 GET  /api/v1/discovery/capability-tree
 ```
 
-These APIs are intended to support future discovery web pages with minimal frontend business logic.
+These APIs are intended to support future discovery websites and operator consoles.
 
-## 4. Sync and Verification
+## 5. Sync Flow
 
-Discovery sync performs these steps:
+Discovery sync performs:
 
-1. fetch bulletin from Root
-2. resolve CDN service information
-3. download manifest
-4. download each package
-5. verify package DID Document hash
-6. verify Root proof against Root DID Document key
-7. verify bulletin event existence
-8. filter by authorized domains
-9. index valid Agent packages
+1. fetch Root bulletin
+2. derive Root DID and Root key information
+3. resolve CDN service information from bulletin
+4. download CDN manifest
+5. download verified packages
+6. verify DID Document hash
+7. verify metadata hash
+8. verify Root proof signature
+9. verify bulletin hash chain
+10. verify package bulletin event presence
+11. reject non-Agent packages
+12. filter by Discovery `authorizedDomains`
+13. persist accepted packages into JSON and SQLite indexes
+14. persist rejected package reasons
+15. persist sync history
 
-The current MVP verifies the main trust anchors, but full bulletin hash-chain verification and `metadataHash` verification remain future work.
+Discovery must not return unanchored, invalid, or Root-revoked Agents as trusted candidates.
 
-## 5. Query and Explain
+## 6. Query Flow
 
-Discovery query input currently supports:
+Query input supports:
 
 - `capabilityTags`
 - `serviceType`
 - `protocol`
 - `limit`
 
-The `query/explain` endpoint returns why each candidate matched or did not match. This is useful for future UI debugging and operator review.
+The current scoring is intentionally simple. Semantic retrieval is out of scope for the current MVP. Future semantic engines can sit behind the same query API.
 
-## 6. Local Data
+The `query/explain` endpoint returns match details for UI debugging and operator review.
 
-Current storage layout:
+## 7. Signed Responses
+
+Discovery signs query responses with its local DID key. User Agents can verify that the candidate set came from the Discovery Node they queried.
+
+The Discovery signature does not prove Agent service quality. It proves the Discovery response came from that Discovery Node over its current local index.
+
+## 8. Authorized Domains
+
+Discovery authorization is governed by Root bulletin events. `authorizedDomains` limits which Agent packages a Discovery Node may index.
+
+Rules:
+
+- `*` matches all canonical domains
+- canonical capability-tree tags support subtree matching
+- custom tags do not expand Root authorization scope
+- custom tags remain queryable after a package passes coarse domain eligibility
+
+## 9. Local Data
+
+Representative local data:
 
 ```text
 data/discovery/did-document.json
 data/discovery/keys/keypair.json
 data/discovery/credentials/node-authorization.json
+data/discovery/credentials/by-dimension/
 data/discovery/index/capabilities.json
+data/discovery/index/rejected-packages.json
 data/discovery/index/sync-history.json
+data/discovery/discovery.db
 ```
 
-The MVP still uses JSON files. SQLite migration is reserved for later.
+JSON files remain readable artifacts. SQLite is the operational lookup index.
 
-## 7. Ranking Signals
+## 10. Tests
 
-Discovery may collect local ranking signals such as reputation, evaluation, history, or enterprise preference. These are local Discovery signals only. They do not override Root trust state.
+Current tests cover:
 
-Root revocation and missing Root proof always win.
+- authorized-domain filtering
+- Root proof verification
+- bulletin event presence verification
+- response signing
+- status API behavior
+- query explain behavior
+- revocation status detection
 
-## 8. Test Coverage
+The repository passes:
 
-Current codebase status:
+```text
+cargo test --workspace
+```
 
-- `cargo check --workspace` passes
-- `cargo test --workspace` passes
-- Discovery has unit tests for authorized-domain filtering, Root proof verification, and response signing
-- the new management APIs are implemented, but direct HTTP-level tests for all new endpoints still need to be added
+## 11. Next Work
 
-## 9. Next Steps
-
-- add tests for status, explain, and capability-tree endpoints
-- add stronger bulletin verification
-- add metadata hash verification
-- move index state to SQLite when the schema is stable
+- verify Discovery self-authorization at startup and during sync
+- add package freshness and version ordering checks
+- enrich rejected package persistence
+- add optional local ranking and evaluation indexes
+- add semantic retrieval integration behind the existing API
+- migrate namespace JSON SQLite records to relational schemas

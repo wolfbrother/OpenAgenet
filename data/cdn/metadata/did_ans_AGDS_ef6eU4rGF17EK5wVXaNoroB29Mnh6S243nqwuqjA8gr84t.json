@@ -1,8 +1,8 @@
 {
-  "did": "did:ans:AGDS:efAAwpkMEA3HESX6cuAkGA5CEWWbZttBZFVHxoWYkWqncC",
+  "did": "did:ans:AGDS:ef6eU4rGF17EK5wVXaNoroB29Mnh6S243nqwuqjA8gr84t",
   "role": "Discovery Node",
   "identityType": "discovery-node",
-  "didDocumentHash": "31369f95975e903b53c8e091a8bc086168c1d8eaddd1e283b11c868d40c7be48",
+  "didDocumentHash": "5f217f3e1da87fb13e78cc9c9c5d690c3ec93f1a7f3ca37140bc6097f78653f0",
   "subjectType": "infrastructure-node",
   "capabilityTags": [
     "discovery",
@@ -11,7 +11,7 @@
   ],
   "services": [
     {
-      "id": "did:ans:AGDS:efAAwpkMEA3HESX6cuAkGA5CEWWbZttBZFVHxoWYkWqncC#discovery-api",
+      "id": "did:ans:AGDS:ef6eU4rGF17EK5wVXaNoroB29Mnh6S243nqwuqjA8gr84t#discovery-api",
       "type": "AgentDiscoveryService",
       "serviceEndpoint": "http://localhost:8002",
       "version": "1.0.0",
@@ -21,5 +21,5 @@
     }
   ],
   "status": "active",
-  "updatedAt": "2026-05-20T00:00:00.000Z"
+  "updatedAt": "2026-05-20T00:00:00Z"
 }

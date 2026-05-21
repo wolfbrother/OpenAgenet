@@ -18,6 +18,8 @@ pub enum PackageError {
     Crypto(#[from] CryptoError),
     #[error("did document hash mismatch")]
     DidDocumentHashMismatch,
+    #[error("metadata hash mismatch")]
+    MetadataHashMismatch,
 }
 
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
@@ -55,6 +57,8 @@ pub struct VerifiedPackage {
     pub did_document: DidDocument,
     #[serde(rename = "didDocumentHash")]
     pub did_document_hash: String,
+    #[serde(rename = "metadataHash", default, skip_serializing_if = "Option::is_none")]
+    pub metadata_hash: Option<String>,
     pub metadata: AgentMetadata,
     #[serde(rename = "rootProof")]
     pub root_proof: RootProof,
@@ -97,6 +101,18 @@ impl VerifiedPackage {
             Err(PackageError::DidDocumentHashMismatch)
         }
     }
+
+    pub fn verify_metadata_hash(&self) -> Result<(), PackageError> {
+        let Some(expected_hash) = self.metadata_hash.as_deref() else {
+            return Ok(());
+        };
+        let actual_hash = hash_json(&self.metadata)?;
+        if actual_hash == expected_hash {
+            Ok(())
+        } else {
+            Err(PackageError::MetadataHashMismatch)
+        }
+    }
 }
 
 #[cfg(test)]
@@ -119,6 +135,7 @@ mod tests {
                 ans_metadata: None,
             },
             did_document_hash: "wrong".to_owned(),
+            metadata_hash: None,
             metadata: AgentMetadata {
                 did: "did:ans:AGDM:efserviceagentservice1234".to_owned(),
                 role: "Demo Service Agent".to_owned(),

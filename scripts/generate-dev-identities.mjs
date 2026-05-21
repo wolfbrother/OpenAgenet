@@ -268,7 +268,7 @@ const definitions = [
 const identities = definitions.map(createIdentity);
 const identityById = Object.fromEntries(identities.map((identity) => [identity.id, identity]));
 const rootPrivateKey = crypto.createPrivateKey({ key: identityById.root.privateJwk, format: "jwk" });
-const createdAt = "2026-05-20T00:00:00.000Z";
+const createdAt = "2026-05-20T00:00:00Z";
 
 for (const relativePath of [
   "cdn/documents",
@@ -435,17 +435,56 @@ const serviceAgentRegistrationCredential = signCredential(registrarPrivateKey, {
   proofCreator: identityById.registrar.keyId,
 });
 
+const userAgentRegistrationCredential = signCredential(registrarPrivateKey, {
+  id: "urn:openagentnet:credential:user-agent-registration:local-registrar:v1",
+  type: "UserAgentRegistrationCredential",
+  issuer: identityById.registrar.did,
+  subject: identityById["user-agent"].did,
+  status: "active",
+  issuedAt: createdAt,
+  expiresAt: null,
+  claims: {
+    registered: true,
+    identityType: "user-agent",
+    didDocumentHash: identityById["user-agent"].didDocumentHash,
+    capabilityTags: identityById["user-agent"].didDocument.ansMetadata.agentDescription.capabilityTags,
+    allowedInvocation: ["trusted-hello-demo"],
+  },
+  proofCreator: identityById.registrar.keyId,
+});
+
 writeJson(path.join(dataDir, "registrar", "credentials", "node-authorization.json"), registrarAuthorizationCredential);
 writeJson(path.join(dataDir, "discovery", "credentials", "node-authorization.json"), discoveryAuthorizationCredential);
 writeJson(path.join(dataDir, "demo-service-agent", "credentials", "agent-registration.json"), serviceAgentRegistrationCredential);
+writeJson(path.join(dataDir, "user-agent", "credentials", "user-agent-registration.json"), userAgentRegistrationCredential);
 writeLocalCredential("registrar", "node-authorization", registrarAuthorizationCredential.issuer, registrarAuthorizationCredential.subject, registrarAuthorizationCredential.id, registrarAuthorizationCredential);
 writeLocalCredential("discovery", "node-authorization", discoveryAuthorizationCredential.issuer, discoveryAuthorizationCredential.subject, discoveryAuthorizationCredential.id, discoveryAuthorizationCredential);
 writeLocalCredential("demo-service-agent", "agent-registration", serviceAgentRegistrationCredential.issuer, serviceAgentRegistrationCredential.subject, serviceAgentRegistrationCredential.id, serviceAgentRegistrationCredential);
+writeLocalCredential("user-agent", "user-agent-registration", userAgentRegistrationCredential.issuer, userAgentRegistrationCredential.subject, userAgentRegistrationCredential.id, userAgentRegistrationCredential);
 writeJson(path.join(dataDir, "user-agent", "credentials", "credentials-index.json"), {
   ownerDid: identityById["user-agent"].did,
   storageMode: "local",
-  credentials: [],
-  dimensions: {},
+  credentials: [
+    {
+      dimension: "user-agent-registration",
+      issuer: userAgentRegistrationCredential.issuer,
+      subject: userAgentRegistrationCredential.subject,
+      credentialId: userAgentRegistrationCredential.id,
+      path: "credentials/user-agent-registration.json",
+      type: userAgentRegistrationCredential.type,
+      status: userAgentRegistrationCredential.status,
+    },
+  ],
+  dimensions: {
+    "user-agent-registration": [
+      {
+        issuer: userAgentRegistrationCredential.issuer,
+        subject: userAgentRegistrationCredential.subject,
+        credentialId: userAgentRegistrationCredential.id,
+        path: "credentials/user-agent-registration.json",
+      },
+    ],
+  },
   note: "User Agent stores multiple local credentials by dimension, issuer, subject, and credential id when issued or received. MVP has no hosted VC wallet.",
 });
 

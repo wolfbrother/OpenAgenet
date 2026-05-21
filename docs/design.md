@@ -4,13 +4,29 @@ Author: JINLIANG XU
 Email: xujinliang@caict.ac.cn; jlxufly@gmail.com
 -->
 
-# OpenAgentNet Design
+# OpenAgentNet System Design
 
-OpenAgentNet is a local, open-source reference implementation for an Agent Internet built around `did:ans`, infrastructure authorization, full DID Document registration, trusted distribution, and verifiable discovery. It is a protocol and architecture workspace, not a business system.
+OpenAgentNet is an open-source reference implementation for an Agent Internet built around `did:ans`, infrastructure authorization, complete DID Document registration, trusted distribution, verifiable discovery, and signed Agent-to-Agent invocation.
 
-## 1. Roles
+This document is the system-level design. It defines the architecture, role boundaries, trust model, cross-role flows, and global constraints. Detailed module behavior, configuration, API lists, storage layout, and tests are maintained in each module's own design document.
 
-OpenAgentNet models these roles:
+## 1. Document Scope
+
+The design documents are split by responsibility:
+
+- `docs/design.md`: system architecture, role model, trust boundaries, global flows, and roadmap-level constraints
+- `services/root-node/docs/design.md`: Root Node implementation details
+- `services/registrar-node/docs/design.md`: Registrar Node implementation details
+- `services/discovery-node/docs/design.md`: Discovery Node implementation details
+- `services/cdn-node/docs/design.md`: CDN Service implementation details
+- `agents/service-agent-python/docs/design.md`: demo Service Agent implementation details
+- `agents/user-agent-python/docs/design.md`: demo User Agent implementation details
+
+System-level decisions should be recorded here. Endpoint lists, code-level storage paths, detailed validation steps, and module-local tests should live in the module documents.
+
+## 2. Roles
+
+OpenAgentNet currently models six roles:
 
 - Root Node
 - Registrar Node
@@ -19,34 +35,64 @@ OpenAgentNet models these roles:
 - Service Agent
 - User Agent
 
-The current repository focuses on infrastructure nodes and trusted metadata flow. Service Agent and User Agent remain loosely coupled and may be implemented in any language, as long as they follow the Agent access contract and can interoperate with MCP and A2A.
+Root Node, Registrar Node, and Discovery Node are infrastructure nodes. They reuse `did:ans` DID Documents to publish identity, keys, and endpoints, but they are not business Agents. Their DID Documents should use `ansMetadata.subjectType = "infrastructure-node"`.
 
-## 2. Core Positioning
+Service Agent and User Agent are business Agent subjects. They may be implemented in any language as long as they satisfy the OpenAgentNet Agent access contract. The current demo Agents are written in Python and managed with `uv`.
 
-Root Node is the governance center of the system. It has three responsibilities:
+CDN Service is a traditional content distribution service. It is not an authorized `did:ans` infrastructure node and is not trusted as a protocol authority.
 
-- Trust management hub
-- Data distribution hub
-- Semantic governance hub
+## 3. Role Responsibilities
 
-Root Node is not a business Agent. It does not provide business capabilities, route Agent calls, or maintain Agent reputation, ratings, historical call records, or recommendation ranking. Discovery Nodes or marketplace services may keep those local ranking signals for their own experience layer, but they are not Root trust state.
+### 3.1 Root Node
 
-Registrar Node receives complete Agent DID Documents from operators, stores intake records, and submits complete DID Documents to Root. Even updates are submitted as full DID Documents, not patches.
+Root Node is the governance center of the system. It is simultaneously:
 
-Discovery Node syncs Root-verified metadata from CDN, builds a local capability index, verifies Root proof and bulletin state, and returns signed discovery responses.
+- trust management hub
+- data distribution hub
+- semantic governance hub
 
-CDN Service is a traditional content distribution service. It is not an authorized OpenAgentNet node and is not trusted. Root may operate CDN itself or outsource it. Clients trust Root proof, DID Document hash, metadata hash, and bulletin state, not CDN.
+Root authorizes infrastructure participants, maintains signed bulletin events, verifies complete Agent DID Documents, verifies registration credentials, archives DID Document versions, creates Root-verified packages, manages capability tree governance, and coordinates CDN publishing plus Discovery notification.
 
-## 3. Implementation Stack
+Root does not provide Agent business capabilities, route Agent calls, rank Agents, or maintain Agent reputation, evaluation, or invocation history.
 
-The current reference implementation uses Rust for all four infrastructure services:
+### 3.2 Registrar Node
+
+Registrar Node is the onboarding and registration gateway for Service Agents. It helps Agent operators create complete DID Documents, select capability tags, preserve custom tags, issue registration credentials, and submit complete DID Documents to Root.
+
+Registrar recommendations are advisory. Root remains the final verifier.
+
+### 3.3 Discovery Node
+
+Discovery Node indexes Root-verified Agent packages and serves User Agents, applications, and orchestration systems. It syncs verified package data from CDN, verifies Root proofs and bulletin facts, filters by Root-authorized domains, builds a local index, and returns signed discovery responses.
+
+Discovery may maintain local ranking, reputation, evaluation, or history signals. These are local Discovery signals and do not override Root trust state.
+
+### 3.4 CDN Service
+
+CDN stores and serves Root-verified DID Documents, metadata, verified packages, and manifests. CDN is only a distribution layer. Relying parties must verify Root proof, hashes, and bulletin state.
+
+Root and CDN may be operated by the same entity, or CDN may be outsourced to a commercial provider. CDN is not authorized by Root; Root only publishes CDN service information on the bulletin so other roles can find it.
+
+### 3.5 Service Agent
+
+Service Agent is a business Agent that exposes callable capabilities. The demo Service Agent supports OpenAgentNet trusted invocation and exposes MCP/A2A-compatible endpoint placeholders.
+
+For OpenAgentNet adaptation, a Service Agent should hold local DID material and credentials, verify peer DID/VC material before trusted calls, prevent replay, and sign responses.
+
+### 3.6 User Agent
+
+User Agent is a business Agent client. The demo User Agent queries Discovery, selects a Service Agent, builds a signed invocation envelope, presents its DID Document and local VC, calls the Service Agent, and verifies the signed response.
+
+## 4. Implementation Stack
+
+Infrastructure services are implemented in Rust:
 
 - `services/root-node`
 - `services/registrar-node`
 - `services/discovery-node`
 - `services/cdn-node`
 
-Shared crates include:
+Shared Rust crates include:
 
 - `crates/oan-core`
 - `crates/oan-did-ans`
@@ -58,321 +104,161 @@ Shared crates include:
 - `crates/oan-protocol`
 - `crates/oan-client`
 
-## 4. Agent Contract
+Demo Agents are implemented in Python:
 
-OpenAgentNet does not prescribe Agent implementation language. Service Agent and User Agent are external participants. The repository currently treats Python as a convenient Agent option, while the infrastructure nodes are written in Rust. TypeScript remains a natural fit for web consoles, SDKs, and developer tooling.
+- `agents/service-agent-python`
+- `agents/user-agent-python`
 
-Infrastructure nodes also use `did:ans` DID Documents, but Root, Registrar, and Discovery are not Agents. They reuse DID Document structure for infrastructure identity, keys, and endpoints. Their `ansMetadata.subjectType` should be `infrastructure-node`.
+The Python Agents use `uv` for cross-platform environment management. TypeScript remains a natural fit for web consoles, SDKs, and developer tooling.
 
 ## 5. Trust Flow
 
+The current trusted registration, distribution, discovery, and invocation flow is:
+
 1. Root authorizes Registrar and Discovery through bulletin events.
-2. Registrar receives a full Service Agent DID Document and registration credential.
-3. Registrar forwards the full DID Document, its own DID Document, metadata, and `registrationCredential` to Root.
-4. Root verifies registrar authorization, DID syntax, DID Document structure, capability tags, and registration credential proof.
-5. Root writes an Agent anchor or update event to the bulletin.
-6. Root archives a full versioned copy of the DID Document and verified package.
-7. Root queues the package for CDN publishing.
-8. Root queues Discovery notification data according to batch policy and authorized domains.
-9. CDN stores and serves the verified package.
-10. Discovery reads CDN information from the Root bulletin, syncs packages, verifies Root proof and bulletin events, applies authorized-domain filtering, and indexes eligible Service Agents.
-11. User Agent queries Discovery and verifies the signed response.
-12. User Agent may invoke Service Agent using signed DID-based invocation.
+2. Service Agent or its operator creates a registration draft through Registrar.
+3. Registrar assists capability tag selection using the Root-governed capability tree.
+4. Service Agent confirms a complete DID Document, including custom tags if needed.
+5. Registrar issues a signed `AgentRegistrationCredential`.
+6. Registrar submits the complete DID Document, Registrar DID material, metadata, and registration credential to Root.
+7. Root verifies Registrar authorization, DID syntax, DID Document structure, capability tags, nonce, optional request signature, and registration credential proof.
+8. Root archives a full versioned copy and appends a signed bulletin event.
+9. Root queues the verified package for CDN publishing.
+10. Root publishes the verified package to CDN through batch execution.
+11. After CDN publish succeeds, Root creates domain-filtered Discovery notification batches.
+12. Discovery reads CDN service information from the bulletin, syncs packages from CDN, verifies Root proof and bulletin facts, filters by authorized domains, and indexes eligible Service Agents.
+13. User Agent queries Discovery and receives a signed discovery response.
+14. User Agent builds a signed trusted invocation envelope containing DID Document, local VC, nonce, timestamp, body hash, and request proof.
+15. Service Agent verifies the User Agent DID Document, VC, nonce, target DID, and request signature before serving `/agent/hello`.
+16. Service Agent returns a signed `OpenAgentNetTrustedInvocationResponse`.
+17. User Agent verifies the Service Agent response signature.
 
-## 6. Root Node
-
-Root is the trust, data, and semantic governance hub. It:
-
-- authorizes Registrar Nodes
-- authorizes Discovery Nodes
-- authorizes third-party VC issuers
-- maintains signed bulletin events
-- verifies complete Agent DID Documents
-- verifies registration credential proof
-- maintains multi-version DID Document archive
-- produces Root-verified packages
-- maintains capability tag tree governance
-- queues CDN publishing and Discovery notification tasks
-
-Root does not directly serve archived versions as the public distribution source. Public distribution is delegated to CDN. The archive is a governance and audit record.
-
-### 6.1 DID Document Verification
-
-Root should verify at least:
-
-- `agentDid` syntax is valid `did:ans`
-- `didDocument.id` equals `agentDid`
-- DID Core context is present
-- verification methods exist
-- authentication methods exist
-- assertion methods exist
-- agent service endpoints exist
-- `ansMetadata.subjectType` is `agent`
-- capability tags are known in the configured capability tree
-- registrar is authorized and not revoked
-- `registrationCredential.issuer` equals `registrarDid`
-- `registrationCredential.subject` equals `agentDid`
-- `registrationCredential.status` is active
-- `registrationCredential.proof` verifies against the registrar DID Document
-
-Future checks should include expiration, nonce, replay protection, request signature, and full W3C VC proof-suite compatibility.
-
-### 6.2 Registration Pipeline
-
-Root processes submissions as a streaming concurrent pipeline. Each request carries a complete DID Document and required credential material. Root validates, hashes, classifies, archives, and enqueues inside the request scope. It should not keep all Agent DID Documents or discovery indexes resident in memory.
-
-Persistent state should live in:
-
-- SQLite indexes and queues
-- append-only bulletin JSON
-- versioned archive files
-- verified package files
-
-Only small governance data such as Root key, capability tree, and authorization cache should be held in memory.
-
-### 6.3 Root APIs
-
-Current Root APIs:
+This flow is verified by the local E2E demo script:
 
 ```text
-GET  /health
-GET  /root/did
-GET  /bulletin
-POST /root/registrars/authorize
-POST /root/discovery-nodes/authorize
-POST /root/discovery-nodes/{did}/domains
-POST /root/nodes/{did}/revoke
-POST /root/agents/verify-and-publish
-POST /root/batches/publish-cdn
-POST /root/batches/notify-discovery
-
-GET  /api/v1/root/status
-GET  /api/v1/root/registrars
-GET  /api/v1/root/registrars/{did}
-GET  /api/v1/root/discovery-nodes
-GET  /api/v1/root/discovery-nodes/{did}
-GET  /api/v1/root/agents
-GET  /api/v1/root/agents/{did}
-GET  /api/v1/root/agents/{did}/versions
-GET  /api/v1/root/agents/{did}/versions/{version}
-GET  /api/v1/root/queues/cdn-publish
-GET  /api/v1/root/queues/discovery-notify
-POST /api/v1/root/queues/cdn-publish/run
-POST /api/v1/root/queues/discovery-notify/run
-GET  /api/v1/root/capability-tree
-POST /api/v1/root/capability-tree/validate-tags
-GET  /api/v1/root/bulletin/events
-GET  /api/v1/root/bulletin/events/{sequence}
+scripts/run-e2e-demo.ps1
 ```
 
-## 7. Bulletin
+## 6. Agent Access Contract
 
-The bulletin is an append-only signed event log. It records:
+OpenAgentNet does not prescribe Agent implementation language. It prescribes an access contract.
 
-- Root initialization
-- CDN service information updates
-- Registrar authorization and revocation
-- Discovery authorization, domain updates, and revocation
-- VC issuer authorization and revocation
-- Agent DID Document anchor/update/revocation
-- Capability tag tree updates
+A minimally adapted Agent should support:
 
-All roles may sync bulletin state as needed. Authorization state changes for Registrar Nodes, Discovery Nodes, and third-party VC issuers must be published to the bulletin.
+- local DID Document
+- local keypair
+- local credential storage by dimension, issuer, subject, and credential ID
+- signed request or response envelopes
+- peer DID Document validation
+- peer VC validation
+- nonce and timestamp checks
+- protocol endpoint metadata in the DID Document
+- compatibility with MCP and/or A2A when those protocols are exposed
 
-The bulletin also carries CDN service discovery information, such as base URL, manifest URL, package URL template, and related metadata. This does not authorize CDN; it only tells other roles where the distribution service is.
+The current Python demo implements this contract for the trusted hello flow. Full MCP/A2A protocol integration remains future work.
 
-## 8. CDN Service
+## 7. Capability Tree
 
-CDN is a loosely coupled traditional distribution service. It may be operated by the Root operator or by an outsourced provider. It is not trusted and is not part of the authorized node set.
-
-CDN responsibilities:
-
-- receive verified packages from Root
-- store DID Documents, metadata, and package objects
-- maintain a manifest
-- provide read APIs for Discovery and clients
-
-Clients must verify:
-
-- Root proof
-- DID Document hash
-- metadata hash
-- bulletin event existence and status
-- revocation status
-
-Future access control may use Root-signed tokens or signed URLs. In that model, Root makes access decisions and CDN only enforces them.
-
-### 8.1 CDN APIs
-
-Current CDN APIs:
-
-```text
-GET  /health
-GET  /cdn/manifest
-GET  /cdn/updates
-POST /cdn/packages
-GET  /cdn/packages/{did}
-GET  /cdn/documents/{did}
-GET  /cdn/metadata/{did}
-
-GET  /api/v1/cdn/status
-GET  /api/v1/cdn/packages
-GET  /api/v1/cdn/packages/{did}
-GET  /api/v1/cdn/documents/{did}
-GET  /api/v1/cdn/metadata/{did}
-GET  /api/v1/cdn/manifest/stats
-GET  /api/v1/cdn/publish/history
-POST /api/v1/cdn/purge
-```
-
-## 9. Discovery Node
-
-Discovery builds a queryable local index from Root-verified data. It is not responsible for Root authorization decisions and must not return unanchored or revoked Agents as trusted candidates.
-
-Current Discovery behavior:
-
-- reads `root_endpoint` from config
-- fetches Root bulletin
-- finds latest `CDN_SERVICE_INFO_UPDATED` event
-- pulls CDN manifest and packages
-- verifies DID Document hash
-- verifies Root proof signature against Root DID Document public key
-- verifies that the package bulletin event exists
-- applies authorized-domain filtering
-- indexes only `subjectType = agent` packages
-- returns signed discovery responses
-
-### 9.1 Discovery APIs
-
-Current Discovery APIs:
-
-```text
-GET  /health
-GET  /discovery/did
-POST /discovery/sync
-POST /discover/query
-GET  /routes/{did}
-
-GET  /api/v1/discovery/status
-GET  /api/v1/discovery/root-authorization
-GET  /api/v1/discovery/authorized-domains
-POST /api/v1/discovery/sync
-GET  /api/v1/discovery/sync/history
-GET  /api/v1/discovery/index/stats
-GET  /api/v1/discovery/index/agents
-GET  /api/v1/discovery/index/agents/{did}
-POST /api/v1/discovery/query
-POST /api/v1/discovery/query/explain
-GET  /api/v1/discovery/rejected-packages
-GET  /api/v1/discovery/capability-tree
-```
-
-Future Discovery work:
-
-- verify full bulletin hash chain
-- verify every Root bulletin event signature
-- validate `metadataHash`
-- enforce Agent revocation and suspension status
-- use capability-tree parent-child matching for `authorizedDomains`
-- maintain optional local reputation, evaluation, and history signals
-
-## 10. Capability Tree
-
-Root maintains the capability tag tree as semantic governance data. The current v1 tree is externalized at:
+Root governs the shared capability tree:
 
 ```text
 docs/capability-tree-v1.json
 ```
 
-It is derived from `docs/GBT4754-2017_industry_tree.json` and serves as an initial capability tree. Runtime code can flatten the nested tree into tags with parent references. Agent registration and Discovery authorization should use canonical tag IDs.
+The current v1 tree is derived from the GB/T 4754-2017 industry tree and is used as a practical initial semantic reference.
 
-## 11. Credentials and VC Compatibility
+The capability tree is not a closed vocabulary. Tree-compatible tags support network-wide coarse discovery and Discovery authorization-domain routing. Custom tags are allowed and can support fine filtering after coarse eligibility is established.
 
-The current implementation uses VC-like JSON credentials. It aligns with W3C VC concepts such as issuer, subject, status, claims, and proof, but it does not claim full W3C VC proof-suite compatibility yet.
+## 8. Credentials and VC Compatibility
 
-Credential local storage applies to:
+The current implementation uses VC-like JSON credentials. They align with core W3C VC concepts such as issuer, subject, status, claims, and proof, but full W3C VC proof-suite compatibility is not yet claimed.
+
+Credential storage is local for:
 
 - Registrar Node
 - Discovery Node
-- Agents
+- Service Agent
+- User Agent
 
-The design does not use VC hosting or credential custody services.
+The MVP does not use VC hosting or credential custody services.
 
-An Agent, Discovery Node, or Registrar Node may hold multiple credentials from multiple issuers across multiple dimensions. Local storage should therefore support dimension, issuer, subject, and credential ID paths.
+An Agent or infrastructure node may hold multiple credentials from multiple issuers across multiple dimensions.
 
-Third-party VC issuers are not implemented as business logic in the current MVP, but they must be authorized by Root before being recognized by the ecosystem. Their authorization status must appear on the bulletin.
+Third-party VC issuers are not implemented as business services in the current MVP, but they must be Root-authorized before their credentials are recognized by the ecosystem. Their authorization status must appear on the bulletin.
 
-## 12. Storage
+## 9. Bulletin and Governance
 
-The implementation uses JSON files for audit-friendly artifacts and SQLite for operational indexes and queues.
+The bulletin is an append-only signed governance log. It carries:
 
-JSON examples:
+- Root initialization
+- CDN service information
+- Registrar authorization and revocation
+- Discovery authorization, domain updates, and revocation
+- third-party VC issuer authorization and revocation
+- Agent DID Document anchor/update/revocation
+- capability tree update events
 
-- DID Documents
-- keypair files
-- bulletin JSON
-- archived versions
-- verified packages
-- local credentials
+All roles may sync bulletin state as needed. Authorization changes are governance facts and must be published to the bulletin.
 
-SQLite should hold:
+CDN service information on the bulletin is service discovery data, not CDN trust.
 
-- latest version indexes
-- queues
-- cursors
-- authorization indexes
-- package indexes
-- discovery indexes
+## 10. Storage Model
 
-The MVP currently includes a namespace-based SQLite JSON helper.
+The reference implementation uses:
 
-## 13. Root Batch Strategy
+- JSON files for audit-friendly artifacts
+- SQLite for operational indexes, queues, and runtime lookup
 
-Root-to-CDN publishing and Root-to-Discovery notification are not real-time requirements. Root should use configurable batch strategies.
+JSON artifacts include DID Documents, keypair files, local credentials, Root bulletin, archived versions, CDN manifest files, and verified packages.
 
-Batch dimensions:
+SQLite currently supports Root queues and indexes, Registrar drafts and records, and Discovery package indexes and sync history. Future work should move from namespace JSON records to role-specific relational schemas.
 
-- maximum batch size
-- maximum waiting time
-- retry policy
-- idempotency key
-- target Discovery Node
-- sequence range
-- authorized domain filtering
+## 11. Batch and Distribution Model
 
-Root should notify only relevant Discovery Nodes when Agent capability tags match the Discovery Node authorized-domain set. It should not broadcast every Agent update to every Discovery Node unless the Discovery Node is authorized for all domains.
+Root-to-CDN publishing and Root-to-Discovery notification are not real-time requirements.
 
-## 14. Semantic Discovery
+The current MVP uses explicit batch APIs. The intended ordering is:
 
-Discovery semantic search may follow this flow:
+1. Root publishes verified packages to CDN.
+2. CDN stores package data and updates its manifest.
+3. Root notifies relevant Discovery Nodes.
+4. Discovery syncs from CDN and verifies package data.
 
-1. User task or query enters Discovery.
-2. Discovery maps query semantics to capability tags.
-3. Discovery retrieves candidate Agents from the verified local index.
-4. Discovery filters by protocol, service type, status, and trust validity.
-5. Discovery optionally applies local ranking signals.
-6. Discovery returns a signed response.
+Discovery notifications are domain-filtered by authorized capability domains. Root should not broadcast every Agent update to every Discovery Node unless the target Discovery Node is authorized for all domains.
 
-The current MVP does not implement vector retrieval, LLM query rewriting, or detailed ontology reasoning. It only implements tags, service type, protocol, and simple ranking.
+## 12. Semantic Discovery Model
 
-## 15. Configuration-Based Connectivity
+The current Discovery implementation supports tag, service type, protocol, and simple score-based matching.
 
-The system should be able to establish a usable local network from configuration plus bulletin state.
+Future semantic discovery may include:
 
-Minimum configuration:
+1. mapping user tasks or natural-language queries to capability tags
+2. retrieving candidates from verified local indexes
+3. filtering by protocol, service type, authorization status, and trust validity
+4. applying Discovery-local ranking signals
+5. returning a signed response
+
+Detailed vector retrieval, LLM query rewriting, ontology reasoning, and reputation systems are out of scope for the current MVP.
+
+## 13. Configuration-Based Connectivity
+
+The local network should be usable from configuration plus bulletin state.
+
+Minimum configuration includes:
 
 - Root endpoint for Registrar and Discovery
-- local DID Document and keypair paths
+- local DID Document paths
+- local keypair paths
 - local data directories
 - optional CDN fallback endpoint
 
-Runtime discovery:
+Runtime discovery includes:
 
 - Discovery finds CDN from Root bulletin
-- CDN movement can be announced by a bulletin event
+- CDN movement can be announced by bulletin event
 - whether a peer accepts a request depends on authorization and verification rules, not merely connectivity
 
-## 16. Security Boundaries
+## 14. Security Boundaries
 
 Important boundaries:
 
@@ -381,34 +267,51 @@ Important boundaries:
 - Root does not rank Agents
 - Discovery-local reputation does not override Root revocation
 - Agents are language-agnostic and loosely coupled
-- full DID Document submission is required for create and update
+- complete DID Document submission is required for create and update
 - Root archive is not the public serving source
 - credentials are local in the MVP
+- demo keys are development fixtures only
 
-## 17. Current Status
+## 15. Current Status
 
-The current codebase already includes:
+The current codebase includes:
 
-- Root proof and bulletin-based verification
-- Discovery verification of Root proof and bulletin event
-- Discovery response signing
-- Root authorization APIs
-- SQLite helper support
-- Root/Discovery batch queues
-- capability tree externalization
-- expanded management APIs for Root, Registrar, Discovery, and CDN
+- runnable Rust Root, Registrar, Discovery, and CDN services
+- Python Service Agent and User Agent managed by `uv`
+- `did:ans` DID Documents and development key fixtures
+- Registrar-issued Agent registration credentials
+- User Agent local registration credential
+- Root verification of registration credential proof
+- Root authorization APIs and persistent authorization state
+- Root request nonce and optional request signature checks
+- Root DID Document archive and verified package generation
+- Root SQLite-backed CDN and Discovery queues
+- Root domain-filtered batch notification
+- CDN package publishing and manifest serving
+- Discovery Root proof, metadata hash, bulletin hash-chain, and bulletin event verification
+- Discovery authorized-domain filtering
+- Discovery signed responses
+- expanded management APIs for infrastructure services
+- signed Agent-to-Agent trusted hello demo
+- E2E verification of User Agent VC, User Agent request signature, Service Agent signed response, and provenance metadata
 
-## 18. Remaining Gaps
+## 16. Remaining Gaps
 
-Important remaining gaps:
+Important gaps are tracked in:
 
-- full W3C VC proof-suite compatibility
-- request nonce and replay protection
-- full bulletin hash-chain verification inside Discovery sync
-- metadata hash verification in Discovery
-- SQLite role-specific schemas
-- real batch retry and partial failure handling
-- end-to-end trusted invocation demo
-- User Agent verification SDK
-- Root-signed CDN access token or signed URL enforcement
-- direct API tests for the newly added management endpoints
+```text
+docs/TODO.md
+```
+
+The highest-priority areas are:
+
+- formal Agent Adapter protocol specification
+- negative E2E tests for trusted invocation failures
+- full W3C VC compatibility profile
+- VC expiration and revocation/status-list checks
+- peer DID Document validation against Root-anchored package data
+- real MCP and A2A protocol adapters
+- Docker Compose and cross-platform E2E scripts
+- role-specific relational SQLite schemas
+- scheduled batch execution and retry policy
+- structured logging, metrics, tracing, backup, and runbooks

@@ -1,20 +1,14 @@
 {
-  "did": "did:ans:AGDM:ef7Qse3ynni4MnLQHXvaHUS8Ac3RJqGWRFRwfiBsWW6SxV",
-  "role": "Demo Service Agent",
+  "did": "did:ans:AGDM:efGyxDoPcm8SgEkFbHfyXSX1PTaKWfDH1Ltw2piFebYLgj",
+  "role": "Service Agent",
   "identityType": "demo-service-agent",
-  "didDocumentHash": "96aefb5ad0e8c93b64b0a455f2f17cdf9f2b9aaa587186821611f083f073ab25",
-  "subjectType": "agent",
+  "didDocumentHash": "f89e271c542aabb39ecf7cc121e882a1adfb15caab41a7120d069c3712c8aa28",
   "capabilityTags": [
-    "echo",
-    "translation",
-    "summarization",
-    "mcp",
-    "a2a",
-    "text-processing"
+    "gbt4754-2017.01"
   ],
   "services": [
     {
-      "id": "did:ans:AGDM:ef7Qse3ynni4MnLQHXvaHUS8Ac3RJqGWRFRwfiBsWW6SxV#agent-endpoint",
+      "id": "did:ans:AGDM:efGyxDoPcm8SgEkFbHfyXSX1PTaKWfDH1Ltw2piFebYLgj#agent-endpoint",
       "type": "AgentService",
       "serviceEndpoint": "http://localhost:9001/agent/invoke",
       "version": "1.0.0",
@@ -23,7 +17,7 @@
       "port": 9001
     },
     {
-      "id": "did:ans:AGDM:ef7Qse3ynni4MnLQHXvaHUS8Ac3RJqGWRFRwfiBsWW6SxV#mcp-endpoint",
+      "id": "did:ans:AGDM:efGyxDoPcm8SgEkFbHfyXSX1PTaKWfDH1Ltw2piFebYLgj#mcp-endpoint",
       "type": "MCPService",
       "serviceEndpoint": "http://localhost:9001/mcp",
       "version": "1.0.0",
@@ -32,7 +26,7 @@
       "port": 9001
     },
     {
-      "id": "did:ans:AGDM:ef7Qse3ynni4MnLQHXvaHUS8Ac3RJqGWRFRwfiBsWW6SxV#a2a-endpoint",
+      "id": "did:ans:AGDM:efGyxDoPcm8SgEkFbHfyXSX1PTaKWfDH1Ltw2piFebYLgj#a2a-endpoint",
       "type": "A2AService",
       "serviceEndpoint": "http://localhost:9001/a2a",
       "version": "1.0.0",
@@ -42,5 +36,5 @@
     }
   ],
   "status": "active",
-  "updatedAt": "2026-05-20T00:00:00.000Z"
+  "updatedAt": "2026-05-21T04:12:01.298056700Z"
 }

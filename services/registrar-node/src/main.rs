@@ -12,10 +12,13 @@ use axum::{
     routing::{get, post, put},
     Json, Router,
 };
+use base64::{engine::general_purpose::URL_SAFE_NO_PAD, Engine};
 use oan_core::{CapabilityTagTree, DidDocument};
+use oan_credentials::AgentRegistrationCredential;
 use oan_crypto::hash_json;
+use oan_crypto::signing_key_from_bytes;
 use oan_protocol::{HealthResponse, VerifyAndPublishRequest};
-use oan_storage::{did_to_file_name, JsonStore};
+use oan_storage::{did_to_file_name, JsonStore, SqliteJsonStore};
 use serde::{Deserialize, Serialize};
 use serde_json::{json, Value};
 use std::{
@@ -47,6 +50,14 @@ struct UpstreamConfig {
 struct PathConfig {
     data_dir: PathBuf,
     records_dir: PathBuf,
+    #[serde(default = "default_keys_dir")]
+    keys_dir: PathBuf,
+    #[serde(default)]
+    database_url: Option<String>,
+}
+
+fn default_keys_dir() -> PathBuf {
+    PathBuf::from("../../data/registrar/keys")
 }
 
 #[derive(Clone)]
@@ -54,7 +65,20 @@ struct AppState {
     data: JsonStore,
     config: Config,
     did: String,
+    signing_key: ed25519_dalek::SigningKey,
+    sqlite: Option<SqliteJsonStore>,
     client: reqwest::Client,
+}
+
+#[derive(Clone, Debug, Deserialize)]
+struct DevKeyFile {
+    #[serde(rename = "privateKeyJwk")]
+    private_key_jwk: PrivateKeyJwk,
+}
+
+#[derive(Clone, Debug, Deserialize)]
+struct PrivateKeyJwk {
+    d: String,
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
@@ -135,10 +159,18 @@ async fn main() -> Result<()> {
         .unwrap_or_else(|| "services/registrar-node/config.example.toml".to_owned());
     let config = load_config(config_path)?;
     let did_doc: DidDocument = JsonStore::new(&config.paths.data_dir).read("did-document.json")?;
+    let key: DevKeyFile = JsonStore::new(".").read(config.paths.keys_dir.join("keypair.json"))?;
+    let signing_key = signing_key_from_bytes(&URL_SAFE_NO_PAD.decode(key.private_key_jwk.d)?)?;
+    let sqlite = match config.paths.database_url.as_deref() {
+        Some(url) if !url.is_empty() => Some(SqliteJsonStore::connect(url).await?),
+        _ => None,
+    };
     let state = AppState {
         data: JsonStore::new(&config.paths.data_dir),
         config: config.clone(),
         did: did_doc.id,
+        signing_key,
+        sqlite,
         client: reqwest::Client::new(),
     };
     let app = Router::new()
@@ -180,17 +212,30 @@ fn load_config(path: String) -> Result<Config> {
     let base = path.parent().unwrap_or_else(|| Path::new("."));
     config.paths.data_dir = resolve_relative(base, &config.paths.data_dir);
     config.paths.records_dir = resolve_relative(base, &config.paths.records_dir);
+    config.paths.keys_dir = resolve_relative(base, &config.paths.keys_dir);
+    if let Some(database_url) = config.paths.database_url.as_mut() {
+        *database_url = resolve_sqlite_url(base, database_url);
+    }
     Ok(config)
 }
 
 fn resolve_relative(base: &Path, path: &Path) -> PathBuf {
     if path.is_absolute() {
         path.to_path_buf()
-    } else if path.exists() {
-        path.to_path_buf()
     } else {
         base.join(path)
     }
+}
+
+fn resolve_sqlite_url(base: &Path, url: &str) -> String {
+    let Some(raw_path) = url
+        .strip_prefix("sqlite://")
+        .or_else(|| url.strip_prefix("sqlite:"))
+    else {
+        return url.to_owned();
+    };
+    let resolved = resolve_relative(base, Path::new(raw_path));
+    format!("sqlite:{}", resolved.display())
 }
 
 async fn health(State(state): State<AppState>) -> Json<HealthResponse> {
@@ -232,6 +277,9 @@ async fn register_agent(
     records_root
         .write(did_to_file_name(&request.agent_did), &record)
         .map_err(|err| ApiError::internal(err.into()))?;
+    mirror_sqlite_json(&state, "registrar.records", &request.agent_did, &record)
+        .await
+        .map_err(ApiError::internal)?;
 
     let root_request = VerifyAndPublishRequest {
         registrar_did: state.did.clone(),
@@ -240,6 +288,9 @@ async fn register_agent(
         did_document: request.did_document,
         metadata: record["metadata"].clone(),
         registration_credential: request.registration_credential,
+        request_timestamp: Some(chrono::Utc::now()),
+        request_nonce: Some(format!("nonce-{}", chrono::Utc::now().timestamp_nanos_opt().unwrap_or_default())),
+        request_signature: None,
     };
     let response = state
         .client
@@ -374,6 +425,9 @@ async fn api_create_draft(
         updated_at: now,
     };
     write_draft(&state, &draft)?;
+    mirror_sqlite_json(&state, "registrar.drafts", &draft.draft_id, &draft)
+        .await
+        .map_err(ApiError::internal)?;
     Ok(Json(json!({ "status": "created", "draft": draft })))
 }
 
@@ -413,6 +467,9 @@ async fn api_update_draft(
     }
     draft.updated_at = chrono::Utc::now();
     write_draft(&state, &draft)?;
+    mirror_sqlite_json(&state, "registrar.drafts", &draft.draft_id, &draft)
+        .await
+        .map_err(ApiError::internal)?;
     Ok(Json(json!({ "status": "updated", "draft": draft })))
 }
 
@@ -432,29 +489,32 @@ async fn api_issue_registration_credential(
     AxumPath(draft_id): AxumPath<String>,
 ) -> ApiResult<Value> {
     let mut draft = read_draft(&state, &draft_id)?;
-    let credential = json!({
-        "type": "AgentRegistrationCredential",
-        "issuer": state.did,
-        "subject": draft.agent_did,
-        "status": "draft-unsigned",
-        "issuedAt": chrono::Utc::now(),
-        "claims": {
+    let credential = AgentRegistrationCredential::unsigned(
+        state.did.clone(),
+        draft.agent_did.clone(),
+        json!({
             "capabilityTags": draft.did_document.as_ref()
                 .and_then(|doc| doc.ans_metadata.as_ref())
                 .and_then(|metadata| metadata.agent_description.as_ref())
                 .map(|description| description.capability_tags.clone())
-                .unwrap_or_default()
-        },
-        "proof": null
-    });
+                .unwrap_or_default(),
+            "assistedBy": "registrar-capability-tree",
+            "registrationFlow": "draft-confirm-submit"
+        }),
+    )
+    .sign(format!("{}#key-1", state.did), &state.signing_key)
+    .map_err(|err| ApiError::internal(err.into()))?;
+    let credential = serde_json::to_value(credential).map_err(|err| ApiError::internal(err.into()))?;
     draft.registration_credential = Some(credential.clone());
-    draft.status = "credential-issued-draft".to_owned();
+    draft.status = "credential-issued".to_owned();
     draft.updated_at = chrono::Utc::now();
     write_draft(&state, &draft)?;
+    mirror_sqlite_json(&state, "registrar.drafts", &draft.draft_id, &draft)
+        .await
+        .map_err(ApiError::internal)?;
     Ok(Json(json!({
-        "status": "issued-draft",
-        "credential": credential,
-        "note": "MVP returns an unsigned credential skeleton; production signing is handled by the registrar credential module."
+        "status": "issued",
+        "credential": credential
     })))
 }
 
@@ -630,6 +690,18 @@ fn storage_safe_id(value: &str) -> String {
         .collect()
 }
 
+async fn mirror_sqlite_json<T: Serialize>(
+    state: &AppState,
+    namespace: &str,
+    key: &str,
+    value: &T,
+) -> Result<()> {
+    if let Some(sqlite) = &state.sqlite {
+        sqlite.upsert_json(namespace, key, value).await?;
+    }
+    Ok(())
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -689,9 +761,13 @@ mod tests {
                 paths: PathConfig {
                     data_dir: dir.to_path_buf(),
                     records_dir: dir.join("records"),
+                    keys_dir: dir.join("keys"),
+                    database_url: None,
                 },
             },
             did: "did:ans:AGRG:efregistrarregistrar1234".to_owned(),
+            signing_key: oan_crypto::generate_ed25519_keypair(),
+            sqlite: None,
             client: reqwest::Client::new(),
         }
     }

@@ -1,8 +1,8 @@
 {
-  "did": "did:ans:AGRT:efHKg7V5cjoWEQcCQdHqpEBpB4ZDqHVHm6eKBbQoQd78HH",
+  "did": "did:ans:AGRT:ef8mwSoLkuczZefef3cJpUqE7Xqg7WWakUYNXtS7R9CpEm",
   "role": "Root Node",
   "identityType": "root-node",
-  "didDocumentHash": "7bbd237f692c6877526359d2ffd28b6e1a5f94f7e54822cb402461aa8d28abb7",
+  "didDocumentHash": "b9199e745dffc62569a157c362aa48984f6235b26b31a98c1b37c7dca41e4a9a",
   "subjectType": "infrastructure-node",
   "capabilityTags": [
     "root-authority",
@@ -12,7 +12,7 @@
   ],
   "services": [
     {
-      "id": "did:ans:AGRT:efHKg7V5cjoWEQcCQdHqpEBpB4ZDqHVHm6eKBbQoQd78HH#root-api",
+      "id": "did:ans:AGRT:ef8mwSoLkuczZefef3cJpUqE7Xqg7WWakUYNXtS7R9CpEm#root-api",
       "type": "RootAuthorityService",
       "serviceEndpoint": "http://localhost:8000",
       "version": "1.0.0",
@@ -21,7 +21,7 @@
       "port": 8000
     },
     {
-      "id": "did:ans:AGRT:efHKg7V5cjoWEQcCQdHqpEBpB4ZDqHVHm6eKBbQoQd78HH#bulletin",
+      "id": "did:ans:AGRT:ef8mwSoLkuczZefef3cJpUqE7Xqg7WWakUYNXtS7R9CpEm#bulletin",
       "type": "TrustBulletinService",
       "serviceEndpoint": "http://localhost:8000/bulletin",
       "version": "1.0.0",
@@ -31,5 +31,5 @@
     }
   ],
   "status": "active",
-  "updatedAt": "2026-05-20T00:00:00.000Z"
+  "updatedAt": "2026-05-20T00:00:00Z"
 }

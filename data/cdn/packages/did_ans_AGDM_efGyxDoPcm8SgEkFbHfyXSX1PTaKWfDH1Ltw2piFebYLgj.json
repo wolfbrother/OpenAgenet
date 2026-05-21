@@ -1,34 +1,34 @@
 {
   "packageVersion": "0.1.0",
-  "did": "did:ans:AGDM:ef7Qse3ynni4MnLQHXvaHUS8Ac3RJqGWRFRwfiBsWW6SxV",
+  "did": "did:ans:AGDM:efGyxDoPcm8SgEkFbHfyXSX1PTaKWfDH1Ltw2piFebYLgj",
   "didDocument": {
     "@context": [
       "https://www.w3.org/ns/did/v1",
       "https://w3id.org/ans/v1"
     ],
-    "id": "did:ans:AGDM:ef7Qse3ynni4MnLQHXvaHUS8Ac3RJqGWRFRwfiBsWW6SxV",
+    "id": "did:ans:AGDM:efGyxDoPcm8SgEkFbHfyXSX1PTaKWfDH1Ltw2piFebYLgj",
     "verificationMethod": [
       {
-        "id": "did:ans:AGDM:ef7Qse3ynni4MnLQHXvaHUS8Ac3RJqGWRFRwfiBsWW6SxV#key-1",
+        "id": "did:ans:AGDM:efGyxDoPcm8SgEkFbHfyXSX1PTaKWfDH1Ltw2piFebYLgj#key-1",
         "type": "Ed25519VerificationKey2020",
-        "controller": "did:ans:AGDM:ef7Qse3ynni4MnLQHXvaHUS8Ac3RJqGWRFRwfiBsWW6SxV",
-        "publicKeyMultibase": "z7Qse3ynni4MnLQHXvaHUS8Ac3RJqGWRFRwfiBsWW6SxV",
+        "controller": "did:ans:AGDM:efGyxDoPcm8SgEkFbHfyXSX1PTaKWfDH1Ltw2piFebYLgj",
+        "publicKeyMultibase": "zGyxDoPcm8SgEkFbHfyXSX1PTaKWfDH1Ltw2piFebYLgj",
         "publicKeyJwk": {
           "crv": "Ed25519",
-          "x": "X0O81z4O65prUMHyNoTBtscOOLfcEac3e0fuzCXr5E4",
-          "kty": "OKP"
+          "kty": "OKP",
+          "x": "7XZEdnx5JjIihw3DVI1vYwKLbYyCVhq99sSVAlIKOMQ"
         }
       }
     ],
     "authentication": [
-      "did:ans:AGDM:ef7Qse3ynni4MnLQHXvaHUS8Ac3RJqGWRFRwfiBsWW6SxV#key-1"
+      "did:ans:AGDM:efGyxDoPcm8SgEkFbHfyXSX1PTaKWfDH1Ltw2piFebYLgj#key-1"
     ],
     "assertionMethod": [
-      "did:ans:AGDM:ef7Qse3ynni4MnLQHXvaHUS8Ac3RJqGWRFRwfiBsWW6SxV#key-1"
+      "did:ans:AGDM:efGyxDoPcm8SgEkFbHfyXSX1PTaKWfDH1Ltw2piFebYLgj#key-1"
     ],
     "service": [
       {
-        "id": "did:ans:AGDM:ef7Qse3ynni4MnLQHXvaHUS8Ac3RJqGWRFRwfiBsWW6SxV#agent-endpoint",
+        "id": "did:ans:AGDM:efGyxDoPcm8SgEkFbHfyXSX1PTaKWfDH1Ltw2piFebYLgj#agent-endpoint",
         "type": "AgentService",
         "serviceEndpoint": "http://localhost:9001/agent/invoke",
         "version": "1.0.0",
@@ -37,7 +37,7 @@
         "port": 9001
       },
       {
-        "id": "did:ans:AGDM:ef7Qse3ynni4MnLQHXvaHUS8Ac3RJqGWRFRwfiBsWW6SxV#mcp-endpoint",
+        "id": "did:ans:AGDM:efGyxDoPcm8SgEkFbHfyXSX1PTaKWfDH1Ltw2piFebYLgj#mcp-endpoint",
         "type": "MCPService",
         "serviceEndpoint": "http://localhost:9001/mcp",
         "version": "1.0.0",
@@ -46,7 +46,7 @@
         "port": 9001
       },
       {
-        "id": "did:ans:AGDM:ef7Qse3ynni4MnLQHXvaHUS8Ac3RJqGWRFRwfiBsWW6SxV#a2a-endpoint",
+        "id": "did:ans:AGDM:efGyxDoPcm8SgEkFbHfyXSX1PTaKWfDH1Ltw2piFebYLgj#a2a-endpoint",
         "type": "A2AService",
         "serviceEndpoint": "http://localhost:9001/a2a",
         "version": "1.0.0",
@@ -61,39 +61,34 @@
       "ttl": 300,
       "addressBindings": [
         {
-          "id": "did:ans:AGDM:ef7Qse3ynni4MnLQHXvaHUS8Ac3RJqGWRFRwfiBsWW6SxV#addr-agent-endpoint",
+          "id": "did:ans:AGDM:efGyxDoPcm8SgEkFbHfyXSX1PTaKWfDH1Ltw2piFebYLgj#addr-agent-endpoint",
           "addressType": "endpoint",
           "network": "local-http",
           "address": "http://localhost:9001/agent/invoke",
-          "controller": "did:ans:AGDM:ef7Qse3ynni4MnLQHXvaHUS8Ac3RJqGWRFRwfiBsWW6SxV",
+          "controller": "did:ans:AGDM:efGyxDoPcm8SgEkFbHfyXSX1PTaKWfDH1Ltw2piFebYLgj",
           "purpose": "service"
         },
         {
-          "id": "did:ans:AGDM:ef7Qse3ynni4MnLQHXvaHUS8Ac3RJqGWRFRwfiBsWW6SxV#addr-mcp-endpoint",
+          "id": "did:ans:AGDM:efGyxDoPcm8SgEkFbHfyXSX1PTaKWfDH1Ltw2piFebYLgj#addr-mcp-endpoint",
           "addressType": "endpoint",
           "network": "local-http",
           "address": "http://localhost:9001/mcp",
-          "controller": "did:ans:AGDM:ef7Qse3ynni4MnLQHXvaHUS8Ac3RJqGWRFRwfiBsWW6SxV",
+          "controller": "did:ans:AGDM:efGyxDoPcm8SgEkFbHfyXSX1PTaKWfDH1Ltw2piFebYLgj",
           "purpose": "service"
         },
         {
-          "id": "did:ans:AGDM:ef7Qse3ynni4MnLQHXvaHUS8Ac3RJqGWRFRwfiBsWW6SxV#addr-a2a-endpoint",
+          "id": "did:ans:AGDM:efGyxDoPcm8SgEkFbHfyXSX1PTaKWfDH1Ltw2piFebYLgj#addr-a2a-endpoint",
           "addressType": "endpoint",
           "network": "local-http",
           "address": "http://localhost:9001/a2a",
-          "controller": "did:ans:AGDM:ef7Qse3ynni4MnLQHXvaHUS8Ac3RJqGWRFRwfiBsWW6SxV",
+          "controller": "did:ans:AGDM:efGyxDoPcm8SgEkFbHfyXSX1PTaKWfDH1Ltw2piFebYLgj",
           "purpose": "service"
         }
       ],
       "agentDescription": {
         "capabilityDescription": "A local demo Service Agent with echo, translation, and summarization capabilities exposed through trusted invocation, MCP, and A2A endpoints.",
         "capabilityTags": [
-          "echo",
-          "translation",
-          "summarization",
-          "mcp",
-          "a2a",
-          "text-processing"
+          "gbt4754-2017.01"
         ],
         "useCaseExamples": [
           "Echo a signed request.",
@@ -105,24 +100,19 @@
       "networkScope": "openagentnet-local"
     }
   },
-  "didDocumentHash": "96aefb5ad0e8c93b64b0a455f2f17cdf9f2b9aaa587186821611f083f073ab25",
+  "didDocumentHash": "f89e271c542aabb39ecf7cc121e882a1adfb15caab41a7120d069c3712c8aa28",
+  "metadataHash": "620f41b7c6392d57078d147998d599cc7665ef520a6db4bd8085cd39b1c2c639",
   "metadata": {
-    "did": "did:ans:AGDM:ef7Qse3ynni4MnLQHXvaHUS8Ac3RJqGWRFRwfiBsWW6SxV",
-    "role": "Demo Service Agent",
+    "did": "did:ans:AGDM:efGyxDoPcm8SgEkFbHfyXSX1PTaKWfDH1Ltw2piFebYLgj",
+    "role": "Service Agent",
     "identityType": "demo-service-agent",
-    "didDocumentHash": "96aefb5ad0e8c93b64b0a455f2f17cdf9f2b9aaa587186821611f083f073ab25",
-    "subjectType": "agent",
+    "didDocumentHash": "f89e271c542aabb39ecf7cc121e882a1adfb15caab41a7120d069c3712c8aa28",
     "capabilityTags": [
-      "echo",
-      "translation",
-      "summarization",
-      "mcp",
-      "a2a",
-      "text-processing"
+      "gbt4754-2017.01"
     ],
     "services": [
       {
-        "id": "did:ans:AGDM:ef7Qse3ynni4MnLQHXvaHUS8Ac3RJqGWRFRwfiBsWW6SxV#agent-endpoint",
+        "id": "did:ans:AGDM:efGyxDoPcm8SgEkFbHfyXSX1PTaKWfDH1Ltw2piFebYLgj#agent-endpoint",
         "type": "AgentService",
         "serviceEndpoint": "http://localhost:9001/agent/invoke",
         "version": "1.0.0",
@@ -131,7 +121,7 @@
         "port": 9001
       },
       {
-        "id": "did:ans:AGDM:ef7Qse3ynni4MnLQHXvaHUS8Ac3RJqGWRFRwfiBsWW6SxV#mcp-endpoint",
+        "id": "did:ans:AGDM:efGyxDoPcm8SgEkFbHfyXSX1PTaKWfDH1Ltw2piFebYLgj#mcp-endpoint",
         "type": "MCPService",
         "serviceEndpoint": "http://localhost:9001/mcp",
         "version": "1.0.0",
@@ -140,7 +130,7 @@
         "port": 9001
       },
       {
-        "id": "did:ans:AGDM:ef7Qse3ynni4MnLQHXvaHUS8Ac3RJqGWRFRwfiBsWW6SxV#a2a-endpoint",
+        "id": "did:ans:AGDM:efGyxDoPcm8SgEkFbHfyXSX1PTaKWfDH1Ltw2piFebYLgj#a2a-endpoint",
         "type": "A2AService",
         "serviceEndpoint": "http://localhost:9001/a2a",
         "version": "1.0.0",
@@ -150,12 +140,12 @@
       }
     ],
     "status": "active",
-    "updatedAt": "2026-05-20T00:00:00.000Z"
+    "updatedAt": "2026-05-21T04:12:01.298056700Z"
   },
   "rootProof": {
-    "rootDid": "did:ans:AGRT:efHKg7V5cjoWEQcCQdHqpEBpB4ZDqHVHm6eKBbQoQd78HH",
-    "bulletinEventHash": "e784e132c735a3402c1e1b583c7945ee1f49e7b69169f48abf39e834676fa691",
-    "signature": "PlLBt0QO6IRhwm_A6FU0F5taIZ6T_RMl2_R4dbh99AQE9z7aN09ZH1JejYsYv5zbKnG4LQG0iRcc_VnUw8-_CA"
+    "rootDid": "did:ans:AGRT:ef8mwSoLkuczZefef3cJpUqE7Xqg7WWakUYNXtS7R9CpEm",
+    "bulletinEventHash": "3b18148e990975b7d49e9302e9552ce446ef5ee9168582cbc4b1e1787b486ffb",
+    "signature": "see91_QEuFZwi0raq7EEvammq1M-yUgVO9CHv5MN70Kac5-9vMnw_jpP8BWhuOqjSU0xsX-O1mUY5B-ETbGPCw"
   },
-  "createdAt": "2026-05-20T00:00:00.000Z"
+  "createdAt": "2026-05-21T04:12:01.306779400Z"
 }

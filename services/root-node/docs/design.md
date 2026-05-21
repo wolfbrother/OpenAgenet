@@ -1,28 +1,54 @@
-﻿<!-- Copyright (c) 2026 China Academy of Information and Communications Technology (CAICT) -->
+<!-- Copyright (c) 2026 China Academy of Information and Communications Technology (CAICT) -->
 <!--
 Author: JINLIANG XU
 Email: xujinliang@caict.ac.cn; jlxufly@gmail.com
 -->
 
-# Root Node Design
+# Root Node Detailed Design
 
-## 1. Positioning
+## 1. Role
 
-Root Node is the governance center of OpenAgentNet. It carries three core responsibilities:
+Root Node is the OpenAgentNet governance center. It is simultaneously:
 
-- trust management hub
-- data distribution hub
-- semantic governance hub
+- the trust management hub
+- the data distribution hub
+- the semantic governance hub
 
-Root Node is not a business Agent. It does not route Agent traffic, does not maintain reputation or rating systems, and does not provide recommendation logic. It reuses `did:ans` DID Document structure only to express infrastructure identity, keys, and endpoints. Its `ansMetadata.subjectType` must be `infrastructure-node`.
+Root Node is not a business Agent and does not serve user tasks. It reuses a `did:ans` DID Document to publish its infrastructure identity, public keys, and endpoints. Its DID Document must use `ansMetadata.subjectType = "infrastructure-node"`.
 
-The current Rust MVP focuses on verifying complete Service Agent DID Documents submitted by Registrar Nodes, anchoring them into the bulletin, archiving versions, and producing the data needed by CDN and Discovery.
+Root does not track Agent reputation, ratings, invocation history, or ranking. Those are Discovery-local or application-local concerns.
 
-## 2. Configuration and Service Discovery
+## 2. Current Implementation
 
-Config file: `services/root-node/config.example.toml`
+The Rust MVP implements:
 
-Required inputs:
+- Registrar and Discovery authorization APIs
+- persistent authorization state
+- signed bulletin events
+- Service Agent DID Document verification
+- Registrar-issued registration credential proof verification
+- optional request signature verification
+- request nonce replay protection
+- DID Document archive versioning
+- verified package generation
+- SQLite-backed CDN publish queue
+- SQLite-backed Discovery notification queue
+- domain-filtered Discovery notification batches
+- Root-to-CDN publish before Discovery notification
+- external capability tree loading from `docs/capability-tree-v1.json`
+- management APIs for future web consoles
+
+Root accepts complete DID Documents for both first registration and update flows. This keeps Root verification stateless and request-scoped.
+
+## 3. Configuration
+
+Config file:
+
+```text
+services/root-node/config.example.toml
+```
+
+Important inputs:
 
 ```text
 [server]
@@ -33,20 +59,24 @@ port
 data_dir
 keys_dir
 bulletin_file
+authorization_state_file
+capability_tree_file
 database_url
+archive_dir
+verified_packages_dir
+cdn_publish_queue_dir
+discovery_notify_queue_dir
 ```
 
 Path resolution follows the repository convention:
 
 1. absolute paths are used directly
-2. relative paths are resolved against the current working directory first
+2. relative paths are resolved against the current working directory
 3. otherwise they are resolved against the config file directory
 
-Root does not discover Registrar or Discovery through a config list. It publishes authorization facts through the bulletin and accepts protocol requests from those services.
+## 4. APIs
 
-## 3. HTTP APIs
-
-Current APIs:
+Protocol APIs:
 
 ```text
 GET  /health
@@ -59,7 +89,11 @@ POST /root/nodes/{did}/revoke
 POST /root/agents/verify-and-publish
 POST /root/batches/publish-cdn
 POST /root/batches/notify-discovery
+```
 
+Management APIs:
+
+```text
 GET  /api/v1/root/status
 GET  /api/v1/root/registrars
 GET  /api/v1/root/registrars/{did}
@@ -79,76 +113,140 @@ GET  /api/v1/root/bulletin/events
 GET  /api/v1/root/bulletin/events/{sequence}
 ```
 
-The new `/api/v1` set is intended to support future web consoles directly, so frontend code can stay thin and data-constrained.
+The management APIs are intended to keep future web console logic thin and data-constrained.
 
-## 4. Verification Duties
+## 5. Verification Duties
 
-Root should verify:
+Root currently verifies:
 
-- `agentDid` is valid `did:ans`
+- `agentDid` uses valid `did:ans` syntax
 - `didDocument.id == agentDid`
 - DID Core context exists
 - verification methods exist
 - authentication methods exist
 - assertion methods exist
 - service endpoints exist
-- `ansMetadata.subjectType == agent`
-- capability tags are known in the configured capability tree
-- registrar is authorized and not revoked
+- `ansMetadata.subjectType == "agent"`
+- capability tags are valid strings
+- capability-tree tags are recognized as canonical coarse-discovery tags
+- custom capability tags are allowed and preserved for fine filtering
+- Registrar is authorized and not revoked
+- request nonce has not been replayed
+- request signature verifies when present
 - `registrationCredential.issuer == registrarDid`
 - `registrationCredential.subject == agentDid`
-- `registrationCredential.status == active`
-- `registrationCredential.proof` verifies against the registrar DID Document
+- `registrationCredential.status == "active"`
+- `registrationCredential.proof` verifies against the Registrar DID Document
 
-Future work should add expiration, nonce, replay protection, request signatures, and full W3C VC proof-suite compatibility.
+Future verification should add:
 
-## 5. Streaming Pipeline
+- strict credential expiration checks
+- `claims.didDocumentHash` matching
+- credential type allowlists
+- issuer authorization scope checks
+- mandatory request signature after a compatibility period
+- full W3C VC proof-suite compatibility
+- DID Document update risk checks for key rotation, endpoint changes, and capability changes
 
-Root processes registration as a streaming pipeline. It should not keep large numbers of DID Documents in memory. Persistent state should live in:
+## 6. Registration Pipeline
 
-- SQLite queues and indexes
-- bulletin JSON
-- versioned archive files
-- verified package files
+Root handles registration as a streaming concurrent pipeline:
 
-This matches the current implementation, which writes archive records and queue entries immediately after verification.
+1. receive a full DID Document and registration credential from Registrar
+2. validate Registrar authorization
+3. validate DID Document structure and `did:ans` identity
+4. validate request nonce and optional request signature
+5. validate `registrationCredential` proof
+6. classify create/update
+7. archive the package version
+8. append a signed bulletin event
+9. enqueue a verified package for CDN publishing
+10. enqueue Discovery notification metadata
 
-## 6. Bulletin
+Root does not keep all Agent DID Documents or Discovery indexes in memory. Operational state is persisted in JSON artifacts and SQLite indexes.
 
-The bulletin is an append-only signed event log. It records:
+## 7. Distribution Pipeline
+
+Root uses explicit batch APIs:
+
+- `POST /root/batches/publish-cdn`
+- `POST /root/batches/notify-discovery`
+
+The intended ordering is:
+
+1. publish verified packages to CDN
+2. confirm CDN publish success
+3. notify relevant Discovery Nodes
+
+Discovery notifications are domain-filtered. A Discovery Node receives package notifications only when its `authorizedDomains` match the Agent's canonical capability tags, unless it is authorized for `*`.
+
+## 8. Bulletin
+
+The bulletin is a signed append-only governance log. It carries:
 
 - Root initialization
-- CDN service information updates
-- Registrar authorization and revocation
-- Discovery authorization, domain updates, and revocation
+- CDN service information
+- Registrar authorization, suspension, recovery, and revocation
+- Discovery authorization, domain changes, suspension, recovery, and revocation
 - third-party VC issuer authorization and revocation
-- Agent DID Document anchor/update/revocation
-- capability tag tree updates
+- Agent DID Document anchor/update/revocation events
+- capability tree version events
 
-The bulletin also carries CDN service discovery information such as base URL, manifest URL, and package URL template. This is service discovery only, not CDN trust.
+CDN information on the bulletin is service discovery data only. CDN is not authorized by the bulletin and is not trusted as a protocol authority.
 
-## 7. Capability Tree
+## 9. Capability Tree
 
-Root maintains the semantic capability tree as external data:
+Root loads the capability tree from:
 
 ```text
 docs/capability-tree-v1.json
 ```
 
-The tree is used by registration validation and Discovery domain authorization. Canonical tag IDs should be used in protocol storage and APIs.
+The capability tree is a shared semantic reference, not a closed vocabulary. Tree-compatible tags improve network-wide coarse discovery and Discovery authorization-domain routing. Custom tags remain allowed for precise matching after coarse filtering.
 
-## 8. Test Coverage
+## 10. Local Data
 
-Current codebase status:
+Representative local data:
 
-- `cargo check --workspace` passes
-- `cargo test --workspace` passes
-- Root has unit tests for request verification and queue behavior
-- the newly added management APIs are implemented, but direct HTTP-level tests for all new endpoints still need to be added
+```text
+data/root/did-document.json
+data/root/keys/keypair.json
+data/root/bulletin.json
+data/root/authorization-state.json
+data/root/root.db
+data/root/archive/
+data/root/verified-packages/
+data/root/queues/
+data/root/indexes/
+```
 
-## 9. Next Steps
+JSON files are audit-friendly artifacts. SQLite is the operational index and queue store.
 
-- add direct tests for Root management APIs
-- add stricter credential and replay checks
-- migrate queues and indexes to role-specific SQLite schemas
-- extend bulletin verification and root authorization status queries
+## 11. Tests
+
+Current tests cover:
+
+- DID Document verification
+- registration credential proof verification
+- nonce replay protection
+- optional request signature verification
+- capability tree validation
+- custom capability tag acceptance
+- queue behavior
+- status and management APIs
+- authorization list APIs
+
+The repository passes:
+
+```text
+cargo test --workspace
+```
+
+## 12. Next Work
+
+- convert namespace JSON SQLite records to role-specific relational schemas
+- add scheduler-driven batch windows
+- add retry backoff and dead-letter queues
+- add stricter credential expiration and issuer-scope checks
+- add formal bulletin event schema validation
+- expose richer authorization lifecycle APIs

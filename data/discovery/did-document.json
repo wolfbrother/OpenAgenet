@@ -3,29 +3,29 @@
     "https://www.w3.org/ns/did/v1",
     "https://w3id.org/ans/v1"
   ],
-  "id": "did:ans:AGDS:efAAwpkMEA3HESX6cuAkGA5CEWWbZttBZFVHxoWYkWqncC",
+  "id": "did:ans:AGDS:ef6eU4rGF17EK5wVXaNoroB29Mnh6S243nqwuqjA8gr84t",
   "verificationMethod": [
     {
-      "id": "did:ans:AGDS:efAAwpkMEA3HESX6cuAkGA5CEWWbZttBZFVHxoWYkWqncC#key-1",
+      "id": "did:ans:AGDS:ef6eU4rGF17EK5wVXaNoroB29Mnh6S243nqwuqjA8gr84t#key-1",
       "type": "Ed25519VerificationKey2020",
-      "controller": "did:ans:AGDS:efAAwpkMEA3HESX6cuAkGA5CEWWbZttBZFVHxoWYkWqncC",
-      "publicKeyMultibase": "zAAwpkMEA3HESX6cuAkGA5CEWWbZttBZFVHxoWYkWqncC",
+      "controller": "did:ans:AGDS:ef6eU4rGF17EK5wVXaNoroB29Mnh6S243nqwuqjA8gr84t",
+      "publicKeyMultibase": "z6eU4rGF17EK5wVXaNoroB29Mnh6S243nqwuqjA8gr84t",
       "publicKeyJwk": {
         "crv": "Ed25519",
-        "x": "iEVmAGccX8Tm-EA7C4ONDF9qqSak8WJfjiONCiIucb0",
+        "x": "U-OHUtVFDVZ9Sk4NYRi0lm6rvXIUbBUMQG9G9-9-xJU",
         "kty": "OKP"
       }
     }
   ],
   "authentication": [
-    "did:ans:AGDS:efAAwpkMEA3HESX6cuAkGA5CEWWbZttBZFVHxoWYkWqncC#key-1"
+    "did:ans:AGDS:ef6eU4rGF17EK5wVXaNoroB29Mnh6S243nqwuqjA8gr84t#key-1"
   ],
   "assertionMethod": [
-    "did:ans:AGDS:efAAwpkMEA3HESX6cuAkGA5CEWWbZttBZFVHxoWYkWqncC#key-1"
+    "did:ans:AGDS:ef6eU4rGF17EK5wVXaNoroB29Mnh6S243nqwuqjA8gr84t#key-1"
   ],
   "service": [
     {
-      "id": "did:ans:AGDS:efAAwpkMEA3HESX6cuAkGA5CEWWbZttBZFVHxoWYkWqncC#discovery-api",
+      "id": "did:ans:AGDS:ef6eU4rGF17EK5wVXaNoroB29Mnh6S243nqwuqjA8gr84t#discovery-api",
       "type": "AgentDiscoveryService",
       "serviceEndpoint": "http://localhost:8002",
       "version": "1.0.0",
@@ -40,11 +40,11 @@
     "ttl": 300,
     "addressBindings": [
       {
-        "id": "did:ans:AGDS:efAAwpkMEA3HESX6cuAkGA5CEWWbZttBZFVHxoWYkWqncC#addr-discovery-api",
+        "id": "did:ans:AGDS:ef6eU4rGF17EK5wVXaNoroB29Mnh6S243nqwuqjA8gr84t#addr-discovery-api",
         "addressType": "endpoint",
         "network": "local-http",
         "address": "http://localhost:8002",
-        "controller": "did:ans:AGDS:efAAwpkMEA3HESX6cuAkGA5CEWWbZttBZFVHxoWYkWqncC",
+        "controller": "did:ans:AGDS:ef6eU4rGF17EK5wVXaNoroB29Mnh6S243nqwuqjA8gr84t",
         "purpose": "service"
       }
     ],

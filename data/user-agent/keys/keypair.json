@@ -1,20 +1,20 @@
 {
   "warning": "Development key only. Do not use in production.",
-  "did": "did:ans:AGUS:ef5e6f7BFrqykuss9LSTh4c65eX6y2q4diEF7HnYSfsmGb",
-  "keyId": "did:ans:AGUS:ef5e6f7BFrqykuss9LSTh4c65eX6y2q4diEF7HnYSfsmGb#key-1",
+  "did": "did:ans:AGUS:efDYS9e8DqpirBGYJNg5BkFwq1hP9QJRwAn7G1P5By5b5F",
+  "keyId": "did:ans:AGUS:efDYS9e8DqpirBGYJNg5BkFwq1hP9QJRwAn7G1P5By5b5F#key-1",
   "algorithm": "Ed25519",
-  "publicKeyMultibase": "z5e6f7BFrqykuss9LSTh4c65eX6y2q4diEF7HnYSfsmGb",
+  "publicKeyMultibase": "zDYS9e8DqpirBGYJNg5BkFwq1hP9QJRwAn7G1P5By5b5F",
   "publicKeyJwk": {
     "crv": "Ed25519",
-    "x": "RO-iUIWjyIcnD5GEh6lA_A6EsbAZfpWSNEaERthuZMg",
+    "x": "ulmvKV824NKWaYHNg_1i8sO8YydbrsydjsTDT5Zksh4",
     "kty": "OKP"
   },
   "privateKeyJwk": {
     "crv": "Ed25519",
-    "d": "HkdlFA5se7Y07Su3bCUi9ZoE2RqYmnVqbhA1uYeUHhg",
-    "x": "RO-iUIWjyIcnD5GEh6lA_A6EsbAZfpWSNEaERthuZMg",
+    "d": "qQD-Ui7Z6gPEJDDOlKIj9tNDYE8io6E_5fgtElbpClU",
+    "x": "ulmvKV824NKWaYHNg_1i8sO8YydbrsydjsTDT5Zksh4",
     "kty": "OKP"
   },
-  "publicKeyPem": "-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEARO+iUIWjyIcnD5GEh6lA/A6EsbAZfpWSNEaERthuZMg=\n-----END PUBLIC KEY-----\n",
-  "privateKeyPem": "-----BEGIN PRIVATE KEY-----\nMC4CAQAwBQYDK2VwBCIEIB5HZRQObHu2NO0rt2wlIvWaBNkamJp1am4QNbmHlB4Y\n-----END PRIVATE KEY-----\n"
+  "publicKeyPem": "-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEAulmvKV824NKWaYHNg/1i8sO8YydbrsydjsTDT5Zksh4=\n-----END PUBLIC KEY-----\n",
+  "privateKeyPem": "-----BEGIN PRIVATE KEY-----\nMC4CAQAwBQYDK2VwBCIEIKkA/lIu2eoDxCQwzpSiI/bTQ2BPIqOhP+X4LRJW6QpV\n-----END PRIVATE KEY-----\n"
 }

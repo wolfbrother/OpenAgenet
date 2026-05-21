@@ -21,7 +21,7 @@ use oan_crypto::{hash_json, sign_bytes, signing_key_from_bytes};
 use oan_did_ans::DidAns;
 use oan_package::{AgentMetadata, RootProof, VerifiedPackage};
 use oan_protocol::{HealthResponse, RootAuthorizeRequest, VerifyAndPublishRequest};
-use oan_storage::{did_to_file_name, JsonStore};
+use oan_storage::{did_to_file_name, JsonStore, SqliteJsonStore};
 use serde::{Deserialize, Serialize};
 use serde_json::{json, Value};
 use std::{
@@ -50,8 +50,22 @@ struct PathConfig {
     data_dir: PathBuf,
     keys_dir: PathBuf,
     bulletin_file: PathBuf,
+    #[serde(default = "default_authorization_state_file")]
+    authorization_state_file: PathBuf,
+    #[serde(default = "default_request_nonce_file")]
+    request_nonce_file: PathBuf,
     #[serde(default = "default_capability_tree_file")]
     capability_tree_file: PathBuf,
+    #[serde(default)]
+    database_url: Option<String>,
+}
+
+fn default_authorization_state_file() -> PathBuf {
+    PathBuf::from("../../data/root/authorization-state.json")
+}
+
+fn default_request_nonce_file() -> PathBuf {
+    PathBuf::from("../../data/root/request-nonces.json")
 }
 
 fn default_capability_tree_file() -> PathBuf {
@@ -65,7 +79,37 @@ struct AppState {
     root_did: String,
     signing_key: ed25519_dalek::SigningKey,
     tag_tree: CapabilityTagTree,
+    sqlite: Option<SqliteJsonStore>,
+    authorization_state: AuthorizationState,
     lock: Arc<Mutex<()>>,
+}
+
+#[derive(Clone, Debug, Default, Serialize, Deserialize)]
+struct AuthorizationState {
+    registrars: BTreeMap<String, NodeAuthorizationState>,
+    discovery_nodes: BTreeMap<String, DiscoveryAuthorizationState>,
+    vc_issuers: BTreeMap<String, NodeAuthorizationState>,
+}
+
+#[derive(Clone, Debug, Serialize, Deserialize)]
+struct NodeAuthorizationState {
+    status: String,
+    updated_at: chrono::DateTime<chrono::Utc>,
+    did_document_hash: String,
+}
+
+#[derive(Clone, Debug, Serialize, Deserialize)]
+struct DiscoveryAuthorizationState {
+    status: String,
+    updated_at: chrono::DateTime<chrono::Utc>,
+    did_document_hash: String,
+    authorized_domains: Vec<String>,
+    tag_tree_version: u64,
+}
+
+#[derive(Clone, Debug, Default, Serialize, Deserialize)]
+struct RequestNonceStore {
+    nonces: BTreeMap<String, chrono::DateTime<chrono::Utc>>,
 }
 
 #[derive(Debug, Serialize)]
@@ -152,6 +196,12 @@ async fn main() -> Result<()> {
     let data = JsonStore::new(&config.paths.data_dir);
     let key: DevKeyFile = JsonStore::new(".").read(config.paths.keys_dir.join("keypair.json"))?;
     let signing_key = signing_key_from_bytes(&URL_SAFE_NO_PAD.decode(key.private_key_jwk.d)?)?;
+    let authorization_state = load_authorization_state(&config.paths.authorization_state_file)
+        .unwrap_or_default();
+    let sqlite = match config.paths.database_url.as_deref() {
+        Some(url) if !url.is_empty() => Some(SqliteJsonStore::connect(url).await?),
+        _ => None,
+    };
     let state = AppState {
         data,
         config: config.clone(),
@@ -159,6 +209,8 @@ async fn main() -> Result<()> {
         signing_key,
         tag_tree: oan_core::CapabilityTagTree::load_from_path(&config.paths.capability_tree_file)
             .unwrap_or_else(|_| default_tag_tree()),
+        sqlite,
+        authorization_state,
         lock: Arc::new(Mutex::new(())),
     };
 
@@ -237,17 +289,29 @@ fn load_config(path: String) -> Result<Config> {
         config.paths.capability_tree_file =
             resolve_relative(base, &config.paths.capability_tree_file);
     }
+    if let Some(database_url) = config.paths.database_url.as_mut() {
+        *database_url = resolve_sqlite_url(base, database_url);
+    }
     Ok(config)
 }
 
 fn resolve_relative(base: &Path, path: &Path) -> PathBuf {
     if path.is_absolute() {
         path.to_path_buf()
-    } else if path.exists() {
-        path.to_path_buf()
     } else {
         base.join(path)
     }
+}
+
+fn resolve_sqlite_url(base: &Path, url: &str) -> String {
+    let Some(raw_path) = url
+        .strip_prefix("sqlite://")
+        .or_else(|| url.strip_prefix("sqlite:"))
+    else {
+        return url.to_owned();
+    };
+    let resolved = resolve_relative(base, Path::new(raw_path));
+    format!("sqlite:{}", resolved.display())
 }
 
 async fn health(State(state): State<AppState>) -> Json<HealthResponse> {
@@ -275,6 +339,8 @@ async fn verify_and_publish(
     Json(request): Json<VerifyAndPublishRequest>,
 ) -> ApiResult<VerifyResponse> {
     let _guard = state.lock.lock().await;
+    verify_request_signature(&state, &request).map_err(ApiError::bad_request)?;
+    verify_request_nonce(&state, &request).map_err(ApiError::bad_request)?;
     verify_request(&state, &request).map_err(ApiError::bad_request)?;
 
     let did_document_hash =
@@ -320,6 +386,7 @@ async fn verify_and_publish(
         did: request.agent_did.clone(),
         did_document: request.did_document.clone(),
         did_document_hash: did_document_hash.clone(),
+        metadata_hash: Some(metadata_hash.clone()),
         metadata: metadata.clone(),
         root_proof: RootProof {
             root_did: state.root_did.clone(),
@@ -340,8 +407,22 @@ async fn verify_and_publish(
         event.core.sequence,
     )
     .map_err(ApiError::internal)?;
-    enqueue_cdn(&state, &package).map_err(ApiError::internal)?;
+    mirror_latest_version_sqlite(
+        &state,
+        &request.agent_did,
+        &json!({
+            "documentVersion": document_version,
+            "didDocumentHash": did_document_hash,
+            "metadataHash": metadata_hash,
+            "bulletinSequence": event.core.sequence,
+            "updatedAt": Utc::now()
+        }),
+    )
+    .await
+    .map_err(ApiError::internal)?;
+    enqueue_cdn(&state, &package).await.map_err(ApiError::internal)?;
     enqueue_discovery(&state, &package, event.core.sequence, &event.event_hash)
+        .await
         .map_err(ApiError::internal)?;
 
     Json(VerifyResponse {
@@ -364,14 +445,27 @@ async fn authorize_registrar(
     Json(request): Json<RootAuthorizeRequest>,
 ) -> ApiResult<Value> {
     let _guard = state.lock.lock().await;
+    let did_document_hash = hash_json(&request.did_document).map_err(|err| ApiError::internal(err.into()))?;
     append_event(
         &state,
         BulletinEventType::RegistrarAuthorized,
         &request.target_did,
         json!({
             "targetRole": request.target_role,
-            "didDocumentHash": hash_json(&request.did_document).map_err(|err| ApiError::internal(err.into()))?,
+            "didDocumentHash": did_document_hash,
         }),
+    )
+    .map_err(ApiError::internal)?;
+    update_authorization_state(
+        &state,
+        &request.target_did,
+        NodeAuthorizationState {
+            status: "active".to_owned(),
+            updated_at: Utc::now(),
+            did_document_hash,
+        },
+        &request.target_role,
+        None,
     )
     .map_err(ApiError::internal)?;
     Ok(Json(json!({"status": "ok"})))
@@ -382,14 +476,27 @@ async fn authorize_discovery(
     Json(request): Json<RootAuthorizeRequest>,
 ) -> ApiResult<Value> {
     let _guard = state.lock.lock().await;
+    let did_document_hash = hash_json(&request.did_document).map_err(|err| ApiError::internal(err.into()))?;
     append_event(
         &state,
         BulletinEventType::DiscoveryNodeAuthorized,
         &request.target_did,
         json!({
             "targetRole": request.target_role,
-            "didDocumentHash": hash_json(&request.did_document).map_err(|err| ApiError::internal(err.into()))?,
+            "didDocumentHash": did_document_hash,
         }),
+    )
+    .map_err(ApiError::internal)?;
+    update_discovery_authorization_state(
+        &state,
+        &request.target_did,
+        DiscoveryAuthorizationState {
+            status: "active".to_owned(),
+            updated_at: Utc::now(),
+            did_document_hash,
+            authorized_domains: vec!["*".to_owned()],
+            tag_tree_version: state.tag_tree.version,
+        },
     )
     .map_err(ApiError::internal)?;
     Ok(Json(json!({"status": "ok"})))
@@ -401,6 +508,13 @@ async fn update_discovery_domains(
     Json(payload): Json<Value>,
 ) -> ApiResult<Value> {
     let _guard = state.lock.lock().await;
+    let domains = payload["authorizedDomains"]
+        .as_array()
+        .cloned()
+        .unwrap_or_default()
+        .into_iter()
+        .filter_map(|value| value.as_str().map(ToOwned::to_owned))
+        .collect::<Vec<_>>();
     append_event(
         &state,
         BulletinEventType::DiscoveryNodeDomainsUpdated,
@@ -408,6 +522,16 @@ async fn update_discovery_domains(
         payload,
     )
     .map_err(ApiError::internal)?;
+    let mut authorization_state = load_authorization_state(&state.config.paths.authorization_state_file)
+        .unwrap_or_else(|_| state.authorization_state.clone());
+    if let Some(entry) = authorization_state.discovery_nodes.get_mut(&did) {
+        entry.authorized_domains = domains;
+        entry.tag_tree_version = state.tag_tree.version;
+        entry.updated_at = Utc::now();
+        JsonStore::new(".")
+            .write(&state.config.paths.authorization_state_file, &authorization_state)
+            .map_err(|err| ApiError::internal(err.into()))?;
+    }
     Ok(Json(json!({"status": "ok"})))
 }
 
@@ -418,33 +542,61 @@ async fn revoke_node(
 ) -> ApiResult<Value> {
     let _guard = state.lock.lock().await;
     append_event(&state, BulletinEventType::NodeRevoked, &did, payload).map_err(ApiError::internal)?;
+    revoke_authorization_state(&state, &did).map_err(ApiError::internal)?;
     Ok(Json(json!({"status": "ok"})))
 }
 
 async fn publish_cdn_batch(State(state): State<AppState>) -> ApiResult<Value> {
-    let queue: Vec<VerifiedPackage> = state
-        .data
-        .read("queues/cdn-publish.json")
-        .unwrap_or_default();
+    let batch_size = 50usize;
+    let queue = read_cdn_queue(&state).await.map_err(ApiError::internal)?;
+    let queue = queue.into_iter().take(batch_size).collect::<Vec<_>>();
     let publish_url = cdn_publish_url(&state).map_err(ApiError::internal)?;
     let client = reqwest::Client::new();
-    let mut published = 0usize;
+    let mut published = Vec::new();
+    let mut failed = Vec::new();
     for package in &queue {
         let response = client
             .post(&publish_url)
             .json(package)
             .send()
-            .await
-            .map_err(|err| ApiError::internal(err.into()))?;
-        if response.status().is_success() {
-            published += 1;
+            .await;
+        match response {
+            Ok(response) if response.status().is_success() => {
+                published.push(package.did.clone());
+                mark_cdn_queue_published(&state, &package.did)
+                    .await
+                    .map_err(ApiError::internal)?;
+            }
+            Ok(response) => failed.push(json!({
+                "did": package.did,
+                "status": response.status().as_u16()
+            })),
+            Err(err) => failed.push(json!({
+                "did": package.did,
+                "error": err.to_string()
+            })),
         }
     }
-    state
-        .data
-        .write("queues/cdn-publish.json", &Vec::<VerifiedPackage>::new())
-        .map_err(|err| ApiError::internal(err.into()))?;
-    Ok(Json(json!({"status": "ok", "publishedCount": published})))
+    write_batch_history(
+        &state,
+        "cdn-publish-history",
+        json!({
+            "batchType": "cdn-publish",
+            "processedAt": Utc::now(),
+            "attemptedCount": queue.len(),
+            "publishedDids": published,
+            "failed": failed
+        }),
+    )
+    .await
+    .map_err(ApiError::internal)?;
+    Ok(Json(json!({
+        "status": if failed.is_empty() { "ok" } else { "partial" },
+        "attemptedCount": queue.len(),
+        "publishedCount": published.len(),
+        "publishedDids": published,
+        "failed": failed
+    })))
 }
 
 fn cdn_publish_url(state: &AppState) -> Result<String> {
@@ -464,6 +616,16 @@ fn cdn_publish_url(state: &AppState) -> Result<String> {
     Err(anyhow!("cdn_publish_url_missing"))
 }
 
+fn cdn_manifest_url(state: &AppState) -> Result<String> {
+    let bulletin = read_bulletin(state)?;
+    let payload = latest_event_payload(&bulletin, "CDN_SERVICE_INFO_UPDATED")
+        .ok_or_else(|| anyhow!("cdn_service_info_missing"))?;
+    payload["manifestUrl"]
+        .as_str()
+        .map(ToOwned::to_owned)
+        .ok_or_else(|| anyhow!("cdn_manifest_url_missing"))
+}
+
 fn latest_event_payload<'a>(bulletin: &'a Bulletin, event_type: &str) -> Option<&'a Value> {
     bulletin
         .events
@@ -480,57 +642,116 @@ fn latest_event_payload<'a>(bulletin: &'a Bulletin, event_type: &str) -> Option<
 }
 
 async fn notify_discovery_batch(State(state): State<AppState>) -> ApiResult<Value> {
-    let queue: Vec<Value> = state
-        .data
-        .read("queues/discovery-notify.json")
-        .unwrap_or_default();
+    let batch_size = 100usize;
+    let queue = read_discovery_queue(&state).await.map_err(ApiError::internal)?;
+    let authorization_state = load_authorization_state(&state.config.paths.authorization_state_file)
+        .unwrap_or_else(|_| state.authorization_state.clone());
+    let manifest_url = cdn_manifest_url(&state).unwrap_or_default();
+    let mut batches = Vec::new();
+    for (discovery_did, auth) in authorization_state.discovery_nodes {
+        if auth.status != "active" {
+            continue;
+        }
+        let items = queue
+            .iter()
+            .filter(|item| {
+                let tags = item["capabilityTags"]
+                    .as_array()
+                    .map(|values| {
+                        values
+                            .iter()
+                            .filter_map(|value| value.as_str().map(ToOwned::to_owned))
+                            .collect::<Vec<_>>()
+                    })
+                    .unwrap_or_default();
+                state
+                    .tag_tree
+                    .matches_authorized_domains(&tags, &auth.authorized_domains)
+            })
+            .take(batch_size)
+            .cloned()
+            .collect::<Vec<_>>();
+        if items.is_empty() {
+            continue;
+        }
+        batches.push(json!({
+            "notificationBatchId": format!("discovery-batch-{}-{}", Utc::now().timestamp_millis(), batches.len() + 1),
+            "rootDid": state.root_did,
+            "targetDiscoveryDid": discovery_did,
+            "authorizedDomains": auth.authorized_domains,
+            "items": items,
+            "cdnManifestUrl": manifest_url,
+            "createdAt": Utc::now()
+        }));
+    }
+    mark_discovery_queue_notified(&state, &queue)
+        .await
+        .map_err(ApiError::internal)?;
+    write_batch_history(
+        &state,
+        "discovery-notify-history",
+        json!({
+            "batchType": "discovery-notify",
+            "processedAt": Utc::now(),
+            "sourceItemCount": queue.len(),
+            "targetBatchCount": batches.len()
+        }),
+    )
+    .await
+    .map_err(ApiError::internal)?;
     Ok(Json(json!({
         "status": "ok",
-        "notificationMode": "queued-local-mvp",
-        "queuedCount": queue.len(),
-        "items": queue
+        "notificationMode": "domain-filtered-batch",
+        "sourceItemCount": queue.len(),
+        "targetBatchCount": batches.len(),
+        "batches": batches
     })))
 }
 
 async fn api_status(State(state): State<AppState>) -> ApiResult<Value> {
     let bulletin = read_bulletin(&state).map_err(ApiError::internal)?;
     let latest_versions = read_latest_versions(&state).map_err(ApiError::internal)?;
-    let cdn_queue: Vec<VerifiedPackage> = state
-        .data
-        .read("queues/cdn-publish.json")
-        .unwrap_or_default();
-    let discovery_queue: Vec<Value> = state
-        .data
-        .read("queues/discovery-notify.json")
-        .unwrap_or_default();
+    let authorization_state = load_authorization_state(&state.config.paths.authorization_state_file)
+        .unwrap_or_else(|_| state.authorization_state.clone());
+    let cdn_queue = read_cdn_queue(&state).await.map_err(ApiError::internal)?;
+    let discovery_queue = read_discovery_queue(&state).await.map_err(ApiError::internal)?;
     Ok(Json(json!({
         "rootDid": state.root_did,
         "bulletinEventCount": bulletin.events.len(),
         "latestVersionCount": latest_versions.len(),
         "cdnQueueCount": cdn_queue.len(),
         "discoveryQueueCount": discovery_queue.len(),
-        "capabilityTreeVersion": state.tag_tree.version
+        "capabilityTreeVersion": state.tag_tree.version,
+        "registrarAuthorizationCount": authorization_state.registrars.len(),
+        "discoveryAuthorizationCount": authorization_state.discovery_nodes.len(),
+        "vcIssuerAuthorizationCount": authorization_state.vc_issuers.len()
     })))
 }
 
 async fn api_registrars(State(state): State<AppState>) -> ApiResult<Value> {
-    let bulletin = read_bulletin(&state).map_err(ApiError::internal)?;
-    let items: Vec<Value> = bulletin
-        .events
-        .iter()
-        .filter(|event| {
-            matches!(
-                event.core.event_type,
-                BulletinEventType::RegistrarAuthorized | BulletinEventType::RegistrarRevoked
-            )
-        })
-        .map(|event| json!({
-            "did": event.core.subject_did,
-            "eventType": event.core.event_type,
-            "sequence": event.core.sequence,
-            "payload": event.core.payload
-        }))
+    let authorization_state = load_authorization_state(&state.config.paths.authorization_state_file)
+        .unwrap_or_else(|_| state.authorization_state.clone());
+    let items: Vec<Value> = authorization_state
+        .registrars
+        .into_iter()
+        .map(|(did, entry)| json!({ "did": did, "status": entry.status, "didDocumentHash": entry.did_document_hash, "updatedAt": entry.updated_at }))
         .collect();
+    let items = if items.is_empty() {
+        let bulletin = read_bulletin(&state).map_err(ApiError::internal)?;
+        bulletin
+            .events
+            .iter()
+            .filter(|event| matches!(event.core.event_type, BulletinEventType::RegistrarAuthorized | BulletinEventType::RegistrarRevoked))
+            .map(|event| json!({
+                "did": event.core.subject_did,
+                "eventType": event.core.event_type,
+                "sequence": event.core.sequence,
+                "payload": event.core.payload
+            }))
+            .collect::<Vec<_>>()
+    } else {
+        items
+    };
     Ok(Json(json!({ "items": items })))
 }
 
@@ -553,25 +774,41 @@ async fn api_registrar_detail(
 }
 
 async fn api_discovery_nodes(State(state): State<AppState>) -> ApiResult<Value> {
-    let bulletin = read_bulletin(&state).map_err(ApiError::internal)?;
-    let items: Vec<Value> = bulletin
-        .events
-        .iter()
-        .filter(|event| {
-            matches!(
+    let authorization_state = load_authorization_state(&state.config.paths.authorization_state_file)
+        .unwrap_or_else(|_| state.authorization_state.clone());
+    let items: Vec<Value> = authorization_state
+        .discovery_nodes
+        .into_iter()
+        .map(|(did, entry)| json!({
+            "did": did,
+            "status": entry.status,
+            "didDocumentHash": entry.did_document_hash,
+            "authorizedDomains": entry.authorized_domains,
+            "tagTreeVersion": entry.tag_tree_version,
+            "updatedAt": entry.updated_at
+        }))
+        .collect();
+    let items = if items.is_empty() {
+        let bulletin = read_bulletin(&state).map_err(ApiError::internal)?;
+        bulletin
+            .events
+            .iter()
+            .filter(|event| matches!(
                 event.core.event_type,
                 BulletinEventType::DiscoveryNodeAuthorized
                     | BulletinEventType::DiscoveryNodeDomainsUpdated
                     | BulletinEventType::DiscoveryNodeRevoked
-            )
-        })
-        .map(|event| json!({
-            "did": event.core.subject_did,
-            "eventType": event.core.event_type,
-            "sequence": event.core.sequence,
-            "payload": event.core.payload
-        }))
-        .collect();
+            ))
+            .map(|event| json!({
+                "did": event.core.subject_did,
+                "eventType": event.core.event_type,
+                "sequence": event.core.sequence,
+                "payload": event.core.payload
+            }))
+            .collect::<Vec<_>>()
+    } else {
+        items
+    };
     Ok(Json(json!({ "items": items })))
 }
 
@@ -664,18 +901,12 @@ async fn api_agent_version_detail(
 }
 
 async fn api_cdn_publish_queue(State(state): State<AppState>) -> ApiResult<Value> {
-    let queue: Vec<VerifiedPackage> = state
-        .data
-        .read("queues/cdn-publish.json")
-        .unwrap_or_default();
+    let queue = read_cdn_queue(&state).await.map_err(ApiError::internal)?;
     Ok(Json(json!({ "items": queue, "count": queue.len() })))
 }
 
 async fn api_discovery_notify_queue(State(state): State<AppState>) -> ApiResult<Value> {
-    let queue: Vec<Value> = state
-        .data
-        .read("queues/discovery-notify.json")
-        .unwrap_or_default();
+    let queue = read_discovery_queue(&state).await.map_err(ApiError::internal)?;
     Ok(Json(json!({ "items": queue, "count": queue.len() })))
 }
 
@@ -694,14 +925,20 @@ async fn api_validate_tags(
         .into_iter()
         .filter_map(|value| value.as_str().map(ToOwned::to_owned))
         .collect::<Vec<_>>();
-    let invalid_tags = tags
+    let custom_tags = tags
         .iter()
         .filter(|tag| state.tag_tree.normalize_tag(tag).is_none())
         .cloned()
         .collect::<Vec<_>>();
+    let canonical_tags = tags
+        .iter()
+        .filter_map(|tag| state.tag_tree.normalize_tag(tag).map(ToOwned::to_owned))
+        .collect::<Vec<_>>();
     Ok(Json(json!({
-        "valid": invalid_tags.is_empty(),
-        "invalidTags": invalid_tags
+        "valid": true,
+        "canonicalTags": canonical_tags,
+        "customTags": custom_tags,
+        "note": "Capability tree tags are recommended for network-wide coarse discovery. Custom tags are allowed and can be used for later fine-grained filtering."
     })))
 }
 
@@ -770,16 +1007,6 @@ fn verify_request(
     }
     if request.did_document.service.is_empty() {
         return Err("invalid_service_endpoint".to_owned());
-    }
-    let tags = metadata
-        .agent_description
-        .as_ref()
-        .map(|description| description.capability_tags.clone())
-        .unwrap_or_default();
-    for tag in &tags {
-        if state.tag_tree.normalize_tag(tag).is_none() {
-            return Err(format!("invalid_capability_tag:{tag}"));
-        }
     }
     if request.registration_credential["issuer"] != request.registrar_did {
         return Err("invalid_registration_credential".to_owned());
@@ -872,6 +1099,118 @@ fn read_bulletin(state: &AppState) -> Result<Bulletin> {
     }
 }
 
+fn load_authorization_state(path: &Path) -> Result<AuthorizationState> {
+    let store = JsonStore::new(".");
+    if path.exists() {
+        store.read(path).map_err(Into::into)
+    } else {
+        Ok(AuthorizationState::default())
+    }
+}
+
+fn load_nonce_store(path: &Path) -> Result<RequestNonceStore> {
+    let store = JsonStore::new(".");
+    if path.exists() {
+        store.read(path).map_err(Into::into)
+    } else {
+        Ok(RequestNonceStore::default())
+    }
+}
+
+fn save_nonce_store(state: &AppState, store: &RequestNonceStore) -> Result<()> {
+    JsonStore::new(".").write(&state.config.paths.request_nonce_file, store)?;
+    Ok(())
+}
+
+fn verify_request_signature(_state: &AppState, request: &VerifyAndPublishRequest) -> std::result::Result<(), String> {
+    let Some(signature) = request.request_signature.as_ref() else {
+        return Ok(());
+    };
+    let registrar_key = verify_issuer_key(&request.registrar_did_document)?;
+    let payload = json!({
+        "registrarDid": request.registrar_did,
+        "agentDid": request.agent_did,
+        "didDocumentHash": hash_json(&request.did_document).map_err(|_| "invalid_request_signature".to_owned())?,
+        "metadataHash": hash_json(&request.metadata).map_err(|_| "invalid_request_signature".to_owned())?,
+        "registrationCredential": request.registration_credential,
+        "requestTimestamp": request.request_timestamp,
+        "requestNonce": request.request_nonce,
+    });
+    let payload_hash = hash_json(&payload).map_err(|_| "invalid_request_signature".to_owned())?;
+    oan_crypto::verify_bytes(&registrar_key, payload_hash.as_bytes(), signature)
+        .map_err(|_| "invalid_request_signature".to_owned())
+}
+
+fn verify_request_nonce(state: &AppState, request: &VerifyAndPublishRequest) -> std::result::Result<(), String> {
+    let Some(nonce) = request.request_nonce.as_ref() else {
+        return Ok(());
+    };
+    let mut store = load_nonce_store(&state.config.paths.request_nonce_file).map_err(|_| "invalid_nonce_store".to_owned())?;
+    if store.nonces.contains_key(nonce) {
+        return Err("replayed_request_nonce".to_owned());
+    }
+    store.nonces.insert(nonce.clone(), Utc::now());
+    save_nonce_store(state, &store).map_err(|_| "invalid_nonce_store".to_owned())?;
+    Ok(())
+}
+
+fn update_authorization_state(
+    state: &AppState,
+    did: &str,
+    entry: NodeAuthorizationState,
+    role: &str,
+    discovery: Option<DiscoveryAuthorizationState>,
+) -> Result<()> {
+    let mut authorization_state = state.authorization_state.clone();
+    match role {
+        "registrar" | "Registrar" | "Registrar Node" => {
+            authorization_state.registrars.insert(did.to_owned(), entry);
+        }
+        "discovery" | "Discovery" | "Discovery Node" => {
+            if let Some(entry) = discovery {
+                authorization_state.discovery_nodes.insert(did.to_owned(), entry);
+            }
+        }
+        "vc-issuer" | "VC Issuer" => {
+            authorization_state.vc_issuers.insert(did.to_owned(), entry);
+        }
+        _ => {
+            authorization_state.registrars.insert(did.to_owned(), entry);
+        }
+    }
+    JsonStore::new(".").write(&state.config.paths.authorization_state_file, &authorization_state)?;
+    Ok(())
+}
+
+fn update_discovery_authorization_state(
+    state: &AppState,
+    did: &str,
+    entry: DiscoveryAuthorizationState,
+) -> Result<()> {
+    let mut authorization_state = state.authorization_state.clone();
+    authorization_state.discovery_nodes.insert(did.to_owned(), entry);
+    JsonStore::new(".").write(&state.config.paths.authorization_state_file, &authorization_state)?;
+    Ok(())
+}
+
+fn revoke_authorization_state(state: &AppState, did: &str) -> Result<()> {
+    let mut authorization_state = state.authorization_state.clone();
+    if let Some(entry) = authorization_state.registrars.get_mut(did) {
+        entry.status = "revoked".to_owned();
+        entry.updated_at = Utc::now();
+    }
+    if let Some(entry) = authorization_state.discovery_nodes.get_mut(did) {
+        entry.status = "revoked".to_owned();
+        entry.updated_at = Utc::now();
+    }
+    if let Some(entry) = authorization_state.vc_issuers.get_mut(did) {
+        entry.status = "revoked".to_owned();
+        entry.updated_at = Utc::now();
+    }
+    JsonStore::new(".").write(&state.config.paths.authorization_state_file, &authorization_state)?;
+    Ok(())
+}
+
 fn write_bulletin(state: &AppState, bulletin: &Bulletin) -> Result<()> {
     JsonStore::new(".").write(&state.config.paths.bulletin_file, bulletin)?;
     Ok(())
@@ -956,7 +1295,20 @@ fn update_latest_version(
     Ok(())
 }
 
-fn enqueue_cdn(state: &AppState, package: &VerifiedPackage) -> Result<()> {
+async fn mirror_latest_version_sqlite(
+    state: &AppState,
+    agent_did: &str,
+    value: &Value,
+) -> Result<()> {
+    if let Some(sqlite) = &state.sqlite {
+        sqlite
+            .upsert_json("root.latest_versions", agent_did, value)
+            .await?;
+    }
+    Ok(())
+}
+
+async fn enqueue_cdn(state: &AppState, package: &VerifiedPackage) -> Result<()> {
     let mut queue: Vec<VerifiedPackage> = state
         .data
         .read("queues/cdn-publish.json")
@@ -964,10 +1316,15 @@ fn enqueue_cdn(state: &AppState, package: &VerifiedPackage) -> Result<()> {
     queue.retain(|item| item.did != package.did);
     queue.push(package.clone());
     state.data.write("queues/cdn-publish.json", &queue)?;
+    if let Some(sqlite) = &state.sqlite {
+        sqlite
+            .upsert_json("root.cdn_publish_queue", &package.did, package)
+            .await?;
+    }
     Ok(())
 }
 
-fn enqueue_discovery(
+async fn enqueue_discovery(
     state: &AppState,
     package: &VerifiedPackage,
     bulletin_sequence: u64,
@@ -977,7 +1334,7 @@ fn enqueue_discovery(
         .data
         .read("queues/discovery-notify.json")
         .unwrap_or_default();
-    queue.push(json!({
+    let item = json!({
         "agentDid": package.did,
         "operation": "upsert",
         "documentVersion": package.metadata.updated_at.timestamp(),
@@ -986,8 +1343,93 @@ fn enqueue_discovery(
         "bulletinSequence": bulletin_sequence,
         "bulletinEventHash": event_hash,
         "capabilityTags": package.metadata.capability_tags
-    }));
+    });
+    queue.push(item.clone());
     state.data.write("queues/discovery-notify.json", &queue)?;
+    if let Some(sqlite) = &state.sqlite {
+        sqlite
+            .upsert_json(
+                "root.discovery_notify_queue",
+                &format!("{}:{bulletin_sequence}", package.did),
+                &item,
+            )
+            .await?;
+    }
+    Ok(())
+}
+
+async fn read_cdn_queue(state: &AppState) -> Result<Vec<VerifiedPackage>> {
+    if let Some(sqlite) = &state.sqlite {
+        let items: Vec<VerifiedPackage> = sqlite.read_namespace("root.cdn_publish_queue").await?;
+        if !items.is_empty() {
+            return Ok(items);
+        }
+    }
+    Ok(state
+        .data
+        .read("queues/cdn-publish.json")
+        .unwrap_or_default())
+}
+
+async fn read_discovery_queue(state: &AppState) -> Result<Vec<Value>> {
+    if let Some(sqlite) = &state.sqlite {
+        let items: Vec<Value> = sqlite.read_namespace("root.discovery_notify_queue").await?;
+        if !items.is_empty() {
+            return Ok(items);
+        }
+    }
+    Ok(state
+        .data
+        .read("queues/discovery-notify.json")
+        .unwrap_or_default())
+}
+
+async fn mark_cdn_queue_published(state: &AppState, did: &str) -> Result<()> {
+    if let Some(sqlite) = &state.sqlite {
+        sqlite.delete_json("root.cdn_publish_queue", did).await?;
+    }
+    let mut queue: Vec<VerifiedPackage> = state
+        .data
+        .read("queues/cdn-publish.json")
+        .unwrap_or_default();
+    queue.retain(|item| item.did != did);
+    state.data.write("queues/cdn-publish.json", &queue)?;
+    Ok(())
+}
+
+async fn mark_discovery_queue_notified(state: &AppState, items: &[Value]) -> Result<()> {
+    if let Some(sqlite) = &state.sqlite {
+        for item in items {
+            if let (Some(did), Some(sequence)) = (
+                item["agentDid"].as_str(),
+                item["bulletinSequence"].as_u64(),
+            ) {
+                sqlite
+                    .delete_json("root.discovery_notify_queue", &format!("{did}:{sequence}"))
+                    .await?;
+            }
+        }
+    }
+    state
+        .data
+        .write("queues/discovery-notify.json", &Vec::<Value>::new())?;
+    Ok(())
+}
+
+async fn write_batch_history(state: &AppState, namespace: &str, item: Value) -> Result<()> {
+    if let Some(sqlite) = &state.sqlite {
+        sqlite
+            .upsert_json(namespace, &format!("{}", Utc::now().timestamp_nanos_opt().unwrap_or_default()), &item)
+            .await?;
+    }
+    let mut history: Vec<Value> = state
+        .data
+        .read(format!("indexes/{namespace}.json"))
+        .unwrap_or_default();
+    history.push(item);
+    state
+        .data
+        .write(format!("indexes/{namespace}.json"), &history)?;
     Ok(())
 }
 
@@ -1100,12 +1542,17 @@ mod tests {
                     data_dir: data_dir.to_path_buf(),
                     keys_dir: data_dir.join("keys"),
                     bulletin_file,
+                    authorization_state_file: data_dir.join("authorization-state.json"),
+                    request_nonce_file: data_dir.join("request-nonces.json"),
                     capability_tree_file: PathBuf::from("unused.json"),
+                    database_url: None,
                 },
             },
             root_did: "did:ans:AGRT:efrootrootrootrootrootroot".to_owned(),
             signing_key: root_key,
             tag_tree: default_tag_tree(),
+            sqlite: None,
+            authorization_state: AuthorizationState::default(),
             lock: Arc::new(Mutex::new(())),
         }
     }
@@ -1148,6 +1595,9 @@ mod tests {
             ),
             metadata: json!({}),
             registration_credential: serde_json::to_value(credential).unwrap(),
+            request_timestamp: Some(Utc::now()),
+            request_nonce: Some("nonce-accepts-signed-registration-credential".to_owned()),
+            request_signature: None,
         };
 
         assert!(verify_request(&state, &request).is_ok());
@@ -1192,6 +1642,9 @@ mod tests {
             ),
             metadata: json!({}),
             registration_credential: serde_json::to_value(credential).unwrap(),
+            request_timestamp: Some(Utc::now()),
+            request_nonce: Some("nonce-rejects-wrong-key".to_owned()),
+            request_signature: None,
         };
 
         assert_eq!(
@@ -1200,8 +1653,8 @@ mod tests {
         );
     }
 
-    #[test]
-    fn enqueue_cdn_keeps_latest_package_per_did() {
+    #[tokio::test]
+    async fn enqueue_cdn_keeps_latest_package_per_did() {
         let dir = tempfile::tempdir().unwrap();
         let state = test_state(dir.path(), dir.path().join("bulletin.json"));
         let did = "did:ans:AGDM:efserviceagentservice1234".to_owned();
@@ -1215,6 +1668,7 @@ mod tests {
             package_version: "0.1.0".to_owned(),
             did: did.clone(),
             did_document_hash: "hash-1".to_owned(),
+            metadata_hash: None,
             metadata: AgentMetadata {
                 did: did.clone(),
                 role: "Service Agent".to_owned(),
@@ -1233,9 +1687,9 @@ mod tests {
             },
             created_at: Utc::now(),
         };
-        enqueue_cdn(&state, &package).unwrap();
+        enqueue_cdn(&state, &package).await.unwrap();
         package.did_document_hash = "hash-2".to_owned();
-        enqueue_cdn(&state, &package).unwrap();
+        enqueue_cdn(&state, &package).await.unwrap();
 
         let queue: Vec<VerifiedPackage> = state.data.read("queues/cdn-publish.json").unwrap();
         assert_eq!(queue.len(), 1);
@@ -1272,6 +1726,7 @@ mod tests {
                 vec!["echo"],
             ),
             did_document_hash: "hash-1".to_owned(),
+            metadata_hash: None,
             metadata: AgentMetadata {
                 did: "did:ans:AGDM:efserviceagentservice1234".to_owned(),
                 role: "Service Agent".to_owned(),
@@ -1310,19 +1765,37 @@ mod tests {
     async fn api_registrars_and_discovery_lists_reflect_bulletin_events() {
         let dir = tempfile::tempdir().unwrap();
         let state = test_state(dir.path(), dir.path().join("bulletin.json"));
-        append_event(
-            &state,
-            BulletinEventType::RegistrarAuthorized,
-            "did:ans:AGRG:efregistrarregistrar1234",
-            json!({"note": "ok"}),
+        let registrar_key = generate_ed25519_keypair();
+        let discovery_key = generate_ed25519_keypair();
+        let _ = authorize_registrar(
+            State(state.clone()),
+            Json(RootAuthorizeRequest {
+                target_did: "did:ans:AGRG:efregistrarregistrar1234".to_owned(),
+                target_role: "registrar".to_owned(),
+                did_document: did_document_with_key(
+                    "did:ans:AGRG:efregistrarregistrar1234",
+                    SubjectType::InfrastructureNode,
+                    &registrar_key,
+                    vec![],
+                ),
+            }),
         )
+        .await
         .unwrap();
-        append_event(
-            &state,
-            BulletinEventType::DiscoveryNodeAuthorized,
-            "did:ans:AGDS:efdiscoverydiscovery1234",
-            json!({"note": "ok"}),
+        let _ = authorize_discovery(
+            State(state.clone()),
+            Json(RootAuthorizeRequest {
+                target_did: "did:ans:AGDS:efdiscoverydiscovery1234".to_owned(),
+                target_role: "discovery".to_owned(),
+                did_document: did_document_with_key(
+                    "did:ans:AGDS:efdiscoverydiscovery1234",
+                    SubjectType::InfrastructureNode,
+                    &discovery_key,
+                    vec![],
+                ),
+            }),
         )
+        .await
         .unwrap();
 
         let registrars = api_registrars(State(state.clone())).await.unwrap();
@@ -1343,7 +1816,54 @@ mod tests {
         )
         .await
         .unwrap();
-        assert!(!result.0["valid"].as_bool().unwrap());
-        assert_eq!(result.0["invalidTags"].as_array().unwrap().len(), 1);
+        assert!(result.0["valid"].as_bool().unwrap());
+        assert_eq!(result.0["canonicalTags"].as_array().unwrap().len(), 1);
+        assert_eq!(result.0["customTags"].as_array().unwrap().len(), 1);
+    }
+
+    #[test]
+    fn verify_request_accepts_custom_capability_tags() {
+        let dir = tempfile::tempdir().unwrap();
+        let registrar_key = generate_ed25519_keypair();
+        let registrar_did = "did:ans:AGRG:efregistrarregistrar1234";
+        let agent_did = "did:ans:AGDM:efserviceagentservice1234";
+        let state = test_state(dir.path(), dir.path().join("bulletin.json"));
+        append_event(
+            &state,
+            BulletinEventType::RegistrarAuthorized,
+            registrar_did,
+            json!({}),
+        )
+        .unwrap();
+        let credential = AgentRegistrationCredential::unsigned(
+            registrar_did.to_owned(),
+            agent_did.to_owned(),
+            json!({"capabilityTags": ["custom-domain-tag"]}),
+        )
+        .sign(format!("{registrar_did}#key-1"), &registrar_key)
+        .unwrap();
+        let request = VerifyAndPublishRequest {
+            registrar_did: registrar_did.to_owned(),
+            registrar_did_document: did_document_with_key(
+                registrar_did,
+                SubjectType::InfrastructureNode,
+                &registrar_key,
+                vec!["registration"],
+            ),
+            agent_did: agent_did.to_owned(),
+            did_document: did_document_with_key(
+                agent_did,
+                SubjectType::Agent,
+                &generate_ed25519_keypair(),
+                vec!["custom-domain-tag"],
+            ),
+            metadata: json!({}),
+            registration_credential: serde_json::to_value(credential).unwrap(),
+            request_timestamp: Some(Utc::now()),
+            request_nonce: Some("nonce-accepts-custom-capability-tags".to_owned()),
+            request_signature: None,
+        };
+
+        assert!(verify_request(&state, &request).is_ok());
     }
 }

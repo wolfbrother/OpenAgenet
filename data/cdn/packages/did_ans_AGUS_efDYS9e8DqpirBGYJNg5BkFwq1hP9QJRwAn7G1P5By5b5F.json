@@ -1,30 +1,30 @@
 {
   "packageVersion": "0.1.0",
-  "did": "did:ans:AGUS:ef5e6f7BFrqykuss9LSTh4c65eX6y2q4diEF7HnYSfsmGb",
+  "did": "did:ans:AGUS:efDYS9e8DqpirBGYJNg5BkFwq1hP9QJRwAn7G1P5By5b5F",
   "didDocument": {
     "@context": [
       "https://www.w3.org/ns/did/v1",
       "https://w3id.org/ans/v1"
     ],
-    "id": "did:ans:AGUS:ef5e6f7BFrqykuss9LSTh4c65eX6y2q4diEF7HnYSfsmGb",
+    "id": "did:ans:AGUS:efDYS9e8DqpirBGYJNg5BkFwq1hP9QJRwAn7G1P5By5b5F",
     "verificationMethod": [
       {
-        "id": "did:ans:AGUS:ef5e6f7BFrqykuss9LSTh4c65eX6y2q4diEF7HnYSfsmGb#key-1",
+        "id": "did:ans:AGUS:efDYS9e8DqpirBGYJNg5BkFwq1hP9QJRwAn7G1P5By5b5F#key-1",
         "type": "Ed25519VerificationKey2020",
-        "controller": "did:ans:AGUS:ef5e6f7BFrqykuss9LSTh4c65eX6y2q4diEF7HnYSfsmGb",
-        "publicKeyMultibase": "z5e6f7BFrqykuss9LSTh4c65eX6y2q4diEF7HnYSfsmGb",
+        "controller": "did:ans:AGUS:efDYS9e8DqpirBGYJNg5BkFwq1hP9QJRwAn7G1P5By5b5F",
+        "publicKeyMultibase": "zDYS9e8DqpirBGYJNg5BkFwq1hP9QJRwAn7G1P5By5b5F",
         "publicKeyJwk": {
           "crv": "Ed25519",
-          "x": "RO-iUIWjyIcnD5GEh6lA_A6EsbAZfpWSNEaERthuZMg",
+          "x": "ulmvKV824NKWaYHNg_1i8sO8YydbrsydjsTDT5Zksh4",
           "kty": "OKP"
         }
       }
     ],
     "authentication": [
-      "did:ans:AGUS:ef5e6f7BFrqykuss9LSTh4c65eX6y2q4diEF7HnYSfsmGb#key-1"
+      "did:ans:AGUS:efDYS9e8DqpirBGYJNg5BkFwq1hP9QJRwAn7G1P5By5b5F#key-1"
     ],
     "assertionMethod": [
-      "did:ans:AGUS:ef5e6f7BFrqykuss9LSTh4c65eX6y2q4diEF7HnYSfsmGb#key-1"
+      "did:ans:AGUS:efDYS9e8DqpirBGYJNg5BkFwq1hP9QJRwAn7G1P5By5b5F#key-1"
     ],
     "service": [],
     "ansMetadata": {
@@ -50,12 +50,12 @@
       "networkScope": "openagentnet-local"
     }
   },
-  "didDocumentHash": "c43ad9782707fed008a1ebe0cd9732f6f6bfdd80dba6c1086f562de6b55bc34b",
+  "didDocumentHash": "2bff804ab97c1be22fd4b42f22932a21c2f30b9ee5a5bcdea836e4c633e6e6be",
   "metadata": {
-    "did": "did:ans:AGUS:ef5e6f7BFrqykuss9LSTh4c65eX6y2q4diEF7HnYSfsmGb",
+    "did": "did:ans:AGUS:efDYS9e8DqpirBGYJNg5BkFwq1hP9QJRwAn7G1P5By5b5F",
     "role": "User Agent",
     "identityType": "user-agent",
-    "didDocumentHash": "c43ad9782707fed008a1ebe0cd9732f6f6bfdd80dba6c1086f562de6b55bc34b",
+    "didDocumentHash": "2bff804ab97c1be22fd4b42f22932a21c2f30b9ee5a5bcdea836e4c633e6e6be",
     "subjectType": "agent",
     "capabilityTags": [
       "user-agent",
@@ -66,12 +66,12 @@
     ],
     "services": [],
     "status": "active",
-    "updatedAt": "2026-05-20T00:00:00.000Z"
+    "updatedAt": "2026-05-20T00:00:00Z"
   },
   "rootProof": {
-    "rootDid": "did:ans:AGRT:efHKg7V5cjoWEQcCQdHqpEBpB4ZDqHVHm6eKBbQoQd78HH",
+    "rootDid": "did:ans:AGRT:ef8mwSoLkuczZefef3cJpUqE7Xqg7WWakUYNXtS7R9CpEm",
     "bulletinEventHash": null,
     "signature": null
   },
-  "createdAt": "2026-05-20T00:00:00.000Z"
+  "createdAt": "2026-05-20T00:00:00Z"
 }
