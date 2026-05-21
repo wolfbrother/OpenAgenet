@@ -1,18 +1,18 @@
-<!-- Copyright (c) 2026 China Academy of Information and Communications Technology (CAICT) -->
+﻿<!-- Copyright (c) 2026 China Academy of Information and Communications Technology (CAICT) -->
 <!--
 Author: JINLIANG XU
 Email: xujinliang@caict.ac.cn; jlxufly@gmail.com
 -->
 
-# OpenAgentNet SDK Support Guide
+# OpenAgenet SDK Support Guide
 
-This document defines the recommended SDK roadmap for OpenAgentNet. It is intended to guide future SDK design, repository splitting, language priorities, package boundaries, and developer experience.
+This document defines the recommended SDK roadmap for OpenAgenet. It is intended to guide future SDK design, repository splitting, language priorities, package boundaries, and developer experience.
 
 ## 1. Purpose
 
-OpenAgentNet should not require every integrator to understand DID Documents, W3C VC-compatible credentials, request signing, replay protection, Root bulletin verification, CDN package verification, and Discovery response verification from scratch.
+OpenAgenet should not require every integrator to understand DID Documents, W3C VC-compatible credentials, request signing, replay protection, Root bulletin verification, CDN package verification, and Discovery response verification from scratch.
 
-SDKs are required to make OpenAgentNet easy to adopt while keeping the protocol behavior consistent across languages and implementations.
+SDKs are required to make OpenAgenet easy to adopt while keeping the protocol behavior consistent across languages and implementations.
 
 The SDK strategy should serve five goals:
 
@@ -22,7 +22,7 @@ The SDK strategy should serve five goals:
 - support web consoles and management tools
 - preserve the language-neutral Agent access contract
 
-OpenAgentNet does not require Agents to use a specific programming language. SDKs are convenience and safety layers, not mandatory runtime dependencies.
+OpenAgenet does not require Agents to use a specific programming language. SDKs are convenience and safety layers, not mandatory runtime dependencies.
 
 ## 2. SDK Categories
 
@@ -51,12 +51,12 @@ The Rust implementation should be treated as the most authoritative reference im
 
 Recommended package names:
 
-- Rust crate: `openagentnet-core`
-- NPM package with WASM bindings: `@openagentnet/core`
+- Rust crate: `oan-core`
+- NPM package with WASM bindings: `@oan/core`
 
 ### 2.2 Agent Adapter SDK
 
-The Agent Adapter SDK should help Service Agents and User Agents join OpenAgentNet with minimal changes to their own business logic.
+The Agent Adapter SDK should help Service Agents and User Agents join OpenAgenet with minimal changes to their own business logic.
 
 Recommended initial language: Python.
 
@@ -78,8 +78,8 @@ The current demo Agents are Python projects managed by `uv`. The Python SDK shou
 
 Recommended package names:
 
-- Python package: `openagentnet-agent`
-- Optional CLI package: `openagentnet-cli`
+- Python package: `oan-agent`
+- Optional CLI package: `oan-cli`
 
 ### 2.3 Infrastructure Client SDK
 
@@ -105,8 +105,8 @@ Responsibilities:
 
 Recommended package names:
 
-- Rust crate: `openagentnet-client`
-- NPM package: `@openagentnet/client`
+- Rust crate: `oan-client`
+- NPM package: `@oan/client`
 
 ### 2.4 Discovery SDK
 
@@ -151,8 +151,8 @@ Responsibilities:
 
 Recommended package names:
 
-- NPM package: `@openagentnet/web`
-- NPM package: `@openagentnet/forms`
+- NPM package: `@oan/web`
+- NPM package: `@oan/forms`
 
 ## 3. Language Priority
 
@@ -177,12 +177,12 @@ The SDKs may be split into separate repositories after the reference implementat
 
 Recommended repository layout:
 
-- `openagentnet-core-rs`: Rust core protocol SDK
-- `openagentnet-client-rs`: Rust infrastructure client SDK
-- `openagentnet-agent-py`: Python Agent adapter SDK
-- `openagentnet-sdk-js`: TypeScript clients and web helpers
-- `openagentnet-cli`: CLI tools
-- `openagentnet-examples`: cross-language examples
+- `oan-core-rs`: Rust core protocol SDK
+- `oan-client-rs`: Rust infrastructure client SDK
+- `oan-agent-py`: Python Agent adapter SDK
+- `oan-sdk-js`: TypeScript clients and web helpers
+- `oan-cli`: CLI tools
+- `oan-examples`: cross-language examples
 
 The main reference implementation can depend on released SDK packages once they are stable. During early development, shared code may remain inside the main repository to reduce coordination overhead.
 
@@ -203,7 +203,7 @@ The Rust Core Protocol SDK should publish canonical test vectors for DID Documen
 
 ## 6. Minimum Agent Adapter Contract
 
-Any Agent that wants to participate in OpenAgentNet should be able to perform the following minimum actions through an SDK or equivalent local implementation:
+Any Agent that wants to participate in OpenAgenet should be able to perform the following minimum actions through an SDK or equivalent local implementation:
 
 - store its own DID Document
 - store one or more local credentials
@@ -270,4 +270,5 @@ SDKs should not:
 - implement business billing logic
 - require Root to observe Agent-to-Agent business traffic
 
-SDKs should make correct integration easier while preserving the loose coupling of the OpenAgentNet architecture.
+SDKs should make correct integration easier while preserving the loose coupling of the OpenAgenet architecture.
+

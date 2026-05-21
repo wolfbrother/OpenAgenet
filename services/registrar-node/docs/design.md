@@ -1,4 +1,4 @@
-<!-- Copyright (c) 2026 China Academy of Information and Communications Technology (CAICT) -->
+﻿<!-- Copyright (c) 2026 China Academy of Information and Communications Technology (CAICT) -->
 <!--
 Author: JINLIANG XU
 Email: xujinliang@caict.ac.cn; jlxufly@gmail.com
@@ -125,7 +125,7 @@ It includes:
 - `claims`
 - `proof`
 
-The proof is an Ed25519 signature over the canonical unsigned credential hash. It is compatible with current OpenAgentNet verification logic, but full W3C VC proof-suite compatibility remains future work.
+The proof is an Ed25519 signature over the canonical unsigned credential hash. It is compatible with current OAN verification logic, but full W3C VC proof-suite compatibility remains future work.
 
 ## 7. Local Data
 
@@ -185,3 +185,4 @@ cargo test --workspace
 - support expiration and revocation of registration credentials
 - add a Registrar web registration wizard
 - migrate namespace JSON SQLite records to relational schemas
+

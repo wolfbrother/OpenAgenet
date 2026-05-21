@@ -1,4 +1,4 @@
-# Copyright (c) 2026 China Academy of Information and Communications Technology (CAICT)
+﻿# Copyright (c) 2026 China Academy of Information and Communications Technology (CAICT)
 #
 # Author: JINLIANG XU
 # Email: xujinliang@caict.ac.cn; jlxufly@gmail.com
@@ -115,7 +115,7 @@ try {
     $serviceAgentErr = Join-Path $pidDir "service-agent-python.err.log"
     $serviceAgent = Start-Process `
         -FilePath "uv" `
-        -ArgumentList @("run", "--project", "agents/service-agent-python", "openagentnet-service-agent") `
+        -ArgumentList @("run", "--project", "agents/service-agent-python", "oan-service-agent") `
         -WorkingDirectory $repoRoot `
         -NoNewWindow `
         -PassThru `
@@ -198,7 +198,7 @@ $query = Invoke-JsonPost "http://127.0.0.1:8002/discover/query" @{
 Write-Host "Discovery query:"
 $query | ConvertTo-Json -Depth 30
 
-$userAgentOutput = & uv run --project agents/user-agent-python openagentnet-user-agent
+$userAgentOutput = & uv run --project agents/user-agent-python oan-user-agent
 $userAgentDemo = Get-JsonFromCommandOutput ($userAgentOutput -join "`n")
 Write-Host "User Agent trusted invocation demo:"
 $userAgentDemo | ConvertTo-Json -Depth 40
@@ -223,3 +223,4 @@ Write-Host "E2E demo completed."
 finally {
     Stop-StartedNodes
 }
+

@@ -1,10 +1,10 @@
-// Copyright (c) 2026 China Academy of Information and Communications Technology (CAICT)
+﻿// Copyright (c) 2026 China Academy of Information and Communications Technology (CAICT)
 //
 // Author: JINLIANG XU
 // Email: xujinliang@caict.ac.cn; jlxufly@gmail.com
 //
 
-//! Storage helpers for local OpenAgentNet nodes.
+//! Storage helpers for local OpenAgenet nodes.
 
 use serde::{de::DeserializeOwned, Serialize};
 use std::fs;
@@ -462,7 +462,7 @@ mod tests {
         assert_eq!(config.url(), "sqlite:./data/root/root.db");
         assert_eq!(config.path(), Path::new("./data/root/root.db"));
         assert_eq!(
-            SqliteDatabaseConfig::parse("postgres://localhost/openagentnet")
+            SqliteDatabaseConfig::parse("postgres://localhost/oan")
                 .unwrap_err()
                 .to_string(),
             "database url must use sqlite: scheme"
@@ -524,3 +524,4 @@ mod tests {
         assert_eq!(store.count_namespace("other").await.unwrap(), 0);
     }
 }
+

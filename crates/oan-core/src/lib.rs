@@ -1,10 +1,10 @@
-// Copyright (c) 2026 China Academy of Information and Communications Technology (CAICT)
+﻿// Copyright (c) 2026 China Academy of Information and Communications Technology (CAICT)
 //
 // Author: JINLIANG XU
 // Email: xujinliang@caict.ac.cn; jlxufly@gmail.com
 //
 
-//! Core domain types shared by OpenAgentNet services.
+//! Core domain types shared by OAN services.
 
 use serde::{Deserialize, Serialize};
 use std::collections::{BTreeMap, BTreeSet};
@@ -365,3 +365,4 @@ mod tests {
         assert_eq!(tree.tags[2].parent.as_deref(), Some("b"));
     }
 }
+

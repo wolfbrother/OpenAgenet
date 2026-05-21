@@ -1,4 +1,4 @@
-<!-- Copyright (c) 2026 China Academy of Information and Communications Technology (CAICT) -->
+﻿<!-- Copyright (c) 2026 China Academy of Information and Communications Technology (CAICT) -->
 <!--
 Author: JINLIANG XU
 Email: xujinliang@caict.ac.cn; jlxufly@gmail.com
@@ -6,7 +6,7 @@ Email: xujinliang@caict.ac.cn; jlxufly@gmail.com
 
 # Error Codes
 
-This document records the current OpenAgentNet security and protocol error code
+This document records the current OpenAgenet security and protocol error code
 vocabulary. APIs should return stable machine-readable codes whenever possible.
 
 ## General API shape
@@ -92,4 +92,5 @@ Future APIs should prefer:
 - Discovery rejection reasons describe local indexing and verification failures.
 - Trusted invocation reasons describe peer-to-peer Agent access failures.
 - CDN should not mint trust errors; relying parties must verify Root proof, hashes, and bulletin facts.
+
 

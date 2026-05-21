@@ -8,4 +8,4 @@ Email: xujinliang@caict.ac.cn; jlxufly@gmail.com
 
 Reference Agent implementations.
 
-OpenAgentNet does not require Agents to use a specific implementation language. Agents only need to satisfy the Agent access contract.
+OpenAgenet does not require Agents to use a specific implementation language. Agents only need to satisfy the Agent access contract.

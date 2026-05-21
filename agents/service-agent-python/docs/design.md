@@ -1,4 +1,4 @@
-<!-- Copyright (c) 2026 China Academy of Information and Communications Technology (CAICT) -->
+﻿<!-- Copyright (c) 2026 China Academy of Information and Communications Technology (CAICT) -->
 <!--
 Author: JINLIANG XU
 Email: xujinliang@caict.ac.cn; jlxufly@gmail.com
@@ -8,7 +8,7 @@ Email: xujinliang@caict.ac.cn; jlxufly@gmail.com
 
 ## 1. Role
 
-The Python Service Agent is a demo business Agent. It represents an Agent that provides callable capabilities and adapts to OpenAgentNet trust requirements while remaining compatible with MCP and A2A endpoint conventions.
+The Python Service Agent is a demo business Agent. It represents an Agent that provides callable capabilities and adapts to OAN trust requirements while remaining compatible with MCP and A2A endpoint conventions.
 
 Unlike Root, Registrar, Discovery, and CDN, this module is a real Agent subject. Its DID Document uses `ansMetadata.subjectType = "agent"`.
 
@@ -24,7 +24,7 @@ agents/service-agent-python/uv.lock
 Command:
 
 ```text
-uv run --project agents/service-agent-python openagentnet-service-agent
+uv run --project agents/service-agent-python oan-service-agent
 ```
 
 The current implementation uses Python standard HTTP server APIs plus `cryptography` for Ed25519 signing and verification.
@@ -58,11 +58,11 @@ GET  /a2a
 
 `/agent/hello` and `/agent/invoke` currently share the same trusted invocation verification path.
 
-## 5. OpenAgentNet Adapter Behavior
+## 5. OAN adapter Behavior
 
 Before serving `/agent/hello`, the Service Agent verifies:
 
-- invocation type is `OpenAgentNetTrustedInvocation`
+- invocation type is `OANTrustedInvocation`
 - caller DID is present
 - target DID equals the Service Agent DID
 - nonce is present and has not been replayed in process memory
@@ -74,7 +74,7 @@ Before serving `/agent/hello`, the Service Agent verifies:
 - credential status is `active`
 - credential proof verifies against the Registrar DID Document
 
-After verification, the Service Agent returns a signed `OpenAgentNetTrustedInvocationResponse`.
+After verification, the Service Agent returns a signed `OANTrustedInvocationResponse`.
 
 ## 6. Provenance Metadata
 
@@ -121,3 +121,4 @@ The E2E demo validates:
 - support VC expiration and revocation checks
 - extract signing and verification logic into a reusable Python Agent Adapter package
 - implement real MCP and A2A protocol adapters
+

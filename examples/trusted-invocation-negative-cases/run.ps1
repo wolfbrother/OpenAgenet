@@ -1,4 +1,4 @@
-# Copyright (c) 2026 China Academy of Information and Communications Technology (CAICT)
+﻿# Copyright (c) 2026 China Academy of Information and Communications Technology (CAICT)
 #
 # Author: JINLIANG XU
 # Email: xujinliang@caict.ac.cn; jlxufly@gmail.com
@@ -145,7 +145,7 @@ function signValue(value, keypair) {
 
 function requestBody(mode) {
   if (mode === 'tampered') return { message: 'tampered after signing', purpose: 'trusted-invocation-negative-cases' };
-  return { message: 'hello from OpenAgentNet example tests', purpose: 'trusted-invocation-negative-cases' };
+  return { message: 'hello from OAN example tests', purpose: 'trusted-invocation-negative-cases' };
 }
 
 function credentials(mode) {
@@ -170,7 +170,7 @@ if ('$TimestampMode' === 'expired') {
   baseTimestamp.setUTCFullYear(2020);
 }
 const invocation = {
-  type: 'OpenAgentNetTrustedInvocation',
+  type: 'OANTrustedInvocation',
   callerDid: userDidDocument.id,
   targetDid: '$TargetDid',
   nonce: crypto.randomBytes(18).toString('base64url'),
@@ -283,7 +283,7 @@ try {
     $serviceAgentErr = Join-Path $pidDir "service-agent-python.err.log"
     $serviceAgent = Start-Process `
         -FilePath "uv" `
-        -ArgumentList @("run", "--project", "agents/service-agent-python", "openagentnet-service-agent") `
+        -ArgumentList @("run", "--project", "agents/service-agent-python", "oan-service-agent") `
         -WorkingDirectory $repoRoot `
         -NoNewWindow `
         -PassThru `
@@ -448,3 +448,4 @@ try {
 } finally {
     Stop-StartedNodes
 }
+

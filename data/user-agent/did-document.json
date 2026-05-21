@@ -3,25 +3,25 @@
     "https://www.w3.org/ns/did/v1",
     "https://w3id.org/ans/v1"
   ],
-  "id": "did:ans:AGUS:efDYS9e8DqpirBGYJNg5BkFwq1hP9QJRwAn7G1P5By5b5F",
+  "id": "did:ans:AGUS:ef9z6DauW5NJ1FG9UX1FDgVVRe2tQJiWzVHvVX9LZWGdND",
   "verificationMethod": [
     {
-      "id": "did:ans:AGUS:efDYS9e8DqpirBGYJNg5BkFwq1hP9QJRwAn7G1P5By5b5F#key-1",
+      "id": "did:ans:AGUS:ef9z6DauW5NJ1FG9UX1FDgVVRe2tQJiWzVHvVX9LZWGdND#key-1",
       "type": "Ed25519VerificationKey2020",
-      "controller": "did:ans:AGUS:efDYS9e8DqpirBGYJNg5BkFwq1hP9QJRwAn7G1P5By5b5F",
-      "publicKeyMultibase": "zDYS9e8DqpirBGYJNg5BkFwq1hP9QJRwAn7G1P5By5b5F",
+      "controller": "did:ans:AGUS:ef9z6DauW5NJ1FG9UX1FDgVVRe2tQJiWzVHvVX9LZWGdND",
+      "publicKeyMultibase": "z9z6DauW5NJ1FG9UX1FDgVVRe2tQJiWzVHvVX9LZWGdND",
       "publicKeyJwk": {
         "crv": "Ed25519",
-        "x": "ulmvKV824NKWaYHNg_1i8sO8YydbrsydjsTDT5Zksh4",
+        "x": "hX2AGPedP9J57f4ISDivs5DnEbSMldwzy5Hpe_iTycY",
         "kty": "OKP"
       }
     }
   ],
   "authentication": [
-    "did:ans:AGUS:efDYS9e8DqpirBGYJNg5BkFwq1hP9QJRwAn7G1P5By5b5F#key-1"
+    "did:ans:AGUS:ef9z6DauW5NJ1FG9UX1FDgVVRe2tQJiWzVHvVX9LZWGdND#key-1"
   ],
   "assertionMethod": [
-    "did:ans:AGUS:efDYS9e8DqpirBGYJNg5BkFwq1hP9QJRwAn7G1P5By5b5F#key-1"
+    "did:ans:AGUS:ef9z6DauW5NJ1FG9UX1FDgVVRe2tQJiWzVHvVX9LZWGdND#key-1"
   ],
   "service": [],
   "ansMetadata": {
@@ -44,6 +44,6 @@
       ]
     },
     "servicePolicy": "public-local-resolution",
-    "networkScope": "openagentnet-local"
+    "networkScope": "oan-local"
   }
 }

@@ -1,4 +1,4 @@
-<!-- Copyright (c) 2026 China Academy of Information and Communications Technology (CAICT) -->
+﻿<!-- Copyright (c) 2026 China Academy of Information and Communications Technology (CAICT) -->
 <!--
 Author: JINLIANG XU
 Email: xujinliang@caict.ac.cn; jlxufly@gmail.com
@@ -6,7 +6,7 @@ Email: xujinliang@caict.ac.cn; jlxufly@gmail.com
 
 # Trusted Invocation Negative Cases
 
-This example runs the full local OpenAgentNet stack and validates both positive
+This example runs the full local OAN stack and validates both positive
 and negative Agent-to-Agent trusted invocation cases.
 
 Run from the repository root:
@@ -41,3 +41,4 @@ The script verifies:
 - mismatched caller DID document id is rejected
 - replayed nonce is rejected
 - wrong target DID is rejected
+

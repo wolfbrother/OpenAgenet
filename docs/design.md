@@ -1,12 +1,12 @@
-<!-- Copyright (c) 2026 China Academy of Information and Communications Technology (CAICT) -->
+﻿<!-- Copyright (c) 2026 China Academy of Information and Communications Technology (CAICT) -->
 <!--
 Author: JINLIANG XU
 Email: xujinliang@caict.ac.cn; jlxufly@gmail.com
 -->
 
-# OpenAgentNet System Design
+# OpenAgenet System Design
 
-OpenAgentNet is an open-source reference implementation for an Agent Internet built around `did:ans`, infrastructure authorization, complete DID Document registration, trusted distribution, verifiable discovery, and signed Agent-to-Agent invocation.
+OpenAgenet (Open Agent-Internet Network, OAN; Chinese name: "开原智网") is an open-source reference implementation for an Agent Internet built around `did:ans`, infrastructure authorization, complete DID Document registration, trusted distribution, verifiable discovery, and signed Agent-to-Agent invocation.
 
 This document is the system-level design. It defines the architecture, role boundaries, trust model, cross-role flows, and global constraints. Detailed module behavior, configuration, API lists, storage layout, and tests are maintained in each module's own design document.
 
@@ -26,7 +26,7 @@ System-level decisions should be recorded here. Endpoint lists, code-level stora
 
 ## 2. Roles
 
-OpenAgentNet currently models six roles:
+OpenAgenet currently models six roles:
 
 - Root Node
 - Registrar Node
@@ -37,7 +37,7 @@ OpenAgentNet currently models six roles:
 
 Root Node, Registrar Node, and Discovery Node are infrastructure nodes. They reuse `did:ans` DID Documents to publish identity, keys, and endpoints, but they are not business Agents. Their DID Documents should use `ansMetadata.subjectType = "infrastructure-node"`.
 
-Service Agent and User Agent are business Agent subjects. They may be implemented in any language as long as they satisfy the OpenAgentNet Agent access contract. The current demo Agents are written in Python and managed with `uv`.
+Service Agent and User Agent are business Agent subjects. They may be implemented in any language as long as they satisfy the OAN Agent access contract. The current demo Agents are written in Python and managed with `uv`.
 
 CDN Service is a traditional content distribution service. It is not an authorized `did:ans` infrastructure node and is not trusted as a protocol authority.
 
@@ -75,9 +75,9 @@ Root and CDN may be operated by the same entity, or CDN may be outsourced to a c
 
 ### 3.5 Service Agent
 
-Service Agent is a business Agent that exposes callable capabilities. The demo Service Agent supports OpenAgentNet trusted invocation and exposes MCP/A2A-compatible endpoint placeholders.
+Service Agent is a business Agent that exposes callable capabilities. The demo Service Agent supports OAN trusted invocation and exposes MCP/A2A-compatible endpoint placeholders.
 
-For OpenAgentNet adaptation, a Service Agent should hold local DID material and credentials, verify peer DID/VC material before trusted calls, prevent replay, and sign responses.
+For OpenAgenet adaptation, a Service Agent should hold local DID material and credentials, verify peer DID/VC material before trusted calls, prevent replay, and sign responses.
 
 ### 3.6 User Agent
 
@@ -130,7 +130,7 @@ The current trusted registration, distribution, discovery, and invocation flow i
 13. User Agent queries Discovery and receives a signed discovery response.
 14. User Agent builds a signed trusted invocation envelope containing DID Document, local VC, nonce, timestamp, body hash, and request proof.
 15. Service Agent verifies the User Agent DID Document, VC, nonce, target DID, and request signature before serving `/agent/hello`.
-16. Service Agent returns a signed `OpenAgentNetTrustedInvocationResponse`.
+16. Service Agent returns a signed `OANTrustedInvocationResponse`.
 17. User Agent verifies the Service Agent response signature.
 
 This flow is verified by the local E2E demo script:
@@ -141,7 +141,7 @@ scripts/run-e2e-demo.ps1
 
 ## 6. Agent Access Contract
 
-OpenAgentNet does not prescribe Agent implementation language. It prescribes an access contract.
+OpenAgenet does not prescribe Agent implementation language. It prescribes an access contract.
 
 A minimally adapted Agent should support:
 
@@ -336,3 +336,4 @@ The highest-priority areas are:
 - role-specific relational SQLite schemas
 - scheduled batch execution and retry policy
 - structured logging, metrics, tracing, backup, and runbooks
+

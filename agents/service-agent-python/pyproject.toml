@@ -1,5 +1,5 @@
 [project]
-name = "openagentnet-service-agent"
+name = "oan-service-agent"
 version = "0.1.0"
 requires-python = ">=3.11"
 dependencies = [
@@ -7,7 +7,7 @@ dependencies = [
 ]
 
 [project.scripts]
-openagentnet-service-agent = "service_agent.main:main"
+oan-service-agent = "service_agent.main:main"
 
 [build-system]
 requires = ["hatchling"]

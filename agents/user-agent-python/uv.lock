@@ -132,7 +132,7 @@ wheels = [
 ]
 
 [[package]]
-name = "openagentnet-user-agent"
+name = "oan-user-agent"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [

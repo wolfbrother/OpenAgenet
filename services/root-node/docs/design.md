@@ -8,7 +8,7 @@ Email: xujinliang@caict.ac.cn; jlxufly@gmail.com
 
 ## 1. Role
 
-Root Node is the OpenAgentNet governance center. It is simultaneously:
+Root Node is the OAN governance center. It is simultaneously:
 
 - the trust management hub
 - the data distribution hub

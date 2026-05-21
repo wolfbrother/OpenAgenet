@@ -1,16 +1,16 @@
-<!-- Copyright (c) 2026 China Academy of Information and Communications Technology (CAICT) -->
+﻿<!-- Copyright (c) 2026 China Academy of Information and Communications Technology (CAICT) -->
 <!--
 Author: JINLIANG XU
 Email: xujinliang@caict.ac.cn; jlxufly@gmail.com
 -->
 
-# OpenAgentNet Large-Scale Production Ecosystem Guide
+# OpenAgenet Large-Scale Production Ecosystem Guide
 
-This document analyzes whether the current OpenAgentNet design can support a large ecosystem and records the additional work required before the system can be considered mature for large-scale production use.
+This document analyzes whether the current OpenAgenet design can support a large ecosystem and records the additional work required before the system can be considered mature for large-scale production use.
 
 ## 1. Current Assessment
 
-OpenAgentNet already has the architectural foundation of an ecosystem-level system.
+OpenAgenet already has the architectural foundation of an ecosystem-level system.
 
 The current design includes:
 
@@ -69,7 +69,7 @@ This separation allows different organizations to operate different roles.
 
 ### 3.2 Language-Neutral Agent Contract
 
-OpenAgentNet does not require Agents to be implemented in a specific language. This is essential for ecosystem expansion.
+OpenAgenet does not require Agents to be implemented in a specific language. This is essential for ecosystem expansion.
 
 The system should continue to define:
 
@@ -504,7 +504,7 @@ Mitigation:
 
 ## 8. Summary
 
-OpenAgentNet already has the right ecosystem-level architecture: separated roles, language-neutral Agents, Root-governed trust, Registrar-assisted onboarding, verifiable CDN distribution, Discovery-based search, and signed Agent-to-Agent invocation.
+OpenAgenet already has the right ecosystem-level architecture: separated roles, language-neutral Agents, Root-governed trust, Registrar-assisted onboarding, verifiable CDN distribution, Discovery-based search, and signed Agent-to-Agent invocation.
 
 The next stage should focus less on adding isolated features and more on making the system stable, repeatable, observable, secure, and easy to integrate.
 
@@ -518,4 +518,5 @@ The most important production ecosystem work is:
 - security boundary hardening
 - governance and community process
 
-These improvements will move OpenAgentNet from a strong demo and research foundation toward a sustainable large-scale Agent Internet ecosystem.
+These improvements will move OpenAgenet from a strong demo and research foundation toward a sustainable large-scale Agent Internet ecosystem.
+

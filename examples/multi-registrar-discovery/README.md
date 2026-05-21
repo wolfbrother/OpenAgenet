@@ -1,4 +1,4 @@
-<!-- Copyright (c) 2026 China Academy of Information and Communications Technology (CAICT) -->
+﻿<!-- Copyright (c) 2026 China Academy of Information and Communications Technology (CAICT) -->
 <!--
 Author: JINLIANG XU
 Email: xujinliang@caict.ac.cn; jlxufly@gmail.com
@@ -6,7 +6,7 @@ Email: xujinliang@caict.ac.cn; jlxufly@gmail.com
 
 # Multi Registrar and Discovery Example
 
-This example runs OpenAgentNet with multiple Registrar Nodes and multiple
+This example runs OpenAgenet with multiple Registrar Nodes and multiple
 Discovery Nodes without disturbing the existing single-node demo.
 
 ## Layout
@@ -37,4 +37,5 @@ Discovery Nodes without disturbing the existing single-node demo.
 - Root can authorize multiple Discovery Nodes.
 - Discovery Nodes can independently sync from the same CDN service.
 - The example keeps separate runtime data under `.oan-multi-node-demo`.
+
 

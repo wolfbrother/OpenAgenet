@@ -1,4 +1,4 @@
-# Copyright (c) 2026 China Academy of Information and Communications Technology (CAICT)
+﻿# Copyright (c) 2026 China Academy of Information and Communications Technology (CAICT)
 #
 # Author: JINLIANG XU
 # Email: xujinliang@caict.ac.cn; jlxufly@gmail.com
@@ -106,11 +106,11 @@ def get_json(url: str) -> dict[str, Any]:
 def build_invocation(target_did: str, discovery_proof: dict[str, Any]) -> dict[str, Any]:
     user_did_document = load_json(USER_DID_DOCUMENT)
     body = {
-        "message": "hello from OpenAgentNet User Agent",
+        "message": "hello from OAN User Agent",
         "purpose": "trusted-agent-hello",
     }
     invocation = {
-        "type": "OpenAgentNetTrustedInvocation",
+        "type": "OANTrustedInvocation",
         "callerDid": user_did_document["id"],
         "targetDid": target_did,
         "nonce": secrets.token_urlsafe(24),
@@ -182,3 +182,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+

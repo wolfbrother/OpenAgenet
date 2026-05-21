@@ -1,4 +1,4 @@
-<!-- Copyright (c) 2026 China Academy of Information and Communications Technology (CAICT) -->
+﻿<!-- Copyright (c) 2026 China Academy of Information and Communications Technology (CAICT) -->
 <!--
 Author: JINLIANG XU
 Email: xujinliang@caict.ac.cn; jlxufly@gmail.com
@@ -24,7 +24,7 @@ agents/user-agent-python/uv.lock
 Command:
 
 ```text
-uv run --project agents/user-agent-python openagentnet-user-agent
+uv run --project agents/user-agent-python oan-user-agent
 ```
 
 The current implementation uses Python standard HTTP client APIs plus `cryptography` for Ed25519 signing and verification.
@@ -64,7 +64,7 @@ The current demo focuses on connectivity and trust verification rather than rank
 
 The User Agent sends:
 
-- `type = OpenAgentNetTrustedInvocation`
+- `type = OANTrustedInvocation`
 - `callerDid`
 - `targetDid`
 - `nonce`
@@ -93,7 +93,7 @@ The E2E script asserts all four checks.
 
 ## 7. MCP and A2A Compatibility
 
-The current User Agent is an OpenAgentNet trusted invocation client. Full MCP and A2A client logic is future work.
+The current User Agent is an OAN trusted invocation client. Full MCP and A2A client logic is future work.
 
 Future work should:
 
@@ -125,3 +125,4 @@ The E2E demo validates:
 - support VC expiration and revocation checks
 - support negative tests for invalid signatures, missing VC, replayed nonce, and wrong target DID
 - extract signing and verification logic into a reusable Python Agent Adapter package
+

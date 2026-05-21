@@ -1,10 +1,10 @@
-// Copyright (c) 2026 China Academy of Information and Communications Technology (CAICT)
+﻿// Copyright (c) 2026 China Academy of Information and Communications Technology (CAICT)
 //
 // Author: JINLIANG XU
 // Email: xujinliang@caict.ac.cn; jlxufly@gmail.com
 //
 
-//! Protocol models shared across OpenAgentNet nodes.
+//! Protocol models shared across OpenAgenet nodes.
 
 use chrono::{DateTime, Utc};
 use oan_core::DidDocument;
@@ -209,3 +209,4 @@ pub struct InvocationEnvelope {
     pub created_at: DateTime<Utc>,
     pub signature: String,
 }
+

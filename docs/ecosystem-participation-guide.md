@@ -1,16 +1,16 @@
-<!-- Copyright (c) 2026 China Academy of Information and Communications Technology (CAICT) -->
+﻿<!-- Copyright (c) 2026 China Academy of Information and Communications Technology (CAICT) -->
 <!--
 Author: JINLIANG XU
 Email: xujinliang@caict.ac.cn; jlxufly@gmail.com
 -->
 
-# OpenAgentNet Ecosystem Participation Guide
+# OpenAgenet Ecosystem Participation Guide
 
-This document describes where community members, teams, companies, research institutions, and ecosystem partners can participate in OpenAgentNet. It covers engineering collaboration, governance collaboration, deployment collaboration, and long-term ecosystem development.
+This document describes where community members, teams, companies, research institutions, and ecosystem partners can participate in OpenAgenet. It covers engineering collaboration, governance collaboration, deployment collaboration, and long-term ecosystem development.
 
 ## 1. Ecosystem Positioning
 
-OpenAgentNet should be developed as an Agent Internet infrastructure project rather than a single application.
+OpenAgenet should be developed as an Agent Internet infrastructure project rather than a single application.
 
 The project provides:
 
@@ -77,7 +77,7 @@ Collaboration topics:
 - low-code Agent platform adapters
 - custom Agent runtime templates
 
-The recommended approach is to keep business Agent logic independent and add an OpenAgentNet adapter layer for DID, VC, signing, verification, and Discovery access.
+The recommended approach is to keep business Agent logic independent and add an OAN adapter layer for DID, VC, signing, verification, and Discovery access.
 
 ### 2.4 Registrar Node Extensions
 
@@ -135,7 +135,7 @@ The standard capability tree should support network-wide coarse discovery. Custo
 
 ### 2.7 Security Review
 
-Security participation is essential because OpenAgentNet is a trust infrastructure project.
+Security participation is essential because OpenAgenet is a trust infrastructure project.
 
 Collaboration topics:
 
@@ -196,7 +196,7 @@ Documentation should clearly distinguish demo behavior, research behavior, and p
 
 ## 3. Participation Areas Likely to Attract the Community
 
-Different participants will care about different parts of OpenAgentNet.
+Different participants will care about different parts of OpenAgenet.
 
 ### 3.1 Individual Developers
 
@@ -433,4 +433,5 @@ Community participation should not require:
 - one mandatory CDN provider
 - Root visibility into Agent business traffic
 
-OpenAgentNet should grow as a loosely coupled trust and interoperability ecosystem.
+OpenAgenet should grow as a loosely coupled trust and interoperability ecosystem.
+

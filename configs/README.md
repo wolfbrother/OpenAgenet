@@ -1,4 +1,4 @@
-<!-- Copyright (c) 2026 China Academy of Information and Communications Technology (CAICT) -->
+﻿<!-- Copyright (c) 2026 China Academy of Information and Communications Technology (CAICT) -->
 <!--
 Author: JINLIANG XU
 Email: xujinliang@caict.ac.cn; jlxufly@gmail.com
@@ -6,7 +6,7 @@ Email: xujinliang@caict.ac.cn; jlxufly@gmail.com
 
 # Configs
 
-Local configuration files for OpenAgentNet nodes and agents.
+Local configuration files for OAN nodes and agents.
 
 ## Local Ports
 
@@ -51,3 +51,4 @@ Root bulletin
 ```
 
 This lets the system establish usable connections from configuration plus bulletin state. If CDN Service moves, Root can publish a new `CDN_SERVICE_INFO_UPDATED` event and Discovery Node can reconnect without changing its own config.
+

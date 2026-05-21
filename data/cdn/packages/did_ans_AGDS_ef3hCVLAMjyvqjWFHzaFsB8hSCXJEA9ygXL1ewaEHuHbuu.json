@@ -1,34 +1,34 @@
 {
   "packageVersion": "0.1.0",
-  "did": "did:ans:AGDS:ef6eU4rGF17EK5wVXaNoroB29Mnh6S243nqwuqjA8gr84t",
+  "did": "did:ans:AGDS:ef3hCVLAMjyvqjWFHzaFsB8hSCXJEA9ygXL1ewaEHuHbuu",
   "didDocument": {
     "@context": [
       "https://www.w3.org/ns/did/v1",
       "https://w3id.org/ans/v1"
     ],
-    "id": "did:ans:AGDS:ef6eU4rGF17EK5wVXaNoroB29Mnh6S243nqwuqjA8gr84t",
+    "id": "did:ans:AGDS:ef3hCVLAMjyvqjWFHzaFsB8hSCXJEA9ygXL1ewaEHuHbuu",
     "verificationMethod": [
       {
-        "id": "did:ans:AGDS:ef6eU4rGF17EK5wVXaNoroB29Mnh6S243nqwuqjA8gr84t#key-1",
+        "id": "did:ans:AGDS:ef3hCVLAMjyvqjWFHzaFsB8hSCXJEA9ygXL1ewaEHuHbuu#key-1",
         "type": "Ed25519VerificationKey2020",
-        "controller": "did:ans:AGDS:ef6eU4rGF17EK5wVXaNoroB29Mnh6S243nqwuqjA8gr84t",
-        "publicKeyMultibase": "z6eU4rGF17EK5wVXaNoroB29Mnh6S243nqwuqjA8gr84t",
+        "controller": "did:ans:AGDS:ef3hCVLAMjyvqjWFHzaFsB8hSCXJEA9ygXL1ewaEHuHbuu",
+        "publicKeyMultibase": "z3hCVLAMjyvqjWFHzaFsB8hSCXJEA9ygXL1ewaEHuHbuu",
         "publicKeyJwk": {
           "crv": "Ed25519",
-          "x": "U-OHUtVFDVZ9Sk4NYRi0lm6rvXIUbBUMQG9G9-9-xJU",
+          "x": "KAOYpAVLD_ClYxwN35-5-l5YtbusP5tu4sRqbiXVqkQ",
           "kty": "OKP"
         }
       }
     ],
     "authentication": [
-      "did:ans:AGDS:ef6eU4rGF17EK5wVXaNoroB29Mnh6S243nqwuqjA8gr84t#key-1"
+      "did:ans:AGDS:ef3hCVLAMjyvqjWFHzaFsB8hSCXJEA9ygXL1ewaEHuHbuu#key-1"
     ],
     "assertionMethod": [
-      "did:ans:AGDS:ef6eU4rGF17EK5wVXaNoroB29Mnh6S243nqwuqjA8gr84t#key-1"
+      "did:ans:AGDS:ef3hCVLAMjyvqjWFHzaFsB8hSCXJEA9ygXL1ewaEHuHbuu#key-1"
     ],
     "service": [
       {
-        "id": "did:ans:AGDS:ef6eU4rGF17EK5wVXaNoroB29Mnh6S243nqwuqjA8gr84t#discovery-api",
+        "id": "did:ans:AGDS:ef3hCVLAMjyvqjWFHzaFsB8hSCXJEA9ygXL1ewaEHuHbuu#discovery-api",
         "type": "AgentDiscoveryService",
         "serviceEndpoint": "http://localhost:8002",
         "version": "1.0.0",
@@ -43,11 +43,11 @@
       "ttl": 300,
       "addressBindings": [
         {
-          "id": "did:ans:AGDS:ef6eU4rGF17EK5wVXaNoroB29Mnh6S243nqwuqjA8gr84t#addr-discovery-api",
+          "id": "did:ans:AGDS:ef3hCVLAMjyvqjWFHzaFsB8hSCXJEA9ygXL1ewaEHuHbuu#addr-discovery-api",
           "addressType": "endpoint",
           "network": "local-http",
           "address": "http://localhost:8002",
-          "controller": "did:ans:AGDS:ef6eU4rGF17EK5wVXaNoroB29Mnh6S243nqwuqjA8gr84t",
+          "controller": "did:ans:AGDS:ef3hCVLAMjyvqjWFHzaFsB8hSCXJEA9ygXL1ewaEHuHbuu",
           "purpose": "service"
         }
       ],
@@ -64,15 +64,15 @@
         ]
       },
       "servicePolicy": "public-local-resolution",
-      "networkScope": "openagentnet-local"
+      "networkScope": "oan-local"
     }
   },
-  "didDocumentHash": "5f217f3e1da87fb13e78cc9c9c5d690c3ec93f1a7f3ca37140bc6097f78653f0",
+  "didDocumentHash": "f8478dc6975f03ff6d3f8ff9ccb4810a12e1064a7ba5ad79bf7283c6ae5fa721",
   "metadata": {
-    "did": "did:ans:AGDS:ef6eU4rGF17EK5wVXaNoroB29Mnh6S243nqwuqjA8gr84t",
+    "did": "did:ans:AGDS:ef3hCVLAMjyvqjWFHzaFsB8hSCXJEA9ygXL1ewaEHuHbuu",
     "role": "Discovery Node",
     "identityType": "discovery-node",
-    "didDocumentHash": "5f217f3e1da87fb13e78cc9c9c5d690c3ec93f1a7f3ca37140bc6097f78653f0",
+    "didDocumentHash": "f8478dc6975f03ff6d3f8ff9ccb4810a12e1064a7ba5ad79bf7283c6ae5fa721",
     "subjectType": "infrastructure-node",
     "capabilityTags": [
       "discovery",
@@ -81,7 +81,7 @@
     ],
     "services": [
       {
-        "id": "did:ans:AGDS:ef6eU4rGF17EK5wVXaNoroB29Mnh6S243nqwuqjA8gr84t#discovery-api",
+        "id": "did:ans:AGDS:ef3hCVLAMjyvqjWFHzaFsB8hSCXJEA9ygXL1ewaEHuHbuu#discovery-api",
         "type": "AgentDiscoveryService",
         "serviceEndpoint": "http://localhost:8002",
         "version": "1.0.0",
@@ -94,9 +94,9 @@
     "updatedAt": "2026-05-20T00:00:00Z"
   },
   "rootProof": {
-    "rootDid": "did:ans:AGRT:ef8mwSoLkuczZefef3cJpUqE7Xqg7WWakUYNXtS7R9CpEm",
-    "bulletinEventHash": "8c6d459c04becabbb5f98a4f0bf6880251567303d1bd0d5cc376dade56d5cab1",
-    "signature": "WJJVAyX3JmUlsk6QlfXoFJoAhHeW5FDhVWhvXmay3cMDlEv0mRh5TYn57a9hW8cbgIvJyjvX7QcGaQSq72yWBw"
+    "rootDid": "did:ans:AGRT:ef6acvLB7aJ2WZVGmzb5hy4hwpuNbyh2e1yjWugrQLyEAm",
+    "bulletinEventHash": "d52f8b92865ccbc67595af0b94f675658548d236b61982eedf7563ed37c7e329",
+    "signature": "Rve2omijXDJUyAomyhC2xaDVUtivQOQ5-r-87U5ONj0-inZIP2X_w3OJWtai1HeKVR4nLNALrx2_G1g2tn0AAw"
   },
   "createdAt": "2026-05-20T00:00:00Z"
 }

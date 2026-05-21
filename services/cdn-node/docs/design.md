@@ -1,4 +1,4 @@
-<!-- Copyright (c) 2026 China Academy of Information and Communications Technology (CAICT) -->
+﻿<!-- Copyright (c) 2026 China Academy of Information and Communications Technology (CAICT) -->
 <!--
 Author: JINLIANG XU
 Email: xujinliang@caict.ac.cn; jlxufly@gmail.com
@@ -8,7 +8,7 @@ Email: xujinliang@caict.ac.cn; jlxufly@gmail.com
 
 ## 1. Role
 
-CDN Service is the traditional content distribution layer for OpenAgentNet. It stores and serves Root-verified DID Documents, metadata, verified packages, manifests, and update data.
+CDN Service is the traditional content distribution layer for OpenAgenet. It stores and serves Root-verified DID Documents, metadata, verified packages, manifests, and update data.
 
 CDN is not an authorized `did:ans` infrastructure node and is not a protocol trust authority. It may be operated by the Root operator or outsourced to a commercial CDN/object-storage provider.
 
@@ -157,3 +157,4 @@ cargo test --workspace
 - add publish history persistence
 - add CDN access logs
 - migrate operational indexes to SQLite schemas
+

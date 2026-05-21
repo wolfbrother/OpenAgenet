@@ -1,4 +1,4 @@
-// Copyright (c) 2026 China Academy of Information and Communications Technology (CAICT)
+﻿// Copyright (c) 2026 China Academy of Information and Communications Technology (CAICT)
 //
 // Author: JINLIANG XU
 // Email: xujinliang@caict.ac.cn; jlxufly@gmail.com
@@ -140,7 +140,7 @@ function createIdentity(definition) {
       addressBindings,
       agentDescription: definition.agentDescription,
       servicePolicy: "public-local-resolution",
-      networkScope: "openagentnet-local",
+      networkScope: "oan-local",
     },
   };
 
@@ -194,7 +194,7 @@ const definitions = [
       { fragment: "#bulletin", type: "TrustBulletinService", endpoint: "http://localhost:8000/bulletin", serverType: "local-root", port: 8000 },
     ],
     agentDescription: {
-      capabilityDescription: "Local OpenAgentNet trust anchor for authorization, bulletin anchoring, DID Document verification, and verified package publishing.",
+      capabilityDescription: "Local OAN trust anchor for authorization, bulletin anchoring, DID Document verification, and verified package publishing.",
       capabilityTags: ["root-authority", "authorization", "bulletin", "verification"],
       useCaseExamples: ["Authorize infrastructure nodes.", "Anchor DID Document hashes to the local bulletin."],
     },
@@ -335,7 +335,7 @@ const bulletinEvents = [
     subjectDid: identityById.root.did,
     actorDid: identityById.root.did,
     payload: {
-      serviceId: "openagentnet-local-cdn",
+      serviceId: "oan-local-cdn",
       providerType: "local",
       baseUrl: "http://localhost:8003",
       manifestUrl: "http://localhost:8003/cdn/manifest",
@@ -383,7 +383,7 @@ const bulletinEvents = [
 ];
 
 const registrarAuthorizationCredential = signCredential(rootPrivateKey, {
-  id: "urn:openagentnet:credential:registrar-authorization:local-root:v1",
+  id: "urn:oan:credential:registrar-authorization:local-root:v1",
   type: "RegistrarAuthorizationCredential",
   issuer: identityById.root.did,
   subject: identityById.registrar.did,
@@ -393,13 +393,13 @@ const registrarAuthorizationCredential = signCredential(rootPrivateKey, {
   expiresAt: null,
   claims: {
     endpoint: "http://localhost:8001",
-    networkScope: "openagentnet-local",
+    networkScope: "oan-local",
   },
   proofCreator: identityById.root.keyId,
 });
 
 const discoveryAuthorizationCredential = signCredential(rootPrivateKey, {
-  id: "urn:openagentnet:credential:discovery-authorization:local-root:v1",
+  id: "urn:oan:credential:discovery-authorization:local-root:v1",
   type: "DiscoveryAuthorizationCredential",
   issuer: identityById.root.did,
   subject: identityById.discovery.did,
@@ -411,14 +411,14 @@ const discoveryAuthorizationCredential = signCredential(rootPrivateKey, {
     endpoint: "http://localhost:8002",
     authorizedDomains: ["*"],
     tagTreeVersion: 1,
-    networkScope: "openagentnet-local",
+    networkScope: "oan-local",
   },
   proofCreator: identityById.root.keyId,
 });
 
 const registrarPrivateKey = crypto.createPrivateKey({ key: identityById.registrar.privateJwk, format: "jwk" });
 const serviceAgentRegistrationCredential = signCredential(registrarPrivateKey, {
-  id: "urn:openagentnet:credential:agent-registration:local-registrar:v1",
+  id: "urn:oan:credential:agent-registration:local-registrar:v1",
   type: "AgentRegistrationCredential",
   issuer: identityById.registrar.did,
   subject: identityById["service-agent"].did,
@@ -436,7 +436,7 @@ const serviceAgentRegistrationCredential = signCredential(registrarPrivateKey, {
 });
 
 const userAgentRegistrationCredential = signCredential(registrarPrivateKey, {
-  id: "urn:openagentnet:credential:user-agent-registration:local-registrar:v1",
+  id: "urn:oan:credential:user-agent-registration:local-registrar:v1",
   type: "UserAgentRegistrationCredential",
   issuer: identityById.registrar.did,
   subject: identityById["user-agent"].did,
@@ -579,3 +579,4 @@ fs.writeFileSync(path.join(dataDir, "DEV_KEYS_NOTICE.md"), [
 ].join("\n"), "utf8");
 
 console.log(`Generated ${identities.length} development identities.`);
+

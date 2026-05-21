@@ -1,24 +1,24 @@
-<!-- Copyright (c) 2026 China Academy of Information and Communications Technology (CAICT) -->
+﻿<!-- Copyright (c) 2026 China Academy of Information and Communications Technology (CAICT) -->
 <!--
 Author: JINLIANG XU
 Email: xujinliang@caict.ac.cn; jlxufly@gmail.com
 -->
 
-# OpenAgentNet Future Development Strategy
+# OpenAgenet Future Development Strategy
 
-This document summarizes the main gaps between OpenAgentNet and domestic ANP / AIP routes, and turns those gaps into future development guidance for OpenAgentNet.
+This document summarizes the main gaps between OpenAgenet and domestic ANP / AIP routes, and turns those gaps into future development guidance for OpenAgenet.
 
-The purpose is not to make OpenAgentNet follow ANP or AIP. OpenAgentNet's central mission is to build trusted Agent interconnection infrastructure. ANP and AIP are important domestic references and potential cooperation routes, but they should not become the product center of OpenAgentNet.
+The purpose is not to make OpenAgenet follow ANP or AIP. OpenAgenet's central mission is to build trusted Agent interconnection infrastructure. ANP and AIP are important domestic references and potential cooperation routes, but they should not become the product center of OpenAgenet.
 
-OpenAgentNet should develop from a runnable trusted registration, distribution, discovery, and verification system into a standardized, easy-to-integrate, deployable, governable, and ecosystem-ready infrastructure base for Agent interconnection and the Agent Internet.
+OpenAgenet should develop from a runnable trusted registration, distribution, discovery, and verification system into a standardized, easy-to-integrate, deployable, governable, and ecosystem-ready infrastructure base for Agent interconnection and the Agent Internet.
 
 ## 1. Strategic Premise
 
-OpenAgentNet does not plan to define a full Agent interaction protocol system.
+OpenAgenet does not plan to define a full Agent interaction protocol system.
 
 Agent interaction protocols and frameworks such as ANP, A2A, MCP, AIP-compatible flows, and future protocols may define how Agents communicate, negotiate, invoke tools, exchange messages, or coordinate tasks.
 
-OpenAgentNet should focus on the infrastructure capabilities around those interactions:
+OpenAgenet should focus on the infrastructure capabilities around those interactions:
 
 - trusted Agent registration
 - Root-governed infrastructure authorization
@@ -30,9 +30,9 @@ OpenAgentNet should focus on the infrastructure capabilities around those intera
 - credential verification
 - pre-connection verification
 - signed request and response envelopes where needed
-- SDKs and adapters that allow different Agent interaction protocols to enter the OpenAgentNet ecosystem
+- SDKs and adapters that allow different Agent interaction protocols to enter the OpenAgenet ecosystem
 
-Therefore, the gap between OpenAgentNet and ANP / AIP should not be described as "OpenAgentNet lacks a full interaction protocol." That is a deliberate boundary. The real gaps are in ecosystem awareness, formal specifications, SDKs, developer experience, production readiness, governance expression, semantic discovery, pilot cases, security completeness, and ecosystem organization.
+Therefore, the gap between OpenAgenet and ANP / AIP should not be described as "OpenAgenet lacks a full interaction protocol." That is a deliberate boundary. The real gaps are in ecosystem awareness, formal specifications, SDKs, developer experience, production readiness, governance expression, semantic discovery, pilot cases, security completeness, and ecosystem organization.
 
 ## 2. Main Gap Areas
 
@@ -40,14 +40,14 @@ Therefore, the gap between OpenAgentNet and ANP / AIP should not be described as
 
 ANP and AIP have naming advantages because their names directly express Agent networks or Agent interconnection. Domestic AIP may also have a closer relationship with standardization discussions. This makes them easier for external audiences to understand as protocol or standard routes.
 
-OpenAgentNet already has a strong engineering foundation, but its external narrative still needs to be strengthened.
+OpenAgenet already has a strong engineering foundation, but its external narrative still needs to be strengthened.
 
 Current gap:
 
 - external awareness is still limited
 - positioning requires explanation
 - the distinction between infrastructure layer and interaction protocol layer needs to be clearer
-- OpenAgentNet's value as a trusted infrastructure base needs stronger public materials
+- OpenAgenet's value as a trusted infrastructure base needs stronger public materials
 
 Future upgrade direction:
 
@@ -59,12 +59,12 @@ Future upgrade direction:
 
 Target state:
 
-- external audiences can quickly understand that OpenAgentNet is not a simple Agent registry, Agent DNS, or interaction protocol
-- OpenAgentNet is recognized as trusted registration, governance, distribution, discovery, and verification infrastructure for Agent interconnection
+- external audiences can quickly understand that OpenAgenet is not a simple Agent registry, Agent DNS, or interaction protocol
+- OpenAgenet is recognized as trusted registration, governance, distribution, discovery, and verification infrastructure for Agent interconnection
 
 ### 2.2 Formal Specification Maturity
 
-ANP and AIP are likely to be discussed as protocol or standardization systems. OpenAgentNet currently has design documents and working code, but its core mechanisms need to be extracted into clearer specifications.
+ANP and AIP are likely to be discussed as protocol or standardization systems. OpenAgenet currently has design documents and working code, but its core mechanisms need to be extracted into clearer specifications.
 
 Current gap:
 
@@ -92,11 +92,11 @@ Future upgrade direction:
 
 Target state:
 
-- OpenAgentNet is not only runnable, but also implementable by independent teams according to stable specifications
+- OpenAgenet is not only runnable, but also implementable by independent teams according to stable specifications
 
 ### 2.3 SDK and Developer Access
 
-OpenAgentNet's infrastructure value depends on low-friction integration. If developers must understand all DID, VC, Root proof, bulletin, CDN package, Discovery response, and request-signing details manually, ecosystem adoption will be slow.
+OpenAgenet's infrastructure value depends on low-friction integration. If developers must understand all DID, VC, Root proof, bulletin, CDN package, Discovery response, and request-signing details manually, ecosystem adoption will be slow.
 
 Current gap:
 
@@ -119,12 +119,12 @@ Future upgrade direction:
 
 Target state:
 
-- Agent developers can enter OpenAgentNet through SDKs without reading all service internals
+- Agent developers can enter OpenAgenet through SDKs without reading all service internals
 - interaction protocol support is available through adapters, but adapters remain an open extension capability rather than the product center
 
 ### 2.4 Developer Platform and Web Experience
 
-ANP or AIP-oriented ecosystems may develop developer portals, conformance tools, or registration platforms. OpenAgentNet currently has APIs and demos, but it still lacks user-friendly web entry points.
+ANP or AIP-oriented ecosystems may develop developer portals, conformance tools, or registration platforms. OpenAgenet currently has APIs and demos, but it still lacks user-friendly web entry points.
 
 Current gap:
 
@@ -151,11 +151,11 @@ Future upgrade direction:
 
 Target state:
 
-- developers, enterprises, and pilot users can understand and operate OpenAgentNet through visual workflows, not only APIs and scripts
+- developers, enterprises, and pilot users can understand and operate OpenAgenet through visual workflows, not only APIs and scripts
 
 ### 2.5 Production Readiness and Operations
 
-OpenAgentNet has runnable demos and integration examples. To become a credible infrastructure base, it needs stronger production and operations capabilities.
+OpenAgenet has runnable demos and integration examples. To become a credible infrastructure base, it needs stronger production and operations capabilities.
 
 Current gap:
 
@@ -184,11 +184,11 @@ Future upgrade direction:
 
 Target state:
 
-- OpenAgentNet can support internal pilots and enterprise deployments with repeatable operational procedures
+- OpenAgenet can support internal pilots and enterprise deployments with repeatable operational procedures
 
 ### 2.6 Governance and Standardization Expression
 
-OpenAgentNet already has strong governance ideas: Root authorization, bulletin events, capability tree governance, Registrar / Discovery authorization, and third-party VC issuer authorization. These need to be expressed in a more formal and reusable way.
+OpenAgenet already has strong governance ideas: Root authorization, bulletin events, capability tree governance, Registrar / Discovery authorization, and third-party VC issuer authorization. These need to be expressed in a more formal and reusable way.
 
 Current gap:
 
@@ -212,11 +212,11 @@ Future upgrade direction:
 
 Target state:
 
-- OpenAgentNet can be discussed as a governance-ready Agent infrastructure system, not only an engineering project
+- OpenAgenet can be discussed as a governance-ready Agent infrastructure system, not only an engineering project
 
 ### 2.7 Semantic Discovery Capability
 
-OpenAgentNet already has a capability tree and allows custom tags. This is a practical foundation. However, large-scale Agent discovery requires richer descriptions and Discovery-side extension mechanisms.
+OpenAgenet already has a capability tree and allows custom tags. This is a practical foundation. However, large-scale Agent discovery requires richer descriptions and Discovery-side extension mechanisms.
 
 Current gap:
 
@@ -247,7 +247,7 @@ Target state:
 
 ### 2.8 Pilot Cases and Demonstration Assets
 
-ANP and AIP may gain influence through pilots, standards discussions, and visible ecosystem activities. OpenAgentNet needs stronger demonstration assets that show its infrastructure value.
+ANP and AIP may gain influence through pilots, standards discussions, and visible ecosystem activities. OpenAgenet needs stronger demonstration assets that show its infrastructure value.
 
 Current gap:
 
@@ -270,11 +270,11 @@ Future upgrade direction:
 
 Target state:
 
-- OpenAgentNet can be demonstrated to research institutions, enterprises, developers, and standardization audiences through concrete scenarios
+- OpenAgenet can be demonstrated to research institutions, enterprises, developers, and standardization audiences through concrete scenarios
 
 ### 2.9 Security Completeness
 
-OpenAgentNet already includes DID, VC-compatible credentials, Root proof, bulletin event verification, signed responses, nonce, timestamp, and request signatures. A production-grade infrastructure requires a fuller security lifecycle.
+OpenAgenet already includes DID, VC-compatible credentials, Root proof, bulletin event verification, signed responses, nonce, timestamp, and request signatures. A production-grade infrastructure requires a fuller security lifecycle.
 
 Current gap:
 
@@ -302,11 +302,11 @@ Future upgrade direction:
 
 Target state:
 
-- OpenAgentNet can support security review, controlled pilots, and long-term infrastructure trust
+- OpenAgenet can support security review, controlled pilots, and long-term infrastructure trust
 
 ### 2.10 Ecosystem Organization
 
-ANP and AIP may have early mover advantages through names, communities, standards discussions, and partner networks. OpenAgentNet needs its own ecosystem organization capacity.
+ANP and AIP may have early mover advantages through names, communities, standards discussions, and partner networks. OpenAgenet needs its own ecosystem organization capacity.
 
 Current gap:
 
@@ -331,24 +331,24 @@ Future upgrade direction:
 
 Target state:
 
-- OpenAgentNet can attract developers, institutions, enterprises, and researchers to contribute around a clear infrastructure roadmap
+- OpenAgenet can attract developers, institutions, enterprises, and researchers to contribute around a clear infrastructure roadmap
 
 ## 3. Relationship to ANP and AIP
 
-ANP and AIP should remain important domestic references, but they should not define the center of OpenAgentNet's roadmap.
+ANP and AIP should remain important domestic references, but they should not define the center of OpenAgenet's roadmap.
 
-OpenAgentNet should use the following stance:
+OpenAgenet should use the following stance:
 
 - respect domestic ANP and AIP as important Agent Internet routes
 - seek terminology and concept alignment where useful
-- publish adapter SDKs and metadata profiles that allow open Agent communication and interconnection protocols to enter OpenAgentNet
+- publish adapter SDKs and metadata profiles that allow open Agent communication and interconnection protocols to enter OpenAgenet
 - avoid duplicating full interaction protocol systems
-- keep OpenAgentNet centered on trusted registration, governance, distribution, discovery, verification, and infrastructure operations
-- use demos and specifications to show OpenAgentNet's independent infrastructure value
+- keep OpenAgenet centered on trusted registration, governance, distribution, discovery, verification, and infrastructure operations
+- use demos and specifications to show OpenAgenet's independent infrastructure value
 
 The key sentence is:
 
-> OpenAgentNet does not compete to define every Agent interaction protocol. It aims to become the trusted infrastructure base where different Agent interaction protocols can be registered, discovered, verified, governed, and connected.
+> OpenAgenet does not compete to define every Agent interaction protocol. It aims to become the trusted infrastructure base where different Agent interaction protocols can be registered, discovered, verified, governed, and connected.
 
 ## 4. Version Upgrade Priorities
 
@@ -386,9 +386,9 @@ The key sentence is:
 
 ## 5. Summary
 
-OpenAgentNet's gap with ANP and AIP should not be reduced to protocol adaptation.
+OpenAgenet's gap with ANP and AIP should not be reduced to protocol adaptation.
 
-The real development task is to upgrade OpenAgentNet from a runnable trusted registration, distribution, discovery, and verification reference implementation into a mature infrastructure base that is:
+The real development task is to upgrade OpenAgenet from a runnable trusted registration, distribution, discovery, and verification reference implementation into a mature infrastructure base that is:
 
 - formally specified
 - easy to integrate
@@ -401,8 +401,9 @@ The real development task is to upgrade OpenAgentNet from a runnable trusted reg
 - demonstration-rich
 - ecosystem-organized
 
-ANP and AIP are important references and potential cooperation routes. OpenAgentNet should respect and align with them where useful, but it should remain centered on its own infrastructure mission.
+ANP and AIP are important references and potential cooperation routes. OpenAgenet should respect and align with them where useful, but it should remain centered on its own infrastructure mission.
 
 The long-term goal is clear:
 
-> Build OpenAgentNet into an open, trusted, interoperable infrastructure base for Agent interconnection and the Agent Internet.
+> Build OpenAgenet into an open, trusted, interoperable infrastructure base for Agent interconnection and the Agent Internet.
+

@@ -1,4 +1,4 @@
-<!-- Copyright (c) 2026 China Academy of Information and Communications Technology (CAICT) -->
+﻿<!-- Copyright (c) 2026 China Academy of Information and Communications Technology (CAICT) -->
 <!--
 Author: JINLIANG XU
 Email: xujinliang@caict.ac.cn; jlxufly@gmail.com
@@ -6,7 +6,7 @@ Email: xujinliang@caict.ac.cn; jlxufly@gmail.com
 
 # Repository and Control Strategy Guide
 
-This document is a practical guide for structuring OpenAgentNet across
+This document is a practical guide for structuring OpenAgenet across
 multiple repositories while preserving long-term governance clarity, release
 consistency, and ecosystem continuity.
 
@@ -201,3 +201,4 @@ and package registries for public distribution.
 
 That structure keeps the project open to contributors while preserving a clear
 path for standards, releases, and long-term evolution.
+

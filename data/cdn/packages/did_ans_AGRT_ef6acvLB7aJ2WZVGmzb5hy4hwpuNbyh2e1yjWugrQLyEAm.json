@@ -1,34 +1,34 @@
 {
   "packageVersion": "0.1.0",
-  "did": "did:ans:AGRT:ef8mwSoLkuczZefef3cJpUqE7Xqg7WWakUYNXtS7R9CpEm",
+  "did": "did:ans:AGRT:ef6acvLB7aJ2WZVGmzb5hy4hwpuNbyh2e1yjWugrQLyEAm",
   "didDocument": {
     "@context": [
       "https://www.w3.org/ns/did/v1",
       "https://w3id.org/ans/v1"
     ],
-    "id": "did:ans:AGRT:ef8mwSoLkuczZefef3cJpUqE7Xqg7WWakUYNXtS7R9CpEm",
+    "id": "did:ans:AGRT:ef6acvLB7aJ2WZVGmzb5hy4hwpuNbyh2e1yjWugrQLyEAm",
     "verificationMethod": [
       {
-        "id": "did:ans:AGRT:ef8mwSoLkuczZefef3cJpUqE7Xqg7WWakUYNXtS7R9CpEm#key-1",
+        "id": "did:ans:AGRT:ef6acvLB7aJ2WZVGmzb5hy4hwpuNbyh2e1yjWugrQLyEAm#key-1",
         "type": "Ed25519VerificationKey2020",
-        "controller": "did:ans:AGRT:ef8mwSoLkuczZefef3cJpUqE7Xqg7WWakUYNXtS7R9CpEm",
-        "publicKeyMultibase": "z8mwSoLkuczZefef3cJpUqE7Xqg7WWakUYNXtS7R9CpEm",
+        "controller": "did:ans:AGRT:ef6acvLB7aJ2WZVGmzb5hy4hwpuNbyh2e1yjWugrQLyEAm",
+        "publicKeyMultibase": "z6acvLB7aJ2WZVGmzb5hy4hwpuNbyh2e1yjWugrQLyEAm",
         "publicKeyJwk": {
           "crv": "Ed25519",
-          "x": "c4TszouHfGG-ucs8-ofL312z_LIvoMvGBGEY7ZjmIvI",
+          "x": "Uuc3M58A_4eG2-kwQEUoFO1gx0fOLhNBT8xbHM5D6Ro",
           "kty": "OKP"
         }
       }
     ],
     "authentication": [
-      "did:ans:AGRT:ef8mwSoLkuczZefef3cJpUqE7Xqg7WWakUYNXtS7R9CpEm#key-1"
+      "did:ans:AGRT:ef6acvLB7aJ2WZVGmzb5hy4hwpuNbyh2e1yjWugrQLyEAm#key-1"
     ],
     "assertionMethod": [
-      "did:ans:AGRT:ef8mwSoLkuczZefef3cJpUqE7Xqg7WWakUYNXtS7R9CpEm#key-1"
+      "did:ans:AGRT:ef6acvLB7aJ2WZVGmzb5hy4hwpuNbyh2e1yjWugrQLyEAm#key-1"
     ],
     "service": [
       {
-        "id": "did:ans:AGRT:ef8mwSoLkuczZefef3cJpUqE7Xqg7WWakUYNXtS7R9CpEm#root-api",
+        "id": "did:ans:AGRT:ef6acvLB7aJ2WZVGmzb5hy4hwpuNbyh2e1yjWugrQLyEAm#root-api",
         "type": "RootAuthorityService",
         "serviceEndpoint": "http://localhost:8000",
         "version": "1.0.0",
@@ -37,7 +37,7 @@
         "port": 8000
       },
       {
-        "id": "did:ans:AGRT:ef8mwSoLkuczZefef3cJpUqE7Xqg7WWakUYNXtS7R9CpEm#bulletin",
+        "id": "did:ans:AGRT:ef6acvLB7aJ2WZVGmzb5hy4hwpuNbyh2e1yjWugrQLyEAm#bulletin",
         "type": "TrustBulletinService",
         "serviceEndpoint": "http://localhost:8000/bulletin",
         "version": "1.0.0",
@@ -52,24 +52,24 @@
       "ttl": 300,
       "addressBindings": [
         {
-          "id": "did:ans:AGRT:ef8mwSoLkuczZefef3cJpUqE7Xqg7WWakUYNXtS7R9CpEm#addr-root-api",
+          "id": "did:ans:AGRT:ef6acvLB7aJ2WZVGmzb5hy4hwpuNbyh2e1yjWugrQLyEAm#addr-root-api",
           "addressType": "endpoint",
           "network": "local-http",
           "address": "http://localhost:8000",
-          "controller": "did:ans:AGRT:ef8mwSoLkuczZefef3cJpUqE7Xqg7WWakUYNXtS7R9CpEm",
+          "controller": "did:ans:AGRT:ef6acvLB7aJ2WZVGmzb5hy4hwpuNbyh2e1yjWugrQLyEAm",
           "purpose": "service"
         },
         {
-          "id": "did:ans:AGRT:ef8mwSoLkuczZefef3cJpUqE7Xqg7WWakUYNXtS7R9CpEm#addr-bulletin",
+          "id": "did:ans:AGRT:ef6acvLB7aJ2WZVGmzb5hy4hwpuNbyh2e1yjWugrQLyEAm#addr-bulletin",
           "addressType": "endpoint",
           "network": "local-http",
           "address": "http://localhost:8000/bulletin",
-          "controller": "did:ans:AGRT:ef8mwSoLkuczZefef3cJpUqE7Xqg7WWakUYNXtS7R9CpEm",
+          "controller": "did:ans:AGRT:ef6acvLB7aJ2WZVGmzb5hy4hwpuNbyh2e1yjWugrQLyEAm",
           "purpose": "service"
         }
       ],
       "agentDescription": {
-        "capabilityDescription": "Local OpenAgentNet trust anchor for authorization, bulletin anchoring, DID Document verification, and verified package publishing.",
+        "capabilityDescription": "Local OAN trust anchor for authorization, bulletin anchoring, DID Document verification, and verified package publishing.",
         "capabilityTags": [
           "root-authority",
           "authorization",
@@ -82,15 +82,15 @@
         ]
       },
       "servicePolicy": "public-local-resolution",
-      "networkScope": "openagentnet-local"
+      "networkScope": "oan-local"
     }
   },
-  "didDocumentHash": "b9199e745dffc62569a157c362aa48984f6235b26b31a98c1b37c7dca41e4a9a",
+  "didDocumentHash": "b6bbe8310ecca6633c3938c2781806cc37963822239c7414b3b9c511016e0d78",
   "metadata": {
-    "did": "did:ans:AGRT:ef8mwSoLkuczZefef3cJpUqE7Xqg7WWakUYNXtS7R9CpEm",
+    "did": "did:ans:AGRT:ef6acvLB7aJ2WZVGmzb5hy4hwpuNbyh2e1yjWugrQLyEAm",
     "role": "Root Node",
     "identityType": "root-node",
-    "didDocumentHash": "b9199e745dffc62569a157c362aa48984f6235b26b31a98c1b37c7dca41e4a9a",
+    "didDocumentHash": "b6bbe8310ecca6633c3938c2781806cc37963822239c7414b3b9c511016e0d78",
     "subjectType": "infrastructure-node",
     "capabilityTags": [
       "root-authority",
@@ -100,7 +100,7 @@
     ],
     "services": [
       {
-        "id": "did:ans:AGRT:ef8mwSoLkuczZefef3cJpUqE7Xqg7WWakUYNXtS7R9CpEm#root-api",
+        "id": "did:ans:AGRT:ef6acvLB7aJ2WZVGmzb5hy4hwpuNbyh2e1yjWugrQLyEAm#root-api",
         "type": "RootAuthorityService",
         "serviceEndpoint": "http://localhost:8000",
         "version": "1.0.0",
@@ -109,7 +109,7 @@
         "port": 8000
       },
       {
-        "id": "did:ans:AGRT:ef8mwSoLkuczZefef3cJpUqE7Xqg7WWakUYNXtS7R9CpEm#bulletin",
+        "id": "did:ans:AGRT:ef6acvLB7aJ2WZVGmzb5hy4hwpuNbyh2e1yjWugrQLyEAm#bulletin",
         "type": "TrustBulletinService",
         "serviceEndpoint": "http://localhost:8000/bulletin",
         "version": "1.0.0",
@@ -122,9 +122,9 @@
     "updatedAt": "2026-05-20T00:00:00Z"
   },
   "rootProof": {
-    "rootDid": "did:ans:AGRT:ef8mwSoLkuczZefef3cJpUqE7Xqg7WWakUYNXtS7R9CpEm",
-    "bulletinEventHash": "480a9375644d9a8f5be9897c0288b9fba25bd8c13a70deb9e1c9ecdafc43e97e",
-    "signature": "cat3I8yCDRUewTJhikDgHQA9x-cHxffRSGjwsAeNKguPqq3ozPVj2YbqNoRwzAYH-PrsNSviWmT2Ayu8npXmBw"
+    "rootDid": "did:ans:AGRT:ef6acvLB7aJ2WZVGmzb5hy4hwpuNbyh2e1yjWugrQLyEAm",
+    "bulletinEventHash": "79f5becf591608809fa56459524e469a3f31886c7b263b3b25ddbaa388ff328c",
+    "signature": "sCxQTn-NbAwsNY2XLFLEsfnvr04KbBmL85Je3h_mrxQGu564XqNqVf9F_k9KcwxsC4pT2BDzUHZlhA65mluhAw"
   },
   "createdAt": "2026-05-20T00:00:00Z"
 }

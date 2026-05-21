@@ -1,4 +1,4 @@
-# Copyright (c) 2026 China Academy of Information and Communications Technology (CAICT)
+﻿# Copyright (c) 2026 China Academy of Information and Communications Technology (CAICT)
 #
 # Author: JINLIANG XU
 # Email: xujinliang@caict.ac.cn; jlxufly@gmail.com
@@ -105,7 +105,7 @@ def service_profile() -> dict[str, Any]:
         "capabilityDescription": description.get("capabilityDescription"),
         "capabilityTags": description.get("capabilityTags", []),
         "serviceEndpoints": did_document.get("service", []),
-        "supportedProtocols": ["OpenAgentNet trusted invocation", "MCP", "A2A"],
+        "supportedProtocols": ["OAN trusted invocation", "MCP", "A2A"],
     }
 
 
@@ -120,7 +120,7 @@ def verify_invocation(payload: dict[str, Any]) -> dict[str, Any]:
     caller_did_document = payload.get("callerDidDocument")
     credentials = payload.get("credentials", [])
 
-    if payload.get("type") != "OpenAgentNetTrustedInvocation":
+    if payload.get("type") != "OANTrustedInvocation":
         raise ValueError("invalid_invocation_type")
     if not caller_did or not target_did or not nonce or not timestamp:
         raise ValueError("missing_invocation_fields")
@@ -187,7 +187,7 @@ def verify_invocation(payload: dict[str, Any]) -> dict[str, Any]:
 
 
 class ServiceAgentHandler(BaseHTTPRequestHandler):
-    server_version = "OpenAgentNetServiceAgent/0.1"
+    server_version = "OANServiceAgent/0.1"
 
     def do_GET(self) -> None:
         if self.path == "/health":
@@ -214,8 +214,8 @@ class ServiceAgentHandler(BaseHTTPRequestHandler):
             try:
                 verification = verify_invocation(payload)
                 response = {
-                    "type": "OpenAgentNetTrustedInvocationResponse",
-                    "reply": "hello, verified OpenAgentNet caller",
+                    "type": "OANTrustedInvocationResponse",
+                    "reply": "hello, verified OAN caller",
                     "verified": True,
                     "callerDid": verification["callerDid"],
                     "serviceDid": service_profile()["did"],
@@ -259,3 +259,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+

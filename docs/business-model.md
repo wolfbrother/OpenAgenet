@@ -4,9 +4,9 @@ Author: JINLIANG XU
 Email: xujinliang@caict.ac.cn; jlxufly@gmail.com
 -->
 
-# OpenAgentNet Ecosystem Business Model
+# OpenAgenet Ecosystem Business Model
 
-This document analyzes possible revenue models for Root Node, Registrar Node, and Discovery Node in the OpenAgentNet ecosystem. It is a business design document only. No business charging logic should be implemented in the current Rust services.
+This document analyzes possible revenue models for Root Node, Registrar Node, and Discovery Node in the OpenAgenet ecosystem. It is a business design document only. No business charging logic should be implemented in the current Rust services.
 
 ## 1. Principles
 
@@ -22,11 +22,11 @@ Core principles:
 6. Fees should be quota-based, package-based, subscription-based, or batch-settled where possible.
 7. Commercial policy must not change protocol facts such as Root proof, bulletin status, DID Document hash, metadata hash, or revocation state.
 
-CDN Service is a traditional commercial distribution service. It is not an authorized OpenAgentNet node and is not a trust source. CDN costs may be paid by Root operator, Registrar operators, Discovery operators, or enterprise customers through separate commercial contracts.
+CDN Service is a traditional commercial distribution service. It is not an authorized OpenAgenet node and is not a trust source. CDN costs may be paid by Root operator, Registrar operators, Discovery operators, or enterprise customers through separate commercial contracts.
 
 ## 2. What Should Not Be Sold
 
-OpenAgentNet should not sell trust conclusions as arbitrary business labels.
+OpenAgenet should not sell trust conclusions as arbitrary business labels.
 
 Root should not sell claims such as:
 
@@ -283,5 +283,6 @@ Recommended future commercial direction:
 
 ## 9. Summary
 
-A healthy OpenAgentNet ecosystem should minimize friction for Agent registration, updates, discovery, and invocation. Root should remain a neutral governance and trust infrastructure layer. Registrar and Discovery Nodes can provide market-facing services, while Root preserves verifiable protocol facts and semantic governance.
+A healthy OpenAgenet ecosystem should minimize friction for Agent registration, updates, discovery, and invocation. Root should remain a neutral governance and trust infrastructure layer. Registrar and Discovery Nodes can provide market-facing services, while Root preserves verifiable protocol facts and semantic governance.
+
 

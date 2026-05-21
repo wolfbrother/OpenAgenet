@@ -19,7 +19,7 @@ resolver = "2"
 [workspace.package]
 edition = "2021"
 license = "MIT"
-repository = "https://github.com/wolfbrother/OpenAgentNet"
+repository = "https://github.com/wolfbrother/OpenAgenet"
 version = "0.1.0"
 
 [workspace.dependencies]

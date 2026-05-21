@@ -1,14 +1,15 @@
-<!-- Copyright (c) 2026 China Academy of Information and Communications Technology (CAICT) -->
+﻿<!-- Copyright (c) 2026 China Academy of Information and Communications Technology (CAICT) -->
 <!--
 Author: JINLIANG XU
 Email: xujinliang@caict.ac.cn; jlxufly@gmail.com
 -->
 
-# OpenAgentNet
+# OpenAgenet
 
-OpenAgentNet is an open-source reference implementation for an agent internet
-built around `did:ans`, Root-governed registration, verifiable discovery,
-trusted distribution, and signed Agent-to-Agent invocation.
+OpenAgenet (Open Agent-Internet Network, OAN; Chinese name: "开原智网") is an
+open-source reference implementation for an agent internet built around
+`did:ans`, Root-governed registration, verifiable discovery, trusted
+distribution, and signed Agent-to-Agent invocation.
 
 ## What it contains
 
@@ -20,7 +21,7 @@ trusted distribution, and signed Agent-to-Agent invocation.
 
 ## What it is for
 
-OpenAgentNet is meant to support:
+OpenAgenet is meant to support:
 
 - internal demos
 - external cooperation discussions
@@ -81,4 +82,5 @@ Run the negative trusted invocation example:
 - `examples/`: runnable demos and security checks
 - `docs/`: system design, roadmap, capability tree, and business notes
 - `scripts/`: automation and demo runners
+
 

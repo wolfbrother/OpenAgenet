@@ -1,0 +1,33 @@
+{
+  "agentDid": "did:ans:AGDM:efEfrwc7SRoM4Xc8jhymaA9dMnukgh5o9Th8RKEDvX6zKA",
+  "didDocumentHash": "2db9e1d1b31ebb6527625af34d00ccaab8621290097825508480364b99766e20",
+  "metadata": {
+    "capabilityTags": [
+      "gbt4754-2017.01"
+    ],
+    "demo": "trusted-invocation-negative-cases",
+    "source": "examples/trusted-invocation-negative-cases/run.ps1"
+  },
+  "registrationCredential": {
+    "claims": {
+      "assistedBy": "registrar-capability-tree",
+      "capabilityTags": [
+        "gbt4754-2017.01"
+      ],
+      "registrationFlow": "draft-confirm-submit"
+    },
+    "issuedAt": "2026-05-21T10:01:51.882441300Z",
+    "issuer": "did:ans:AGRG:ef5GRqjxJtj9AhpGwpKnwV9PF3PzbUkHkydAM5bRUmGdVk",
+    "proof": {
+      "created": "2026-05-21T10:01:51.882770700Z",
+      "creator": "did:ans:AGRG:ef5GRqjxJtj9AhpGwpKnwV9PF3PzbUkHkydAM5bRUmGdVk#key-1",
+      "proofPurpose": "assertionMethod",
+      "proofValue": "gX0tVL07OLRk3R8HVFIyRacCuNXpR-aAKxwwN3-FjcWNs5W5MKO205IONgfUjfsE0UQy1d5j4n_Y1v_gmabgDw",
+      "type": "Ed25519Signature2020"
+    },
+    "status": "active",
+    "subject": "did:ans:AGDM:efEfrwc7SRoM4Xc8jhymaA9dMnukgh5o9Th8RKEDvX6zKA",
+    "type": "AgentRegistrationCredential"
+  },
+  "submittedAt": "2026-05-21T10:01:51.900945800Z"
+}

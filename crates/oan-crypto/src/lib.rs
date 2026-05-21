@@ -1,10 +1,10 @@
-// Copyright (c) 2026 China Academy of Information and Communications Technology (CAICT)
+﻿// Copyright (c) 2026 China Academy of Information and Communications Technology (CAICT)
 //
 // Author: JINLIANG XU
 // Email: xujinliang@caict.ac.cn; jlxufly@gmail.com
 //
 
-//! Cryptographic helpers for OpenAgentNet.
+//! Cryptographic helpers for OpenAgenet.
 
 use base64::{engine::general_purpose::URL_SAFE_NO_PAD, Engine};
 use ed25519_dalek::{Signature, Signer, SigningKey, Verifier, VerifyingKey};
@@ -180,3 +180,4 @@ mod tests {
         assert_eq!(from_multibase.as_bytes(), verifying_key.as_bytes());
     }
 }
+

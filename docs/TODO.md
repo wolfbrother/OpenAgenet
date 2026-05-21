@@ -1,12 +1,12 @@
-<!-- Copyright (c) 2026 China Academy of Information and Communications Technology (CAICT) -->
+﻿<!-- Copyright (c) 2026 China Academy of Information and Communications Technology (CAICT) -->
 <!--
 Author: JINLIANG XU
 Email: xujinliang@caict.ac.cn; jlxufly@gmail.com
 -->
 
-# OpenAgentNet TODO
+# OpenAgenet TODO
 
-This document records the current engineering status and the next development work for the OpenAgentNet reference implementation.
+This document records the current engineering status and the next development work for the OpenAgenet reference implementation.
 
 ## Current Status
 
@@ -147,7 +147,7 @@ Root batch handling is now explicit and domain-filtered. Next it should become c
 
 The E2E demo now proves the basic Agent-to-Agent trust loop. Next work should move it from demo-grade to adapter-grade:
 
-- Define the formal OpenAgentNet trusted invocation envelope.
+- Define the formal OAN trusted invocation envelope.
 - Specify canonical JSON, `bodyHash`, proof fields, `proofPurpose`, nonce, timestamp, and response-signing rules.
 - Persist Service Agent nonce records instead of keeping them only in memory.
 - Enforce timestamp windows for Agent invocation requests.
@@ -312,3 +312,4 @@ Keep these docs synchronized with implementation:
 - `services/registrar-node/docs/design.md`
 - `services/discovery-node/docs/design.md`
 - `services/cdn-node/docs/design.md`
+

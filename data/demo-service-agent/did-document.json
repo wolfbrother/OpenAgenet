@@ -3,29 +3,29 @@
     "https://www.w3.org/ns/did/v1",
     "https://w3id.org/ans/v1"
   ],
-  "id": "did:ans:AGDM:efGyxDoPcm8SgEkFbHfyXSX1PTaKWfDH1Ltw2piFebYLgj",
+  "id": "did:ans:AGDM:efEfrwc7SRoM4Xc8jhymaA9dMnukgh5o9Th8RKEDvX6zKA",
   "verificationMethod": [
     {
-      "id": "did:ans:AGDM:efGyxDoPcm8SgEkFbHfyXSX1PTaKWfDH1Ltw2piFebYLgj#key-1",
+      "id": "did:ans:AGDM:efEfrwc7SRoM4Xc8jhymaA9dMnukgh5o9Th8RKEDvX6zKA#key-1",
       "type": "Ed25519VerificationKey2020",
-      "controller": "did:ans:AGDM:efGyxDoPcm8SgEkFbHfyXSX1PTaKWfDH1Ltw2piFebYLgj",
-      "publicKeyMultibase": "zGyxDoPcm8SgEkFbHfyXSX1PTaKWfDH1Ltw2piFebYLgj",
+      "controller": "did:ans:AGDM:efEfrwc7SRoM4Xc8jhymaA9dMnukgh5o9Th8RKEDvX6zKA",
+      "publicKeyMultibase": "zEfrwc7SRoM4Xc8jhymaA9dMnukgh5o9Th8RKEDvX6zKA",
       "publicKeyJwk": {
         "crv": "Ed25519",
-        "x": "7XZEdnx5JjIihw3DVI1vYwKLbYyCVhq99sSVAlIKOMQ",
+        "x": "yxx4RCFA_QbSDQT6EIi1EemNFfTFRv_xwHQxjTW9R2k",
         "kty": "OKP"
       }
     }
   ],
   "authentication": [
-    "did:ans:AGDM:efGyxDoPcm8SgEkFbHfyXSX1PTaKWfDH1Ltw2piFebYLgj#key-1"
+    "did:ans:AGDM:efEfrwc7SRoM4Xc8jhymaA9dMnukgh5o9Th8RKEDvX6zKA#key-1"
   ],
   "assertionMethod": [
-    "did:ans:AGDM:efGyxDoPcm8SgEkFbHfyXSX1PTaKWfDH1Ltw2piFebYLgj#key-1"
+    "did:ans:AGDM:efEfrwc7SRoM4Xc8jhymaA9dMnukgh5o9Th8RKEDvX6zKA#key-1"
   ],
   "service": [
     {
-      "id": "did:ans:AGDM:efGyxDoPcm8SgEkFbHfyXSX1PTaKWfDH1Ltw2piFebYLgj#agent-endpoint",
+      "id": "did:ans:AGDM:efEfrwc7SRoM4Xc8jhymaA9dMnukgh5o9Th8RKEDvX6zKA#agent-endpoint",
       "type": "AgentService",
       "serviceEndpoint": "http://localhost:9001/agent/invoke",
       "version": "1.0.0",
@@ -34,7 +34,7 @@
       "port": 9001
     },
     {
-      "id": "did:ans:AGDM:efGyxDoPcm8SgEkFbHfyXSX1PTaKWfDH1Ltw2piFebYLgj#mcp-endpoint",
+      "id": "did:ans:AGDM:efEfrwc7SRoM4Xc8jhymaA9dMnukgh5o9Th8RKEDvX6zKA#mcp-endpoint",
       "type": "MCPService",
       "serviceEndpoint": "http://localhost:9001/mcp",
       "version": "1.0.0",
@@ -43,7 +43,7 @@
       "port": 9001
     },
     {
-      "id": "did:ans:AGDM:efGyxDoPcm8SgEkFbHfyXSX1PTaKWfDH1Ltw2piFebYLgj#a2a-endpoint",
+      "id": "did:ans:AGDM:efEfrwc7SRoM4Xc8jhymaA9dMnukgh5o9Th8RKEDvX6zKA#a2a-endpoint",
       "type": "A2AService",
       "serviceEndpoint": "http://localhost:9001/a2a",
       "version": "1.0.0",
@@ -58,27 +58,27 @@
     "ttl": 300,
     "addressBindings": [
       {
-        "id": "did:ans:AGDM:efGyxDoPcm8SgEkFbHfyXSX1PTaKWfDH1Ltw2piFebYLgj#addr-agent-endpoint",
+        "id": "did:ans:AGDM:efEfrwc7SRoM4Xc8jhymaA9dMnukgh5o9Th8RKEDvX6zKA#addr-agent-endpoint",
         "addressType": "endpoint",
         "network": "local-http",
         "address": "http://localhost:9001/agent/invoke",
-        "controller": "did:ans:AGDM:efGyxDoPcm8SgEkFbHfyXSX1PTaKWfDH1Ltw2piFebYLgj",
+        "controller": "did:ans:AGDM:efEfrwc7SRoM4Xc8jhymaA9dMnukgh5o9Th8RKEDvX6zKA",
         "purpose": "service"
       },
       {
-        "id": "did:ans:AGDM:efGyxDoPcm8SgEkFbHfyXSX1PTaKWfDH1Ltw2piFebYLgj#addr-mcp-endpoint",
+        "id": "did:ans:AGDM:efEfrwc7SRoM4Xc8jhymaA9dMnukgh5o9Th8RKEDvX6zKA#addr-mcp-endpoint",
         "addressType": "endpoint",
         "network": "local-http",
         "address": "http://localhost:9001/mcp",
-        "controller": "did:ans:AGDM:efGyxDoPcm8SgEkFbHfyXSX1PTaKWfDH1Ltw2piFebYLgj",
+        "controller": "did:ans:AGDM:efEfrwc7SRoM4Xc8jhymaA9dMnukgh5o9Th8RKEDvX6zKA",
         "purpose": "service"
       },
       {
-        "id": "did:ans:AGDM:efGyxDoPcm8SgEkFbHfyXSX1PTaKWfDH1Ltw2piFebYLgj#addr-a2a-endpoint",
+        "id": "did:ans:AGDM:efEfrwc7SRoM4Xc8jhymaA9dMnukgh5o9Th8RKEDvX6zKA#addr-a2a-endpoint",
         "addressType": "endpoint",
         "network": "local-http",
         "address": "http://localhost:9001/a2a",
-        "controller": "did:ans:AGDM:efGyxDoPcm8SgEkFbHfyXSX1PTaKWfDH1Ltw2piFebYLgj",
+        "controller": "did:ans:AGDM:efEfrwc7SRoM4Xc8jhymaA9dMnukgh5o9Th8RKEDvX6zKA",
         "purpose": "service"
       }
     ],
@@ -99,6 +99,6 @@
       ]
     },
     "servicePolicy": "public-local-resolution",
-    "networkScope": "openagentnet-local"
+    "networkScope": "oan-local"
   }
 }

@@ -1,4 +1,4 @@
-// Copyright (c) 2026 China Academy of Information and Communications Technology (CAICT)
+﻿// Copyright (c) 2026 China Academy of Information and Communications Technology (CAICT)
 //
 // Author: JINLIANG XU
 // Email: xujinliang@caict.ac.cn; jlxufly@gmail.com
@@ -126,7 +126,7 @@ function generateIdentity({
           : ["Discover a Service Agent.", "Submit or verify a registration package."],
       },
       servicePolicy: "public-local-resolution",
-      networkScope: "openagentnet-local",
+      networkScope: "oan-local",
     },
   };
 
@@ -167,7 +167,7 @@ const root = generateIdentity({
   subjectType: "infrastructure-node",
   identityType: "root-node",
   role: "Root Node",
-  description: "Local OpenAgentNet trust anchor for authorization, bulletin anchoring, DID Document verification, and verified package publishing.",
+  description: "Local OAN trust anchor for authorization, bulletin anchoring, DID Document verification, and verified package publishing.",
   capabilityTags: ["root-authority", "authorization", "bulletin", "verification"],
   services: [
     { fragment: "#root-api", type: "RootAuthorityService", endpoint: "http://localhost:8100", serverType: "local-root", port: 8100 },
@@ -357,3 +357,4 @@ writeText(path.join(outputDir, "README.md"), [
 ].join("\n"));
 
 console.log(`Generated multi-node demo data at ${outputDir}`);
+

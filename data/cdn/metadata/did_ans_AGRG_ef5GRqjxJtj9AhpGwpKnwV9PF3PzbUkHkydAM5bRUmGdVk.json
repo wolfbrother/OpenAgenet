@@ -1,8 +1,8 @@
 {
-  "did": "did:ans:AGRG:efEG7xC2ertt4FsXZLThNaE7gwb1WoufEqpc9rb6Vh5Yrm",
+  "did": "did:ans:AGRG:ef5GRqjxJtj9AhpGwpKnwV9PF3PzbUkHkydAM5bRUmGdVk",
   "role": "Registrar Node",
   "identityType": "registrar-node",
-  "didDocumentHash": "5c51a461bf6d7bd0a59245d06c351d7d893a2b1c3f1525a064e9babddeada70b",
+  "didDocumentHash": "44ca71270c71b3989ac85387fcb7f7c585d149ba4aafad58fa4e752c259b4cea",
   "subjectType": "infrastructure-node",
   "capabilityTags": [
     "registration",
@@ -11,7 +11,7 @@
   ],
   "services": [
     {
-      "id": "did:ans:AGRG:efEG7xC2ertt4FsXZLThNaE7gwb1WoufEqpc9rb6Vh5Yrm#registrar-api",
+      "id": "did:ans:AGRG:ef5GRqjxJtj9AhpGwpKnwV9PF3PzbUkHkydAM5bRUmGdVk#registrar-api",
       "type": "AgentRegistrarService",
       "serviceEndpoint": "http://localhost:8001",
       "version": "1.0.0",
