@@ -20,6 +20,7 @@ and negative security checks.
 
 - `full-trusted-invocation`: full local happy-path system flow
 - `trusted-invocation-negative-cases`: trusted invocation security regression checks
+- `multi-registrar-discovery`: isolated multi Registrar / multi Discovery integration example
 - `register-service-agent`: service registration flow
 - `discover-agent`: discovery flow
 - `a2a-service-agent-demo`: A2A-oriented service demo

@@ -13,3 +13,4 @@ data/**/credentials/by-dimension/
 docs/~$*
 
 *.log
+.oan-multi-node-demo/

@@ -292,6 +292,9 @@ fn load_config(path: String) -> Result<Config> {
     config.paths.data_dir = resolve_relative(base, &config.paths.data_dir);
     config.paths.keys_dir = resolve_relative(base, &config.paths.keys_dir);
     config.paths.bulletin_file = resolve_relative(base, &config.paths.bulletin_file);
+    config.paths.authorization_state_file =
+        resolve_relative(base, &config.paths.authorization_state_file);
+    config.paths.request_nonce_file = resolve_relative(base, &config.paths.request_nonce_file);
     if !config.paths.capability_tree_file.as_os_str().is_empty() {
         config.paths.capability_tree_file =
             resolve_relative(base, &config.paths.capability_tree_file);
@@ -352,8 +355,8 @@ async fn verify_and_publish(
 
     let did_document_hash =
         hash_json(&request.did_document).map_err(|err| ApiError::internal(err.into()))?;
-    let metadata = build_metadata(&state, &request, &did_document_hash)
-        .map_err(ApiError::internal)?;
+    let metadata =
+        build_metadata(&state, &request, &did_document_hash).map_err(ApiError::internal)?;
     let metadata_hash = hash_json(&metadata).map_err(|err| ApiError::internal(err.into()))?;
     let latest = read_latest_versions(&state).map_err(ApiError::internal)?;
     let previous = latest.get(&request.agent_did);
@@ -1226,7 +1229,9 @@ fn update_authorization_state(
     role: &str,
     discovery: Option<DiscoveryAuthorizationState>,
 ) -> Result<()> {
-    let mut authorization_state = state.authorization_state.clone();
+    let mut authorization_state =
+        load_authorization_state(&state.config.paths.authorization_state_file)
+            .unwrap_or_else(|_| state.authorization_state.clone());
     match role {
         "registrar" | "Registrar" | "Registrar Node" => {
             authorization_state.registrars.insert(did.to_owned(), entry);
@@ -1257,7 +1262,9 @@ fn update_discovery_authorization_state(
     did: &str,
     entry: DiscoveryAuthorizationState,
 ) -> Result<()> {
-    let mut authorization_state = state.authorization_state.clone();
+    let mut authorization_state =
+        load_authorization_state(&state.config.paths.authorization_state_file)
+            .unwrap_or_else(|_| state.authorization_state.clone());
     authorization_state
         .discovery_nodes
         .insert(did.to_owned(), entry);
@@ -1269,7 +1276,9 @@ fn update_discovery_authorization_state(
 }
 
 fn revoke_authorization_state(state: &AppState, did: &str) -> Result<()> {
-    let mut authorization_state = state.authorization_state.clone();
+    let mut authorization_state =
+        load_authorization_state(&state.config.paths.authorization_state_file)
+            .unwrap_or_else(|_| state.authorization_state.clone());
     if let Some(entry) = authorization_state.registrars.get_mut(did) {
         entry.status = "revoked".to_owned();
         entry.updated_at = Utc::now();

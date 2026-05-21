@@ -1,0 +1,18 @@
+[server]
+host = "127.0.0.1"
+port = 8100
+endpoint = "http://localhost:8100"
+
+[node]
+name = "Root Node A"
+role = "root"
+did_semantic_code = "AGRT"
+
+[paths]
+data_dir = "../../.oan-multi-node-demo/root"
+keys_dir = "../../.oan-multi-node-demo/root/keys"
+bulletin_file = "../../.oan-multi-node-demo/root/bulletin.json"
+authorization_state_file = "../../.oan-multi-node-demo/root/authorization-state.json"
+request_nonce_file = "../../.oan-multi-node-demo/root/request-nonces.json"
+capability_tree_file = "../../docs/capability-tree-v1.json"
+database_url = "sqlite:../../.oan-multi-node-demo/root/root.db"

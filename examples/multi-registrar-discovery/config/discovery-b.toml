@@ -1,0 +1,20 @@
+[server]
+host = "127.0.0.1"
+port = 8104
+endpoint = "http://localhost:8104"
+
+[node]
+name = "Discovery Node B"
+role = "discovery"
+did_semantic_code = "AGDB"
+
+[upstream]
+root_endpoint = "http://localhost:8100"
+cdn_endpoint = "http://localhost:8105"
+
+[paths]
+data_dir = "../../.oan-multi-node-demo/discovery-b"
+index_dir = "../../.oan-multi-node-demo/discovery-b/index"
+database_url = "sqlite:../../.oan-multi-node-demo/discovery-b/discovery.db"
+keys_dir = "../../.oan-multi-node-demo/discovery-b/keys"
+

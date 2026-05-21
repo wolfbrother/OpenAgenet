@@ -1,0 +1,21 @@
+[server]
+host = "127.0.0.1"
+port = 8105
+endpoint = "http://localhost:8105"
+
+[service]
+name = "CDN Service"
+role = "cdn-service"
+provider = "local"
+
+[upstream]
+root_endpoint = "http://localhost:8100"
+
+[paths]
+data_dir = "../../.oan-multi-node-demo/cdn"
+manifest_file = "../../.oan-multi-node-demo/cdn/manifest.json"
+documents_dir = "../../.oan-multi-node-demo/cdn/documents"
+metadata_dir = "../../.oan-multi-node-demo/cdn/metadata"
+packages_dir = "../../.oan-multi-node-demo/cdn/packages"
+database_url = "sqlite:../../.oan-multi-node-demo/cdn/cdn.db"
+
