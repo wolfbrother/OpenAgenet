@@ -230,11 +230,9 @@ mod tests {
         )
         .unwrap();
 
-        assert!(verify_agent_registration_credential(
-            &credential,
-            &wrong_key.verifying_key()
-        )
-        .is_err());
+        assert!(
+            verify_agent_registration_credential(&credential, &wrong_key.verifying_key()).is_err()
+        );
     }
 
     #[test]

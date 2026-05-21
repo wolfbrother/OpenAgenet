@@ -6,6 +6,8 @@ Email: xujinliang@caict.ac.cn; jlxufly@gmail.com
 
 # Registrar Node
 
-Registers Service Agents and submits DID Documents to Root Node.
+Onboards Service Agents, helps assemble complete DID Documents, and submits
+registration packages to Root Node.
 
-Detailed module design: [docs/design.md](docs/design.md)
+This README is the module entry point. For detailed behavior, APIs, storage,
+and tests, see [docs/design.md](docs/design.md).

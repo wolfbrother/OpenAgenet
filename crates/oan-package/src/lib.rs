@@ -57,7 +57,11 @@ pub struct VerifiedPackage {
     pub did_document: DidDocument,
     #[serde(rename = "didDocumentHash")]
     pub did_document_hash: String,
-    #[serde(rename = "metadataHash", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "metadataHash",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub metadata_hash: Option<String>,
     pub metadata: AgentMetadata,
     #[serde(rename = "rootProof")]

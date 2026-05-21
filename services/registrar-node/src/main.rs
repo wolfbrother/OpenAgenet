@@ -22,8 +22,7 @@ use oan_storage::{did_to_file_name, JsonStore, SqliteJsonStore};
 use serde::{Deserialize, Serialize};
 use serde_json::{json, Value};
 use std::{
-    env,
-    fs,
+    env, fs,
     net::SocketAddr,
     path::{Path, PathBuf},
 };
@@ -185,15 +184,24 @@ async fn main() -> Result<()> {
         )
         .route("/api/v1/agents", get(api_agents))
         .route("/api/v1/agents/{did}", get(api_agent_detail))
-        .route("/api/v1/agents/{did}/submissions", get(api_agent_submissions))
+        .route(
+            "/api/v1/agents/{did}/submissions",
+            get(api_agent_submissions),
+        )
         .route("/api/v1/agents/draft", post(api_create_draft))
         .route("/api/v1/agents/draft/{draftId}", put(api_update_draft))
-        .route("/api/v1/agents/draft/{draftId}/validate", post(api_validate_draft))
+        .route(
+            "/api/v1/agents/draft/{draftId}/validate",
+            post(api_validate_draft),
+        )
         .route(
             "/api/v1/agents/draft/{draftId}/issue-registration-credential",
             post(api_issue_registration_credential),
         )
-        .route("/api/v1/agents/draft/{draftId}/submit", post(api_submit_draft))
+        .route(
+            "/api/v1/agents/draft/{draftId}/submit",
+            post(api_submit_draft),
+        )
         .route("/api/v1/agents/{did}/resubmit", post(api_resubmit_agent))
         .route("/api/v1/capability-tree", get(api_capability_tree))
         .route("/api/v1/capability-tags/suggest", post(api_suggest_tags))
@@ -283,13 +291,18 @@ async fn register_agent(
 
     let root_request = VerifyAndPublishRequest {
         registrar_did: state.did.clone(),
-        registrar_did_document: JsonStore::new(&state.config.paths.data_dir).read("did-document.json").map_err(|err| ApiError::internal(err.into()))?,
+        registrar_did_document: JsonStore::new(&state.config.paths.data_dir)
+            .read("did-document.json")
+            .map_err(|err| ApiError::internal(err.into()))?,
         agent_did: request.agent_did,
         did_document: request.did_document,
         metadata: record["metadata"].clone(),
         registration_credential: request.registration_credential,
         request_timestamp: Some(chrono::Utc::now()),
-        request_nonce: Some(format!("nonce-{}", chrono::Utc::now().timestamp_nanos_opt().unwrap_or_default())),
+        request_nonce: Some(format!(
+            "nonce-{}",
+            chrono::Utc::now().timestamp_nanos_opt().unwrap_or_default()
+        )),
         request_signature: None,
     };
     let response = state
@@ -367,7 +380,8 @@ async fn api_root_authorization(State(state): State<AppState>) -> ApiResult<Valu
 }
 
 async fn api_agents(State(state): State<AppState>) -> ApiResult<Value> {
-    let records = read_record_values(&state.config.paths.records_dir).map_err(ApiError::internal)?;
+    let records =
+        read_record_values(&state.config.paths.records_dir).map_err(ApiError::internal)?;
     Ok(Json(json!({ "items": records, "count": records.len() })))
 }
 
@@ -388,10 +402,10 @@ async fn api_agent_submissions(
     let record: Option<Value> = JsonStore::new(&state.config.paths.records_dir)
         .read(did_to_file_name(&did))
         .ok();
-    let submissions = record
-        .map(|value| vec![value])
-        .unwrap_or_default();
-    Ok(Json(json!({ "did": did, "items": submissions, "count": submissions.len() })))
+    let submissions = record.map(|value| vec![value]).unwrap_or_default();
+    Ok(Json(
+        json!({ "did": did, "items": submissions, "count": submissions.len() }),
+    ))
 }
 
 async fn api_create_draft(
@@ -419,7 +433,10 @@ async fn api_create_draft(
         agent_did,
         did_document,
         registration_credential: payload.get("registrationCredential").cloned(),
-        metadata: payload.get("metadata").cloned().unwrap_or_else(|| json!({})),
+        metadata: payload
+            .get("metadata")
+            .cloned()
+            .unwrap_or_else(|| json!({})),
         status: "draft".to_owned(),
         created_at: now,
         updated_at: now,
@@ -504,7 +521,8 @@ async fn api_issue_registration_credential(
     )
     .sign(format!("{}#key-1", state.did), &state.signing_key)
     .map_err(|err| ApiError::internal(err.into()))?;
-    let credential = serde_json::to_value(credential).map_err(|err| ApiError::internal(err.into()))?;
+    let credential =
+        serde_json::to_value(credential).map_err(|err| ApiError::internal(err.into()))?;
     draft.registration_credential = Some(credential.clone());
     draft.status = "credential-issued".to_owned();
     draft.updated_at = chrono::Utc::now();
@@ -581,7 +599,9 @@ async fn api_suggest_tags(
         .and_then(Value::as_str)
         .unwrap_or("")
         .to_lowercase();
-    let tree_value = fetch_root_value(&state, "/api/v1/root/capability-tree").await.ok();
+    let tree_value = fetch_root_value(&state, "/api/v1/root/capability-tree")
+        .await
+        .ok();
     let tree: Option<CapabilityTagTree> = tree_value
         .clone()
         .and_then(|value| serde_json::from_value(value).ok());
@@ -593,14 +613,19 @@ async fn api_suggest_tags(
                     keyword.is_empty()
                         || tag.id.to_lowercase().contains(&keyword)
                         || tag.label.to_lowercase().contains(&keyword)
-                        || tag.aliases.iter().any(|alias| alias.to_lowercase().contains(&keyword))
+                        || tag
+                            .aliases
+                            .iter()
+                            .any(|alias| alias.to_lowercase().contains(&keyword))
                 })
                 .take(20)
                 .map(|tag| json!({ "id": tag.id, "label": tag.label, "parent": tag.parent }))
                 .collect::<Vec<_>>()
         })
         .unwrap_or_default();
-    Ok(Json(json!({ "items": suggestions, "count": suggestions.len() })))
+    Ok(Json(
+        json!({ "items": suggestions, "count": suggestions.len() }),
+    ))
 }
 
 async fn fetch_root_value(state: &AppState, path: &str) -> Result<Value> {
@@ -784,7 +809,10 @@ mod tests {
             .unwrap();
         state
             .data
-            .write(format!("drafts/{}.json", storage_safe_id("draft-1")), &json!({"draftId": "draft-1", "agentDid": did}))
+            .write(
+                format!("drafts/{}.json", storage_safe_id("draft-1")),
+                &json!({"draftId": "draft-1", "agentDid": did}),
+            )
             .unwrap();
 
         let response = api_status(State(state)).await.unwrap();

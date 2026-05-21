@@ -69,8 +69,8 @@ impl SqliteJsonStore {
         if let Some(parent) = config.path().parent() {
             fs::create_dir_all(parent)?;
         }
-        let options = sqlx::sqlite::SqliteConnectOptions::from_str(config.url())?
-            .create_if_missing(true);
+        let options =
+            sqlx::sqlite::SqliteConnectOptions::from_str(config.url())?.create_if_missing(true);
         let pool = sqlx::SqlitePool::connect_with(options).await?;
         sqlx::query(
             r#"
@@ -476,28 +476,43 @@ mod tests {
         let store = SqliteJsonStore::connect(&url).await.unwrap();
 
         store
-            .upsert_json("queue", "a", &Example {
-                value: "first".to_owned(),
-            })
+            .upsert_json(
+                "queue",
+                "a",
+                &Example {
+                    value: "first".to_owned(),
+                },
+            )
             .await
             .unwrap();
         store
-            .upsert_json("queue", "a", &Example {
-                value: "updated".to_owned(),
-            })
+            .upsert_json(
+                "queue",
+                "a",
+                &Example {
+                    value: "updated".to_owned(),
+                },
+            )
             .await
             .unwrap();
         store
-            .upsert_json("other", "b", &Example {
-                value: "ignored".to_owned(),
-            })
+            .upsert_json(
+                "other",
+                "b",
+                &Example {
+                    value: "ignored".to_owned(),
+                },
+            )
             .await
             .unwrap();
 
         let rows: Vec<Example> = store.read_namespace("queue").await.unwrap();
-        assert_eq!(rows, vec![Example {
-            value: "updated".to_owned()
-        }]);
+        assert_eq!(
+            rows,
+            vec![Example {
+                value: "updated".to_owned()
+            }]
+        );
         let one: Option<Example> = store.read_json("queue", "a").await.unwrap();
         assert_eq!(one.unwrap().value, "updated");
         assert_eq!(store.count_namespace("queue").await.unwrap(), 1);

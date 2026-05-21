@@ -238,7 +238,9 @@ async fn api_packages(State(state): State<AppState>) -> ApiResult<serde_json::Va
         root_did: String::new(),
         packages: vec![],
     });
-    Ok(Json(json!({ "items": manifest.packages, "count": manifest.packages.len() })))
+    Ok(Json(
+        json!({ "items": manifest.packages, "count": manifest.packages.len() }),
+    ))
 }
 
 async fn api_package_detail(
@@ -283,7 +285,11 @@ async fn api_manifest_stats(State(state): State<AppState>) -> ApiResult<serde_js
     });
     let mut role_counts = serde_json::Map::new();
     for entry in &manifest.packages {
-        let count = role_counts.get(&entry.role).and_then(Value::as_u64).unwrap_or(0) + 1;
+        let count = role_counts
+            .get(&entry.role)
+            .and_then(Value::as_u64)
+            .unwrap_or(0)
+            + 1;
         role_counts.insert(entry.role.clone(), json!(count));
     }
     Ok(Json(json!({
@@ -298,9 +304,14 @@ async fn api_publish_history(State(state): State<AppState>) -> ApiResult<serde_j
     Ok(Json(json!({ "items": history, "count": history.len() })))
 }
 
-async fn api_purge(State(state): State<AppState>, Json(payload): Json<Value>) -> ApiResult<serde_json::Value> {
+async fn api_purge(
+    State(state): State<AppState>,
+    Json(payload): Json<Value>,
+) -> ApiResult<serde_json::Value> {
     if let Some(did) = payload.get("did").and_then(|value| value.as_str()) {
-        let _ = state.data.resolve(format!("packages/{}", did_to_file_name(did)));
+        let _ = state
+            .data
+            .resolve(format!("packages/{}", did_to_file_name(did)));
     }
     Ok(Json(json!({
         "status": "accepted",
@@ -423,11 +434,17 @@ mod tests {
             .unwrap();
         state
             .data
-            .write(format!("documents/{}", did_to_file_name(did)), &package.did_document)
+            .write(
+                format!("documents/{}", did_to_file_name(did)),
+                &package.did_document,
+            )
             .unwrap();
         state
             .data
-            .write(format!("metadata/{}", did_to_file_name(did)), &package.metadata)
+            .write(
+                format!("metadata/{}", did_to_file_name(did)),
+                &package.metadata,
+            )
             .unwrap();
 
         let detail = api_package_detail(State(state.clone()), AxumPath(did.to_owned()))

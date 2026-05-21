@@ -295,7 +295,28 @@ The current codebase includes:
 - signed Agent-to-Agent trusted hello demo
 - E2E verification of User Agent VC, User Agent request signature, Service Agent signed response, and provenance metadata
 
-## 16. Remaining Gaps
+## 16. Demo and Research Boundary
+
+The repository should be read as a two-layer reference:
+
+- the demo layer proves the trust flow, registration flow, discovery flow, and signed invocation flow end to end
+- the research layer expands protocol compatibility, governance policy, lifecycle checks, deployment hardening, and observability
+
+The demo layer is intended for:
+
+- internal demonstrations
+- external cooperation discussions
+- protocol validation
+
+The research layer is intended for:
+
+- deeper MCP and A2A alignment
+- fuller W3C VC compatibility
+- stronger issuer and revocation controls
+- richer discovery semantics
+- multi-node deployment and operational readiness
+
+## 17. Remaining Gaps
 
 Important gaps are tracked in:
 

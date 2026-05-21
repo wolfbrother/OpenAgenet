@@ -1,0 +1,65 @@
+# Copyright (c) 2026 China Academy of Information and Communications Technology (CAICT)
+#
+# Author: JINLIANG XU
+# Email: xujinliang@caict.ac.cn; jlxufly@gmail.com
+#
+
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  rust:
+    name: Rust checks
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+      - name: Cargo format
+        run: cargo fmt --all --check
+      - name: Cargo clippy
+        run: cargo clippy --workspace --all-targets --all-features -- -D warnings
+      - name: Cargo test
+        run: cargo test --workspace
+
+  python:
+    name: Python agent checks
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+      - name: Compile Python agents
+        run: python -m compileall agents/service-agent-python/src agents/user-agent-python/src
+      - name: Check Service Agent lock
+        run: uv sync --project agents/service-agent-python --locked
+      - name: Check User Agent lock
+        run: uv sync --project agents/user-agent-python --locked
+
+  e2e:
+    name: Local E2E demos
+    runs-on: windows-latest
+    needs:
+      - rust
+      - python
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+      - name: Run trusted invocation happy path
+        shell: pwsh
+        run: .\scripts\run-e2e-demo.ps1
+      - name: Run trusted invocation negative cases
+        shell: pwsh
+        run: .\examples\trusted-invocation-negative-cases\run.ps1

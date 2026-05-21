@@ -6,6 +6,8 @@ Email: xujinliang@caict.ac.cn; jlxufly@gmail.com
 
 # Discovery Node
 
-Builds a capability index from CDN metadata and serves discovery queries.
+Builds a verified local capability index from CDN packages and serves signed
+discovery responses.
 
-Detailed module design: [docs/design.md](docs/design.md)
+This README is the module entry point. For detailed behavior, APIs, storage,
+and tests, see [docs/design.md](docs/design.md).

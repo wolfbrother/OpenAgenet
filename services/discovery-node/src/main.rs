@@ -12,10 +12,11 @@ use axum::{
     routing::{get, post},
     Json, Router,
 };
+use base64::{engine::general_purpose::URL_SAFE_NO_PAD, Engine};
 use chrono::Utc;
+use oan_bulletin::Bulletin;
 use oan_core::{CapabilityTagTree, DidDocument, SubjectType};
 use oan_crypto::{hash_json, sign_bytes, signing_key_from_bytes};
-use oan_bulletin::Bulletin;
 use oan_package::{Manifest, VerifiedPackage};
 use oan_protocol::{
     DiscoveryCandidate, DiscoveryQuery, DiscoveryResponse, DiscoveryResponseProof, HealthResponse,
@@ -23,10 +24,8 @@ use oan_protocol::{
 use oan_storage::{JsonStore, SqliteJsonStore};
 use serde::{Deserialize, Serialize};
 use serde_json::{json, Value};
-use base64::{engine::general_purpose::URL_SAFE_NO_PAD, Engine};
 use std::{
-    env,
-    fs,
+    env, fs,
     net::SocketAddr,
     path::{Path, PathBuf},
 };
@@ -157,11 +156,20 @@ async fn main() -> Result<()> {
         .route("/api/v1/discovery/sync/history", get(api_sync_history))
         .route("/api/v1/discovery/index/stats", get(api_index_stats))
         .route("/api/v1/discovery/index/agents", get(api_index_agents))
-        .route("/api/v1/discovery/index/agents/{did}", get(api_index_agent_detail))
+        .route(
+            "/api/v1/discovery/index/agents/{did}",
+            get(api_index_agent_detail),
+        )
         .route("/api/v1/discovery/query", post(query))
         .route("/api/v1/discovery/query/explain", post(api_query_explain))
-        .route("/api/v1/discovery/rejected-packages", get(api_rejected_packages))
-        .route("/api/v1/discovery/capability-tree", get(api_capability_tree))
+        .route(
+            "/api/v1/discovery/rejected-packages",
+            get(api_rejected_packages),
+        )
+        .route(
+            "/api/v1/discovery/capability-tree",
+            get(api_capability_tree),
+        )
         .with_state(state);
 
     let addr: SocketAddr = format!("{}:{}", config.server.host, config.server.port).parse()?;
@@ -221,7 +229,9 @@ async fn discovery_did_document(State(state): State<AppState>) -> ApiResult<DidD
 
 async fn sync_from_cdn(State(state): State<AppState>) -> ApiResult<serde_json::Value> {
     let bulletin = fetch_bulletin(&state).await.map_err(ApiError::internal)?;
-    let root_key = root_verifying_key(&state).await.map_err(ApiError::internal)?;
+    let root_key = root_verifying_key(&state)
+        .await
+        .map_err(ApiError::internal)?;
     verify_bulletin_state(&bulletin, &root_key).map_err(ApiError::internal)?;
     let authorized_domains = discovery_authorized_domains(&bulletin, &state.did);
     let cdn = resolve_cdn_service(&state, &bulletin)
@@ -307,8 +317,11 @@ async fn sync_from_cdn(State(state): State<AppState>) -> ApiResult<serde_json::V
         "syncedCount": indexed.len(),
         "cdnManifestUrl": cdn.manifest_url
     });
-    append_json_log(&state.config.paths.index_dir.join("sync-history.json"), history)
-        .map_err(ApiError::internal)?;
+    append_json_log(
+        &state.config.paths.index_dir.join("sync-history.json"),
+        history,
+    )
+    .map_err(ApiError::internal)?;
     write_sync_history_sqlite(
         &state,
         json!({
@@ -411,8 +424,8 @@ async fn query(
         signature: String::new(),
         proof: None,
     };
-    let signature = sign_discovery_response(&state.signing_key, &unsigned)
-        .map_err(|err| ApiError::internal(err.into()))?;
+    let signature =
+        sign_discovery_response(&state.signing_key, &unsigned).map_err(ApiError::internal)?;
     let response = DiscoveryResponse {
         signature: signature.clone(),
         proof: Some(DiscoveryResponseProof {
@@ -449,7 +462,9 @@ async fn api_status(State(state): State<AppState>) -> ApiResult<Value> {
     let packages = read_indexed_packages(&state)
         .await
         .map_err(ApiError::internal)?;
-    let history = read_sync_history(&state).await.map_err(ApiError::internal)?;
+    let history = read_sync_history(&state)
+        .await
+        .map_err(ApiError::internal)?;
     let bulletin = fetch_bulletin(&state).await.ok();
     Ok(Json(json!({
         "discoveryDid": state.did,
@@ -489,7 +504,9 @@ async fn api_authorized_domains(State(state): State<AppState>) -> ApiResult<Valu
 }
 
 async fn api_sync_history(State(state): State<AppState>) -> ApiResult<Value> {
-    let history = read_sync_history(&state).await.map_err(ApiError::internal)?;
+    let history = read_sync_history(&state)
+        .await
+        .map_err(ApiError::internal)?;
     Ok(Json(json!({ "items": history, "count": history.len() })))
 }
 
@@ -516,13 +533,15 @@ async fn api_index_agents(State(state): State<AppState>) -> ApiResult<Value> {
         .map_err(ApiError::internal)?;
     let items = packages
         .into_iter()
-        .map(|package| json!({
-            "did": package.did,
-            "capabilityTags": package.metadata.capability_tags,
-            "services": package.metadata.services,
-            "status": package.metadata.status,
-            "updatedAt": package.metadata.updated_at
-        }))
+        .map(|package| {
+            json!({
+                "did": package.did,
+                "capabilityTags": package.metadata.capability_tags,
+                "services": package.metadata.services,
+                "status": package.metadata.status,
+                "updatedAt": package.metadata.updated_at
+            })
+        })
         .collect::<Vec<_>>();
     Ok(Json(json!({ "items": items, "count": items.len() })))
 }
@@ -570,7 +589,10 @@ async fn api_query_explain(
 }
 
 async fn api_rejected_packages(State(state): State<AppState>) -> ApiResult<Value> {
-    let items: Vec<Value> = state.index.read("rejected-packages.json").unwrap_or_default();
+    let items: Vec<Value> = state
+        .index
+        .read("rejected-packages.json")
+        .unwrap_or_default();
     Ok(Json(json!({ "items": items, "count": items.len() })))
 }
 
@@ -605,7 +627,7 @@ async fn api_capability_tree(State(state): State<AppState>) -> ApiResult<Value> 
 }
 
 async fn fetch_bulletin(state: &AppState) -> Result<Value> {
-    Ok(state
+    state
         .client
         .get(format!(
             "{}/bulletin",
@@ -616,7 +638,7 @@ async fn fetch_bulletin(state: &AppState) -> Result<Value> {
         .context("fetch_root_bulletin_failed")?
         .json()
         .await
-        .context("decode_root_bulletin_failed")?)
+        .context("decode_root_bulletin_failed")
 }
 
 fn discovery_authorization_status(bulletin: &Value, discovery_did: &str) -> String {
@@ -652,7 +674,9 @@ fn append_json_log(path: &Path, value: Value) -> Result<()> {
 
 async fn write_indexed_packages(state: &AppState, packages: &[VerifiedPackage]) -> Result<()> {
     if let Some(sqlite) = &state.sqlite {
-        sqlite.delete_namespace("discovery.indexed_packages").await?;
+        sqlite
+            .delete_namespace("discovery.indexed_packages")
+            .await?;
         for package in packages {
             sqlite
                 .upsert_json("discovery.indexed_packages", &package.did, package)
@@ -664,9 +688,8 @@ async fn write_indexed_packages(state: &AppState, packages: &[VerifiedPackage]) 
 
 async fn read_indexed_packages(state: &AppState) -> Result<Vec<VerifiedPackage>> {
     if let Some(sqlite) = &state.sqlite {
-        let packages: Vec<VerifiedPackage> = sqlite
-            .read_namespace("discovery.indexed_packages")
-            .await?;
+        let packages: Vec<VerifiedPackage> =
+            sqlite.read_namespace("discovery.indexed_packages").await?;
         if !packages.is_empty() {
             return Ok(packages);
         }
@@ -759,7 +782,7 @@ fn discovery_authorized_domains(bulletin: &Value, discovery_did: &str) -> Vec<St
 
 fn verify_bulletin_state(bulletin: &Value, root_key: &ed25519_dalek::VerifyingKey) -> Result<()> {
     let bulletin_obj: Bulletin = serde_json::from_value(bulletin.clone())?;
-    bulletin_obj.verify_hash_chain(&root_key)?;
+    bulletin_obj.verify_hash_chain(root_key)?;
     Ok(())
 }
 
@@ -788,11 +811,13 @@ fn verify_package_root_proof(
 }
 
 fn authorized_domains_match(package: &VerifiedPackage, authorized_domains: &[String]) -> bool {
-    let tree = CapabilityTagTree::load_from_path("../../docs/capability-tree-v1.json").unwrap_or(CapabilityTagTree {
-        version: 1,
-        tags: vec![],
-        tree: vec![],
-    });
+    let tree = CapabilityTagTree::load_from_path("../../docs/capability-tree-v1.json").unwrap_or(
+        CapabilityTagTree {
+            version: 1,
+            tags: vec![],
+            tree: vec![],
+        },
+    );
     tree.matches_authorized_domains(&package.metadata.capability_tags, authorized_domains)
 }
 
@@ -930,7 +955,10 @@ mod tests {
 
         assert!(authorized_domains_match(&package, &["*".to_owned()]));
         assert!(authorized_domains_match(&package, &["finance".to_owned()]));
-        assert!(!authorized_domains_match(&package, &["translation".to_owned()]));
+        assert!(!authorized_domains_match(
+            &package,
+            &["translation".to_owned()]
+        ));
     }
 
     #[test]
@@ -1018,7 +1046,10 @@ mod tests {
         };
         state
             .index
-            .write("capabilities.json", &vec![package_with_tags(vec!["finance"])])
+            .write(
+                "capabilities.json",
+                &vec![package_with_tags(vec!["finance"])],
+            )
             .unwrap();
         let response = api_status(State(state)).await.unwrap();
         assert_eq!(response.0["indexedAgentCount"], 1);
@@ -1053,7 +1084,10 @@ mod tests {
         };
         state
             .index
-            .write("capabilities.json", &vec![package_with_tags(vec!["finance"])])
+            .write(
+                "capabilities.json",
+                &vec![package_with_tags(vec!["finance"])],
+            )
             .unwrap();
         let response = api_query_explain(
             State(state),

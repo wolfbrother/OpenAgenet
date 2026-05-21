@@ -196,8 +196,8 @@ async fn main() -> Result<()> {
     let data = JsonStore::new(&config.paths.data_dir);
     let key: DevKeyFile = JsonStore::new(".").read(config.paths.keys_dir.join("keypair.json"))?;
     let signing_key = signing_key_from_bytes(&URL_SAFE_NO_PAD.decode(key.private_key_jwk.d)?)?;
-    let authorization_state = load_authorization_state(&config.paths.authorization_state_file)
-        .unwrap_or_default();
+    let authorization_state =
+        load_authorization_state(&config.paths.authorization_state_file).unwrap_or_default();
     let sqlite = match config.paths.database_url.as_deref() {
         Some(url) if !url.is_empty() => Some(SqliteJsonStore::connect(url).await?),
         _ => None,
@@ -220,7 +220,10 @@ async fn main() -> Result<()> {
         .route("/bulletin", get(bulletin))
         .route("/root/registrars/authorize", post(authorize_registrar))
         .route("/root/discovery-nodes/authorize", post(authorize_discovery))
-        .route("/root/discovery-nodes/{did}/domains", post(update_discovery_domains))
+        .route(
+            "/root/discovery-nodes/{did}/domains",
+            post(update_discovery_domains),
+        )
         .route("/root/nodes/{did}/revoke", post(revoke_node))
         .route("/root/agents/verify-and-publish", post(verify_and_publish))
         .route("/root/batches/publish-cdn", post(publish_cdn_batch))
@@ -232,15 +235,24 @@ async fn main() -> Result<()> {
         .route("/api/v1/root/registrars", get(api_registrars))
         .route("/api/v1/root/registrars/{did}", get(api_registrar_detail))
         .route("/api/v1/root/discovery-nodes", get(api_discovery_nodes))
-        .route("/api/v1/root/discovery-nodes/{did}", get(api_discovery_detail))
+        .route(
+            "/api/v1/root/discovery-nodes/{did}",
+            get(api_discovery_detail),
+        )
         .route("/api/v1/root/agents", get(api_agents))
         .route("/api/v1/root/agents/{did}", get(api_agent_detail))
-        .route("/api/v1/root/agents/{did}/versions", get(api_agent_versions))
+        .route(
+            "/api/v1/root/agents/{did}/versions",
+            get(api_agent_versions),
+        )
         .route(
             "/api/v1/root/agents/{did}/versions/{version}",
             get(api_agent_version_detail),
         )
-        .route("/api/v1/root/queues/cdn-publish", get(api_cdn_publish_queue))
+        .route(
+            "/api/v1/root/queues/cdn-publish",
+            get(api_cdn_publish_queue),
+        )
         .route(
             "/api/v1/root/queues/discovery-notify",
             get(api_discovery_notify_queue),
@@ -280,12 +292,7 @@ fn load_config(path: String) -> Result<Config> {
     config.paths.data_dir = resolve_relative(base, &config.paths.data_dir);
     config.paths.keys_dir = resolve_relative(base, &config.paths.keys_dir);
     config.paths.bulletin_file = resolve_relative(base, &config.paths.bulletin_file);
-    if !config
-        .paths
-        .capability_tree_file
-        .as_os_str()
-        .is_empty()
-    {
+    if !config.paths.capability_tree_file.as_os_str().is_empty() {
         config.paths.capability_tree_file =
             resolve_relative(base, &config.paths.capability_tree_file);
     }
@@ -346,7 +353,7 @@ async fn verify_and_publish(
     let did_document_hash =
         hash_json(&request.did_document).map_err(|err| ApiError::internal(err.into()))?;
     let metadata = build_metadata(&state, &request, &did_document_hash)
-        .map_err(|err| ApiError::internal(err.into()))?;
+        .map_err(ApiError::internal)?;
     let metadata_hash = hash_json(&metadata).map_err(|err| ApiError::internal(err.into()))?;
     let latest = read_latest_versions(&state).map_err(ApiError::internal)?;
     let previous = latest.get(&request.agent_did);
@@ -420,7 +427,9 @@ async fn verify_and_publish(
     )
     .await
     .map_err(ApiError::internal)?;
-    enqueue_cdn(&state, &package).await.map_err(ApiError::internal)?;
+    enqueue_cdn(&state, &package)
+        .await
+        .map_err(ApiError::internal)?;
     enqueue_discovery(&state, &package, event.core.sequence, &event.event_hash)
         .await
         .map_err(ApiError::internal)?;
@@ -445,7 +454,8 @@ async fn authorize_registrar(
     Json(request): Json<RootAuthorizeRequest>,
 ) -> ApiResult<Value> {
     let _guard = state.lock.lock().await;
-    let did_document_hash = hash_json(&request.did_document).map_err(|err| ApiError::internal(err.into()))?;
+    let did_document_hash =
+        hash_json(&request.did_document).map_err(|err| ApiError::internal(err.into()))?;
     append_event(
         &state,
         BulletinEventType::RegistrarAuthorized,
@@ -476,7 +486,8 @@ async fn authorize_discovery(
     Json(request): Json<RootAuthorizeRequest>,
 ) -> ApiResult<Value> {
     let _guard = state.lock.lock().await;
-    let did_document_hash = hash_json(&request.did_document).map_err(|err| ApiError::internal(err.into()))?;
+    let did_document_hash =
+        hash_json(&request.did_document).map_err(|err| ApiError::internal(err.into()))?;
     append_event(
         &state,
         BulletinEventType::DiscoveryNodeAuthorized,
@@ -522,14 +533,18 @@ async fn update_discovery_domains(
         payload,
     )
     .map_err(ApiError::internal)?;
-    let mut authorization_state = load_authorization_state(&state.config.paths.authorization_state_file)
-        .unwrap_or_else(|_| state.authorization_state.clone());
+    let mut authorization_state =
+        load_authorization_state(&state.config.paths.authorization_state_file)
+            .unwrap_or_else(|_| state.authorization_state.clone());
     if let Some(entry) = authorization_state.discovery_nodes.get_mut(&did) {
         entry.authorized_domains = domains;
         entry.tag_tree_version = state.tag_tree.version;
         entry.updated_at = Utc::now();
         JsonStore::new(".")
-            .write(&state.config.paths.authorization_state_file, &authorization_state)
+            .write(
+                &state.config.paths.authorization_state_file,
+                &authorization_state,
+            )
             .map_err(|err| ApiError::internal(err.into()))?;
     }
     Ok(Json(json!({"status": "ok"})))
@@ -541,7 +556,8 @@ async fn revoke_node(
     Json(payload): Json<Value>,
 ) -> ApiResult<Value> {
     let _guard = state.lock.lock().await;
-    append_event(&state, BulletinEventType::NodeRevoked, &did, payload).map_err(ApiError::internal)?;
+    append_event(&state, BulletinEventType::NodeRevoked, &did, payload)
+        .map_err(ApiError::internal)?;
     revoke_authorization_state(&state, &did).map_err(ApiError::internal)?;
     Ok(Json(json!({"status": "ok"})))
 }
@@ -555,11 +571,7 @@ async fn publish_cdn_batch(State(state): State<AppState>) -> ApiResult<Value> {
     let mut published = Vec::new();
     let mut failed = Vec::new();
     for package in &queue {
-        let response = client
-            .post(&publish_url)
-            .json(package)
-            .send()
-            .await;
+        let response = client.post(&publish_url).json(package).send().await;
         match response {
             Ok(response) if response.status().is_success() => {
                 published.push(package.did.clone());
@@ -643,9 +655,12 @@ fn latest_event_payload<'a>(bulletin: &'a Bulletin, event_type: &str) -> Option<
 
 async fn notify_discovery_batch(State(state): State<AppState>) -> ApiResult<Value> {
     let batch_size = 100usize;
-    let queue = read_discovery_queue(&state).await.map_err(ApiError::internal)?;
-    let authorization_state = load_authorization_state(&state.config.paths.authorization_state_file)
-        .unwrap_or_else(|_| state.authorization_state.clone());
+    let queue = read_discovery_queue(&state)
+        .await
+        .map_err(ApiError::internal)?;
+    let authorization_state =
+        load_authorization_state(&state.config.paths.authorization_state_file)
+            .unwrap_or_else(|_| state.authorization_state.clone());
     let manifest_url = cdn_manifest_url(&state).unwrap_or_default();
     let mut batches = Vec::new();
     for (discovery_did, auth) in authorization_state.discovery_nodes {
@@ -711,10 +726,13 @@ async fn notify_discovery_batch(State(state): State<AppState>) -> ApiResult<Valu
 async fn api_status(State(state): State<AppState>) -> ApiResult<Value> {
     let bulletin = read_bulletin(&state).map_err(ApiError::internal)?;
     let latest_versions = read_latest_versions(&state).map_err(ApiError::internal)?;
-    let authorization_state = load_authorization_state(&state.config.paths.authorization_state_file)
-        .unwrap_or_else(|_| state.authorization_state.clone());
+    let authorization_state =
+        load_authorization_state(&state.config.paths.authorization_state_file)
+            .unwrap_or_else(|_| state.authorization_state.clone());
     let cdn_queue = read_cdn_queue(&state).await.map_err(ApiError::internal)?;
-    let discovery_queue = read_discovery_queue(&state).await.map_err(ApiError::internal)?;
+    let discovery_queue = read_discovery_queue(&state)
+        .await
+        .map_err(ApiError::internal)?;
     Ok(Json(json!({
         "rootDid": state.root_did,
         "bulletinEventCount": bulletin.events.len(),
@@ -729,8 +747,9 @@ async fn api_status(State(state): State<AppState>) -> ApiResult<Value> {
 }
 
 async fn api_registrars(State(state): State<AppState>) -> ApiResult<Value> {
-    let authorization_state = load_authorization_state(&state.config.paths.authorization_state_file)
-        .unwrap_or_else(|_| state.authorization_state.clone());
+    let authorization_state =
+        load_authorization_state(&state.config.paths.authorization_state_file)
+            .unwrap_or_else(|_| state.authorization_state.clone());
     let items: Vec<Value> = authorization_state
         .registrars
         .into_iter()
@@ -741,13 +760,20 @@ async fn api_registrars(State(state): State<AppState>) -> ApiResult<Value> {
         bulletin
             .events
             .iter()
-            .filter(|event| matches!(event.core.event_type, BulletinEventType::RegistrarAuthorized | BulletinEventType::RegistrarRevoked))
-            .map(|event| json!({
-                "did": event.core.subject_did,
-                "eventType": event.core.event_type,
-                "sequence": event.core.sequence,
-                "payload": event.core.payload
-            }))
+            .filter(|event| {
+                matches!(
+                    event.core.event_type,
+                    BulletinEventType::RegistrarAuthorized | BulletinEventType::RegistrarRevoked
+                )
+            })
+            .map(|event| {
+                json!({
+                    "did": event.core.subject_did,
+                    "eventType": event.core.event_type,
+                    "sequence": event.core.sequence,
+                    "payload": event.core.payload
+                })
+            })
             .collect::<Vec<_>>()
     } else {
         items
@@ -764,47 +790,56 @@ async fn api_registrar_detail(
         .events
         .iter()
         .filter(|event| event.core.subject_did == did)
-        .map(|event| json!({
-            "sequence": event.core.sequence,
-            "eventType": event.core.event_type,
-            "payload": event.core.payload
-        }))
+        .map(|event| {
+            json!({
+                "sequence": event.core.sequence,
+                "eventType": event.core.event_type,
+                "payload": event.core.payload
+            })
+        })
         .collect();
     Ok(Json(json!({ "did": did, "events": events })))
 }
 
 async fn api_discovery_nodes(State(state): State<AppState>) -> ApiResult<Value> {
-    let authorization_state = load_authorization_state(&state.config.paths.authorization_state_file)
-        .unwrap_or_else(|_| state.authorization_state.clone());
+    let authorization_state =
+        load_authorization_state(&state.config.paths.authorization_state_file)
+            .unwrap_or_else(|_| state.authorization_state.clone());
     let items: Vec<Value> = authorization_state
         .discovery_nodes
         .into_iter()
-        .map(|(did, entry)| json!({
-            "did": did,
-            "status": entry.status,
-            "didDocumentHash": entry.did_document_hash,
-            "authorizedDomains": entry.authorized_domains,
-            "tagTreeVersion": entry.tag_tree_version,
-            "updatedAt": entry.updated_at
-        }))
+        .map(|(did, entry)| {
+            json!({
+                "did": did,
+                "status": entry.status,
+                "didDocumentHash": entry.did_document_hash,
+                "authorizedDomains": entry.authorized_domains,
+                "tagTreeVersion": entry.tag_tree_version,
+                "updatedAt": entry.updated_at
+            })
+        })
         .collect();
     let items = if items.is_empty() {
         let bulletin = read_bulletin(&state).map_err(ApiError::internal)?;
         bulletin
             .events
             .iter()
-            .filter(|event| matches!(
-                event.core.event_type,
-                BulletinEventType::DiscoveryNodeAuthorized
-                    | BulletinEventType::DiscoveryNodeDomainsUpdated
-                    | BulletinEventType::DiscoveryNodeRevoked
-            ))
-            .map(|event| json!({
-                "did": event.core.subject_did,
-                "eventType": event.core.event_type,
-                "sequence": event.core.sequence,
-                "payload": event.core.payload
-            }))
+            .filter(|event| {
+                matches!(
+                    event.core.event_type,
+                    BulletinEventType::DiscoveryNodeAuthorized
+                        | BulletinEventType::DiscoveryNodeDomainsUpdated
+                        | BulletinEventType::DiscoveryNodeRevoked
+                )
+            })
+            .map(|event| {
+                json!({
+                    "did": event.core.subject_did,
+                    "eventType": event.core.event_type,
+                    "sequence": event.core.sequence,
+                    "payload": event.core.payload
+                })
+            })
             .collect::<Vec<_>>()
     } else {
         items
@@ -823,7 +858,10 @@ async fn api_discovery_detail(
         .rev()
         .find(|event| {
             event.core.subject_did == did
-                && matches!(event.core.event_type, BulletinEventType::DiscoveryNodeDomainsUpdated)
+                && matches!(
+                    event.core.event_type,
+                    BulletinEventType::DiscoveryNodeDomainsUpdated
+                )
         })
         .map(|event| event.core.payload.clone())
         .unwrap_or_else(|| json!({"authorizedDomains": ["*"]}));
@@ -843,14 +881,16 @@ async fn api_agents(State(state): State<AppState>) -> ApiResult<Value> {
     let latest_versions = read_latest_versions(&state).map_err(ApiError::internal)?;
     let items: Vec<Value> = latest_versions
         .into_iter()
-        .map(|(did, value)| json!({
-            "did": did,
-            "documentVersion": value["documentVersion"],
-            "didDocumentHash": value["didDocumentHash"],
-            "metadataHash": value["metadataHash"],
-            "bulletinSequence": value["bulletinSequence"],
-            "updatedAt": value["updatedAt"]
-        }))
+        .map(|(did, value)| {
+            json!({
+                "did": did,
+                "documentVersion": value["documentVersion"],
+                "didDocumentHash": value["didDocumentHash"],
+                "metadataHash": value["metadataHash"],
+                "bulletinSequence": value["bulletinSequence"],
+                "updatedAt": value["updatedAt"]
+            })
+        })
         .collect();
     Ok(Json(json!({ "items": items })))
 }
@@ -861,7 +901,10 @@ async fn api_agent_detail(
 ) -> ApiResult<Value> {
     let latest_versions = read_latest_versions(&state).map_err(ApiError::internal)?;
     let latest = latest_versions.get(&did).cloned();
-    let archive_root = format!("archive/{}", did_to_file_name(&did).trim_end_matches(".json"));
+    let archive_root = format!(
+        "archive/{}",
+        did_to_file_name(&did).trim_end_matches(".json")
+    );
     Ok(Json(json!({
         "did": did,
         "latest": latest,
@@ -873,7 +916,10 @@ async fn api_agent_versions(
     State(state): State<AppState>,
     AxumPath(did): AxumPath<String>,
 ) -> ApiResult<Value> {
-    let prefix = format!("archive/{}", did_to_file_name(&did).trim_end_matches(".json"));
+    let prefix = format!(
+        "archive/{}",
+        did_to_file_name(&did).trim_end_matches(".json")
+    );
     let index = state
         .data
         .read::<Value>(format!("{prefix}/index.json"))
@@ -887,8 +933,13 @@ async fn api_agent_version_detail(
     State(state): State<AppState>,
     AxumPath((did, version)): AxumPath<(String, String)>,
 ) -> ApiResult<Value> {
-    let prefix = format!("archive/{}/v{}", did_to_file_name(&did).trim_end_matches(".json"), version);
-    let did_document: Option<DidDocument> = state.data.read(format!("{prefix}/did-document.json")).ok();
+    let prefix = format!(
+        "archive/{}/v{}",
+        did_to_file_name(&did).trim_end_matches(".json"),
+        version
+    );
+    let did_document: Option<DidDocument> =
+        state.data.read(format!("{prefix}/did-document.json")).ok();
     let metadata: Option<AgentMetadata> = state.data.read(format!("{prefix}/metadata.json")).ok();
     let package: Option<VerifiedPackage> = state.data.read(format!("{prefix}/package.json")).ok();
     Ok(Json(json!({
@@ -906,7 +957,9 @@ async fn api_cdn_publish_queue(State(state): State<AppState>) -> ApiResult<Value
 }
 
 async fn api_discovery_notify_queue(State(state): State<AppState>) -> ApiResult<Value> {
-    let queue = read_discovery_queue(&state).await.map_err(ApiError::internal)?;
+    let queue = read_discovery_queue(&state)
+        .await
+        .map_err(ApiError::internal)?;
     Ok(Json(json!({ "items": queue, "count": queue.len() })))
 }
 
@@ -1017,15 +1070,14 @@ fn verify_request(
     if request.registration_credential["status"] != "active" {
         return Err("invalid_registration_credential".to_owned());
     }
-    let credential: AgentRegistrationCredential = serde_json::from_value(
-        request.registration_credential.clone(),
-    )
-    .map_err(|_| "invalid_registration_credential".to_owned())?;
+    let credential: AgentRegistrationCredential =
+        serde_json::from_value(request.registration_credential.clone())
+            .map_err(|_| "invalid_registration_credential".to_owned())?;
     verify_agent_registration_credential(
         &credential,
         &verify_issuer_key(&request.registrar_did_document)?,
     )
-        .map_err(|_| "invalid_registration_credential_signature".to_owned())?;
+    .map_err(|_| "invalid_registration_credential_signature".to_owned())?;
     Ok(())
 }
 
@@ -1033,10 +1085,16 @@ fn verify_issuer_key(did_document: &DidDocument) -> Result<ed25519_dalek::Verify
     let method = did_document
         .verification_method
         .iter()
-        .find(|method| did_document.assertion_method.iter().any(|id| id == &method.id))
+        .find(|method| {
+            did_document
+                .assertion_method
+                .iter()
+                .any(|id| id == &method.id)
+        })
         .ok_or_else(|| "missing_issuer_verification_method".to_owned())?;
     if let Some(jwk) = &method.public_key_jwk {
-        oan_crypto::verifying_key_from_public_key_jwk(jwk).map_err(|_| "invalid_issuer_key".to_owned())
+        oan_crypto::verifying_key_from_public_key_jwk(jwk)
+            .map_err(|_| "invalid_issuer_key".to_owned())
     } else if let Some(multibase) = &method.public_key_multibase {
         oan_crypto::verifying_key_from_public_key_multibase(multibase)
             .map_err(|_| "invalid_issuer_key".to_owned())
@@ -1122,7 +1180,10 @@ fn save_nonce_store(state: &AppState, store: &RequestNonceStore) -> Result<()> {
     Ok(())
 }
 
-fn verify_request_signature(_state: &AppState, request: &VerifyAndPublishRequest) -> std::result::Result<(), String> {
+fn verify_request_signature(
+    _state: &AppState,
+    request: &VerifyAndPublishRequest,
+) -> std::result::Result<(), String> {
     let Some(signature) = request.request_signature.as_ref() else {
         return Ok(());
     };
@@ -1141,11 +1202,15 @@ fn verify_request_signature(_state: &AppState, request: &VerifyAndPublishRequest
         .map_err(|_| "invalid_request_signature".to_owned())
 }
 
-fn verify_request_nonce(state: &AppState, request: &VerifyAndPublishRequest) -> std::result::Result<(), String> {
+fn verify_request_nonce(
+    state: &AppState,
+    request: &VerifyAndPublishRequest,
+) -> std::result::Result<(), String> {
     let Some(nonce) = request.request_nonce.as_ref() else {
         return Ok(());
     };
-    let mut store = load_nonce_store(&state.config.paths.request_nonce_file).map_err(|_| "invalid_nonce_store".to_owned())?;
+    let mut store = load_nonce_store(&state.config.paths.request_nonce_file)
+        .map_err(|_| "invalid_nonce_store".to_owned())?;
     if store.nonces.contains_key(nonce) {
         return Err("replayed_request_nonce".to_owned());
     }
@@ -1168,7 +1233,9 @@ fn update_authorization_state(
         }
         "discovery" | "Discovery" | "Discovery Node" => {
             if let Some(entry) = discovery {
-                authorization_state.discovery_nodes.insert(did.to_owned(), entry);
+                authorization_state
+                    .discovery_nodes
+                    .insert(did.to_owned(), entry);
             }
         }
         "vc-issuer" | "VC Issuer" => {
@@ -1178,7 +1245,10 @@ fn update_authorization_state(
             authorization_state.registrars.insert(did.to_owned(), entry);
         }
     }
-    JsonStore::new(".").write(&state.config.paths.authorization_state_file, &authorization_state)?;
+    JsonStore::new(".").write(
+        &state.config.paths.authorization_state_file,
+        &authorization_state,
+    )?;
     Ok(())
 }
 
@@ -1188,8 +1258,13 @@ fn update_discovery_authorization_state(
     entry: DiscoveryAuthorizationState,
 ) -> Result<()> {
     let mut authorization_state = state.authorization_state.clone();
-    authorization_state.discovery_nodes.insert(did.to_owned(), entry);
-    JsonStore::new(".").write(&state.config.paths.authorization_state_file, &authorization_state)?;
+    authorization_state
+        .discovery_nodes
+        .insert(did.to_owned(), entry);
+    JsonStore::new(".").write(
+        &state.config.paths.authorization_state_file,
+        &authorization_state,
+    )?;
     Ok(())
 }
 
@@ -1207,7 +1282,10 @@ fn revoke_authorization_state(state: &AppState, did: &str) -> Result<()> {
         entry.status = "revoked".to_owned();
         entry.updated_at = Utc::now();
     }
-    JsonStore::new(".").write(&state.config.paths.authorization_state_file, &authorization_state)?;
+    JsonStore::new(".").write(
+        &state.config.paths.authorization_state_file,
+        &authorization_state,
+    )?;
     Ok(())
 }
 
@@ -1400,10 +1478,9 @@ async fn mark_cdn_queue_published(state: &AppState, did: &str) -> Result<()> {
 async fn mark_discovery_queue_notified(state: &AppState, items: &[Value]) -> Result<()> {
     if let Some(sqlite) = &state.sqlite {
         for item in items {
-            if let (Some(did), Some(sequence)) = (
-                item["agentDid"].as_str(),
-                item["bulletinSequence"].as_u64(),
-            ) {
+            if let (Some(did), Some(sequence)) =
+                (item["agentDid"].as_str(), item["bulletinSequence"].as_u64())
+            {
                 sqlite
                     .delete_json("root.discovery_notify_queue", &format!("{did}:{sequence}"))
                     .await?;
@@ -1419,7 +1496,11 @@ async fn mark_discovery_queue_notified(state: &AppState, items: &[Value]) -> Res
 async fn write_batch_history(state: &AppState, namespace: &str, item: Value) -> Result<()> {
     if let Some(sqlite) = &state.sqlite {
         sqlite
-            .upsert_json(namespace, &format!("{}", Utc::now().timestamp_nanos_opt().unwrap_or_default()), &item)
+            .upsert_json(
+                namespace,
+                &format!("{}", Utc::now().timestamp_nanos_opt().unwrap_or_default()),
+                &item,
+            )
             .await?;
     }
     let mut history: Vec<Value> = state
@@ -1750,11 +1831,17 @@ mod tests {
             .unwrap();
         state
             .data
-            .write("queues/discovery-notify.json", &vec![serde_json::json!({"did": "x"})])
+            .write(
+                "queues/discovery-notify.json",
+                &vec![serde_json::json!({"did": "x"})],
+            )
             .unwrap();
 
         let response = api_status(State(state)).await.unwrap();
-        assert_eq!(response.0["rootDid"], "did:ans:AGRT:efrootrootrootrootrootroot");
+        assert_eq!(
+            response.0["rootDid"],
+            "did:ans:AGRT:efrootrootrootrootrootroot"
+        );
         assert_eq!(response.0["bulletinEventCount"], 1);
         assert_eq!(response.0["latestVersionCount"], 1);
         assert_eq!(response.0["cdnQueueCount"], 1);

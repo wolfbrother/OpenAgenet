@@ -6,6 +6,8 @@ Email: xujinliang@caict.ac.cn; jlxufly@gmail.com
 
 # Root Node
 
-Trust anchor for local OpenAgentNet deployments.
+Trust anchor for local OpenAgentNet deployments and the governance hub of the
+reference implementation.
 
-Detailed module design: [docs/design.md](docs/design.md)
+This README is the module entry point. For detailed behavior, APIs, storage,
+and tests, see [docs/design.md](docs/design.md).

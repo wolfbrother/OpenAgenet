@@ -11,7 +11,7 @@ import copy
 import hashlib
 import json
 import sys
-from datetime import UTC, datetime
+from datetime import UTC, datetime, timedelta
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from typing import Any
@@ -25,6 +25,7 @@ SERVICE_KEYPAIR = REPO_ROOT / "data" / "demo-service-agent" / "keys" / "keypair.
 REGISTRAR_DID_DOCUMENT = REPO_ROOT / "data" / "registrar" / "did-document.json"
 
 SEEN_NONCES: set[str] = set()
+MAX_INVOCATION_AGE = timedelta(minutes=5)
 
 ORGANIZATION = {
     "deployer": "China Academy of Information and Communications Technology (CAICT)",
@@ -114,6 +115,8 @@ def verify_invocation(payload: dict[str, Any]) -> dict[str, Any]:
     target_did = payload.get("targetDid")
     nonce = payload.get("nonce")
     timestamp = payload.get("timestamp")
+    body = payload.get("body")
+    body_hash = payload.get("bodyHash")
     caller_did_document = payload.get("callerDidDocument")
     credentials = payload.get("credentials", [])
 
@@ -123,12 +126,35 @@ def verify_invocation(payload: dict[str, Any]) -> dict[str, Any]:
         raise ValueError("missing_invocation_fields")
     if target_did != service_did:
         raise ValueError("target_did_mismatch")
+    if not isinstance(body, dict) or not isinstance(body_hash, str):
+        raise ValueError("missing_or_invalid_body_hash")
+    expected_body_hash = hashlib.sha256(canonical_json(body).encode("utf-8")).hexdigest()
+    if body_hash != expected_body_hash:
+        raise ValueError("body_hash_mismatch")
+    try:
+        request_time = datetime.fromisoformat(timestamp.replace("Z", "+00:00"))
+    except ValueError as exc:
+        raise ValueError("invalid_timestamp") from exc
+    if request_time.tzinfo is None:
+        raise ValueError("timestamp_must_include_timezone")
+    now = datetime.now(UTC)
+    if request_time > now + timedelta(seconds=30):
+        raise ValueError("timestamp_in_future")
+    if now - request_time > MAX_INVOCATION_AGE:
+        raise ValueError("timestamp_expired")
     if not isinstance(caller_did_document, dict) or caller_did_document.get("id") != caller_did:
         raise ValueError("caller_did_document_mismatch")
+    if not isinstance(credentials, list):
+        raise ValueError("credentials_must_be_array")
     if nonce in SEEN_NONCES:
         raise ValueError("replayed_nonce")
 
-    request_signature_verified = verify_signed_value(payload, caller_did_document)
+    try:
+        request_signature_verified = verify_signed_value(payload, caller_did_document)
+    except Exception as exc:
+        raise ValueError("request_signature_invalid") from exc
+    if not request_signature_verified:
+        raise ValueError("request_signature_invalid")
     registrar_did_document = load_json(REGISTRAR_DID_DOCUMENT)
     user_credentials = [
         credential for credential in credentials
@@ -140,9 +166,12 @@ def verify_invocation(payload: dict[str, Any]) -> dict[str, Any]:
         raise ValueError("missing_user_agent_credential")
 
     user_credential = user_credentials[0]
-    credential_verified = verify_signed_value(user_credential, registrar_did_document)
+    try:
+        credential_verified = verify_signed_value(user_credential, registrar_did_document)
+    except Exception as exc:
+        raise ValueError("user_credential_signature_invalid") from exc
     if not credential_verified:
-        raise ValueError("user_agent_credential_not_verified")
+        raise ValueError("user_credential_signature_invalid")
 
     SEEN_NONCES.add(nonce)
     return {

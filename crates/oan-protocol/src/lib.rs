@@ -76,11 +76,23 @@ pub struct VerifyAndPublishRequest {
     pub metadata: Value,
     #[serde(rename = "registrationCredential")]
     pub registration_credential: Value,
-    #[serde(rename = "requestTimestamp", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "requestTimestamp",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub request_timestamp: Option<DateTime<Utc>>,
-    #[serde(rename = "requestNonce", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "requestNonce",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub request_nonce: Option<String>,
-    #[serde(rename = "requestSignature", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "requestSignature",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub request_signature: Option<String>,
 }
 
