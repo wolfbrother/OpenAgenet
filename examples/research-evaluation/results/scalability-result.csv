@@ -1,0 +1,5 @@
+﻿"experiment","scale","status","acceptedCount","registrationTotalMs","registrationThroughputPerSecond","registrationAvgLatencyMs","registrationP95LatencyMs","publishLatencyMs","notifyLatencyMs","syncLatencyMs","queryLatencyMs","queryCandidateCount","storageBytes"
+"scalability-and-overhead","5","ok","5","2787.118","1.794","553.095","2503.818","399.793","28.235","3025.524","11.565","2","377422"
+"scalability-and-overhead","10","ok","10","1043.782","9.581","104.094","398.343","473.9","45.489","1101.502","6.632","4","666882"
+"scalability-and-overhead","20","ok","20","2347.774","8.519","117.138","181.401","1248.052","155.466","1466.786","12.216","7","1241779"
+"scalability-and-overhead","50","ok","50","6128.767","8.158","122.358","177.308","1887.102","223.066","2070.702","23.562","17","2954176"

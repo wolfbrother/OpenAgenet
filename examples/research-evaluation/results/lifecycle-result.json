@@ -1,0 +1,13 @@
+﻿{
+    "experiment":  "lifecycle-correctness",
+    "status":  "ok",
+    "registeredDid":  "did:ans:AGDM:ef1111111111111111111111000001",
+    "registrationLatencyMs":  2460.608,
+    "publishLatencyMs":  327.985,
+    "notifyLatencyMs":  16.427,
+    "syncLatencyMs":  2862.194,
+    "queryLatencyMs":  4.397,
+    "propagationTimeMs":  3206.606,
+    "candidateCount":  1,
+    "storageBytes":  130820
+}

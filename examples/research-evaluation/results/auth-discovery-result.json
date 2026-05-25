@@ -1,0 +1,26 @@
+﻿{
+    "experiment":  "authorization-aware-discovery",
+    "status":  "ok",
+    "authorizedDomains":  [
+                              "gbt4754-2017.01"
+                          ],
+    "datasetCount":  6,
+    "expectedAuthorizedCandidates":  3,
+    "observedAuthorizedCandidates":  3,
+    "expectedUnauthorizedCandidates":  0,
+    "observedUnauthorizedCandidates":  0,
+    "policyEnforcementAccuracy":  1,
+    "registrationLatencyMs":  [
+                                  2422.69,
+                                  49.869,
+                                  58.405,
+                                  60.981,
+                                  60.148,
+                                  56.872
+                              ],
+    "publishLatencyMs":  395.092,
+    "notifyLatencyMs":  31.925,
+    "syncLatencyMs":  2920.192,
+    "authorizedQueryLatencyMs":  5.235,
+    "unauthorizedQueryLatencyMs":  4.047
+}
