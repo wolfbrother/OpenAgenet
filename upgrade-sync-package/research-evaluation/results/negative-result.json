@@ -1,0 +1,39 @@
+﻿{
+    "experiment":  "negative-verification",
+    "status":  "ok",
+    "elapsedMs":  68678.652,
+    "positiveChecks":  [
+                           "valid signed invocation",
+                           "service verified request signature",
+                           "service verified user credential"
+                       ],
+    "negativeChecks":  [
+                           "tampered request signature",
+                           "missing proof",
+                           "invalid proof creator",
+                           "missing User Agent VC",
+                           "wrong VC subject",
+                           "tampered VC signature",
+                           "invalid VC type",
+                           "credentials not array",
+                           "wrong body hash",
+                           "missing body",
+                           "missing bodyHash",
+                           "expired timestamp",
+                           "future timestamp",
+                           "invalid timestamp format",
+                           "timestamp without timezone",
+                           "missing caller DID",
+                           "missing target DID",
+                           "missing nonce",
+                           "missing timestamp",
+                           "missing caller DID document",
+                           "mismatched caller DID document id",
+                           "wrong target DID",
+                           "replayed nonce"
+                       ],
+    "negativeCaseCount":  23,
+    "falseAcceptanceCount":  0,
+    "falseAcceptanceRate":  0,
+    "note":  "This regression covers trusted invocation negative cases. Root and discovery negative cases can be appended as additional case generators."
+}
