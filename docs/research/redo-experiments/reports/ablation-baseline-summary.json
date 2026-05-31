@@ -1,0 +1,211 @@
+{
+  "experimentName": "real-system-degraded-baseline-ablation",
+  "generatedAt": "2026-05-31T09:09:40.916Z",
+  "method": "experiment-only degraded variants executed inside a copied reference-service workspace; each variant removes one check while exercising the root-node or discovery-node service code path",
+  "sandbox": "docs/research/redo-experiments/system-ablation",
+  "rawReports": {
+    "authorizationFiltering": "docs/research/redo-experiments/system-ablation/reports/raw/authorization_filtering.json",
+    "registrationCredential": "docs/research/redo-experiments/system-ablation/reports/raw/registration_credential.json",
+    "preconnectionFreshness": "docs/research/redo-experiments/system-ablation/reports/raw/preconnection_freshness.json"
+  },
+  "testCommands": [
+    "cargo test -p root-node ablation_ -- --nocapture",
+    "cargo test -p discovery-node ablation_ -- --nocapture"
+  ],
+  "results": {
+    "authorizationFiltering": {
+      "cases": [
+        {
+          "case": "unauthorized_shared_tag_0",
+          "degradedReturned": true,
+          "fullReturned": false
+        },
+        {
+          "case": "unauthorized_shared_tag_1",
+          "degradedReturned": true,
+          "fullReturned": false
+        },
+        {
+          "case": "unauthorized_shared_tag_2",
+          "degradedReturned": true,
+          "fullReturned": false
+        },
+        {
+          "case": "unauthorized_shared_tag_3",
+          "degradedReturned": true,
+          "fullReturned": false
+        },
+        {
+          "case": "unauthorized_shared_tag_4",
+          "degradedReturned": true,
+          "fullReturned": false
+        },
+        {
+          "case": "unauthorized_shared_tag_5",
+          "degradedReturned": true,
+          "fullReturned": false
+        },
+        {
+          "case": "unauthorized_shared_tag_6",
+          "degradedReturned": true,
+          "fullReturned": false
+        },
+        {
+          "case": "unauthorized_shared_tag_7",
+          "degradedReturned": true,
+          "fullReturned": false
+        },
+        {
+          "case": "unauthorized_shared_tag_8",
+          "degradedReturned": true,
+          "fullReturned": false
+        },
+        {
+          "case": "unauthorized_shared_tag_9",
+          "degradedReturned": true,
+          "fullReturned": false
+        },
+        {
+          "case": "unauthorized_shared_tag_10",
+          "degradedReturned": true,
+          "fullReturned": false
+        },
+        {
+          "case": "unauthorized_shared_tag_11",
+          "degradedReturned": true,
+          "fullReturned": false
+        }
+      ],
+      "degradedFalseAcceptanceOrExposure": 12,
+      "fullFalseAcceptanceOrExposure": 0,
+      "invalidCases": 12,
+      "mechanism": "authorization-aware discovery filtering"
+    },
+    "registrationCredential": {
+      "cases": [
+        {
+          "case": "unsigned_registration_credential_0",
+          "degradedAccepted": true,
+          "fullAccepted": false,
+          "fullRejection": "invalid_registration_credential_signature"
+        },
+        {
+          "case": "unsigned_registration_credential_1",
+          "degradedAccepted": true,
+          "fullAccepted": false,
+          "fullRejection": "invalid_registration_credential_signature"
+        },
+        {
+          "case": "unsigned_registration_credential_2",
+          "degradedAccepted": true,
+          "fullAccepted": false,
+          "fullRejection": "invalid_registration_credential_signature"
+        },
+        {
+          "case": "unsigned_registration_credential_3",
+          "degradedAccepted": true,
+          "fullAccepted": false,
+          "fullRejection": "invalid_registration_credential_signature"
+        },
+        {
+          "case": "unsigned_registration_credential_4",
+          "degradedAccepted": true,
+          "fullAccepted": false,
+          "fullRejection": "invalid_registration_credential_signature"
+        },
+        {
+          "case": "unsigned_registration_credential_5",
+          "degradedAccepted": true,
+          "fullAccepted": false,
+          "fullRejection": "invalid_registration_credential_signature"
+        }
+      ],
+      "degradedFalseAcceptanceOrExposure": 6,
+      "fullFalseAcceptanceOrExposure": 0,
+      "invalidCases": 6,
+      "mechanism": "registration credential verification"
+    },
+    "preconnectionFreshness": {
+      "cases": [
+        {
+          "case": "stale_timestamp_0",
+          "degradedAccepted": true,
+          "fullAccepted": false,
+          "fullRejection": "trusted_upstream_timestamp_stale"
+        },
+        {
+          "case": "stale_timestamp_1",
+          "degradedAccepted": true,
+          "fullAccepted": false,
+          "fullRejection": "trusted_upstream_timestamp_stale"
+        },
+        {
+          "case": "stale_timestamp_2",
+          "degradedAccepted": true,
+          "fullAccepted": false,
+          "fullRejection": "trusted_upstream_timestamp_stale"
+        },
+        {
+          "case": "stale_timestamp_3",
+          "degradedAccepted": true,
+          "fullAccepted": false,
+          "fullRejection": "trusted_upstream_timestamp_stale"
+        },
+        {
+          "case": "replayed_nonce_4",
+          "degradedAccepted": true,
+          "fullAccepted": false,
+          "fullRejection": "trusted_upstream_nonce_replayed"
+        },
+        {
+          "case": "replayed_nonce_5",
+          "degradedAccepted": true,
+          "fullAccepted": false,
+          "fullRejection": "trusted_upstream_nonce_replayed"
+        },
+        {
+          "case": "replayed_nonce_6",
+          "degradedAccepted": true,
+          "fullAccepted": false,
+          "fullRejection": "trusted_upstream_nonce_replayed"
+        },
+        {
+          "case": "replayed_nonce_7",
+          "degradedAccepted": true,
+          "fullAccepted": false,
+          "fullRejection": "trusted_upstream_nonce_replayed"
+        }
+      ],
+      "degradedFalseAcceptanceOrExposure": 8,
+      "fullFalseAcceptanceOrExposure": 0,
+      "invalidCases": 8,
+      "mechanism": "pre-connection freshness validation"
+    }
+  },
+  "tableRows": [
+    {
+      "mechanism": "authorization-aware discovery filtering",
+      "invalidOrUnauthorizedCases": 12,
+      "fullFalseAcceptanceOrExposure": 0,
+      "fullRate": 0,
+      "degradedFalseAcceptanceOrExposure": 12,
+      "degradedRate": 1
+    },
+    {
+      "mechanism": "registration credential verification",
+      "invalidOrUnauthorizedCases": 6,
+      "fullFalseAcceptanceOrExposure": 0,
+      "fullRate": 0,
+      "degradedFalseAcceptanceOrExposure": 6,
+      "degradedRate": 1
+    },
+    {
+      "mechanism": "pre-connection freshness validation",
+      "invalidOrUnauthorizedCases": 8,
+      "fullFalseAcceptanceOrExposure": 0,
+      "fullRate": 0,
+      "degradedFalseAcceptanceOrExposure": 8,
+      "degradedRate": 1
+    }
+  ]
+}

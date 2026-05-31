@@ -1,0 +1,273 @@
+{
+  "scale": 1000,
+  "concurrency": 16,
+  "totalWallMs": 186348.5266,
+  "registrationWallMs": 122883.1658,
+  "batchWallMs": 48528.8002,
+  "discoveryWallMs": 14361.2103,
+  "queryVerificationWallMs": 575.3503,
+  "registeredCount": 1000,
+  "discoveredCount": 1000,
+  "missingCount": 0,
+  "registrationThroughputPerSec": 8.137811176085439,
+  "endToEndThroughputPerSec": 5.366288739950788,
+  "stageStats": {
+    "registrar.createDraft": {
+      "count": 1000,
+      "minMs": 5.9663,
+      "maxMs": 970.2246,
+      "avgMs": 44.44629929999999,
+      "p50Ms": 24.4705,
+      "p95Ms": 139.1759,
+      "p99Ms": 308.5787,
+      "totalMs": 44446.29929999999
+    },
+    "registrar.validateDraft": {
+      "count": 1000,
+      "minMs": 3.81,
+      "maxMs": 686.2151,
+      "avgMs": 35.267988999999986,
+      "p50Ms": 16.7847,
+      "p95Ms": 122.31,
+      "p99Ms": 339.8306,
+      "totalMs": 35267.98899999999
+    },
+    "registrar.controlChallenge": {
+      "count": 1000,
+      "minMs": 6.2761,
+      "maxMs": 788.6426,
+      "avgMs": 46.576424500000044,
+      "p50Ms": 26.17,
+      "p95Ms": 143.6348,
+      "p99Ms": 308.706,
+      "totalMs": 46576.424500000045
+    },
+    "registrar.proveControl": {
+      "count": 1000,
+      "minMs": 25.2305,
+      "maxMs": 945.4831,
+      "avgMs": 111.35348069999998,
+      "p50Ms": 80.0507,
+      "p95Ms": 286.1796,
+      "p99Ms": 472.6278,
+      "totalMs": 111353.48069999997
+    },
+    "registrar.issueCredential": {
+      "count": 1000,
+      "minMs": 7.6104,
+      "maxMs": 576.7378,
+      "avgMs": 52.18759529999994,
+      "p50Ms": 31.2522,
+      "p95Ms": 169.6315,
+      "p99Ms": 317.4465,
+      "totalMs": 52187.59529999994
+    },
+    "registrar.submitToRoot": {
+      "count": 1000,
+      "minMs": 327.4858,
+      "maxMs": 6768.0272,
+      "avgMs": 1667.0298062999987,
+      "p50Ms": 1432.9684,
+      "p95Ms": 3695.322,
+      "p99Ms": 4530.6529,
+      "totalMs": 1667029.8062999987
+    },
+    "root.publishCdnBatch": {
+      "count": 20,
+      "minMs": 1431.8038,
+      "maxMs": 2470.535,
+      "avgMs": 2009.548935,
+      "p50Ms": 2065.7644,
+      "p95Ms": 2448.8044,
+      "p99Ms": 2470.535,
+      "totalMs": 40190.9787
+    },
+    "root.notifyDiscoveryBatch": {
+      "count": 1,
+      "minMs": 2521.0164,
+      "maxMs": 2521.0164,
+      "avgMs": 2521.0164,
+      "p50Ms": 2521.0164,
+      "p95Ms": 2521.0164,
+      "p99Ms": 2521.0164,
+      "totalMs": 2521.0164
+    },
+    "discovery.sync": {
+      "count": 2,
+      "minMs": 6519.7995,
+      "maxMs": 7841.369,
+      "avgMs": 7180.58425,
+      "p50Ms": 6519.7995,
+      "p95Ms": 7841.369,
+      "p99Ms": 7841.369,
+      "totalMs": 14361.1685
+    },
+    "discovery.query": {
+      "count": 1,
+      "minMs": 575.3503,
+      "maxMs": 575.3503,
+      "avgMs": 575.3503,
+      "p50Ms": 575.3503,
+      "p95Ms": 575.3503,
+      "p99Ms": 575.3503,
+      "totalMs": 575.3503
+    }
+  },
+  "stageGroups": {
+    "rootAccept": {
+      "registrar.createDraft": {
+        "count": 1000,
+        "minMs": 5.9663,
+        "maxMs": 970.2246,
+        "avgMs": 44.44629929999999,
+        "p50Ms": 24.4705,
+        "p95Ms": 139.1759,
+        "p99Ms": 308.5787,
+        "totalMs": 44446.29929999999
+      },
+      "registrar.validateDraft": {
+        "count": 1000,
+        "minMs": 3.81,
+        "maxMs": 686.2151,
+        "avgMs": 35.267988999999986,
+        "p50Ms": 16.7847,
+        "p95Ms": 122.31,
+        "p99Ms": 339.8306,
+        "totalMs": 35267.98899999999
+      },
+      "registrar.controlChallenge": {
+        "count": 1000,
+        "minMs": 6.2761,
+        "maxMs": 788.6426,
+        "avgMs": 46.576424500000044,
+        "p50Ms": 26.17,
+        "p95Ms": 143.6348,
+        "p99Ms": 308.706,
+        "totalMs": 46576.424500000045
+      },
+      "registrar.proveControl": {
+        "count": 1000,
+        "minMs": 25.2305,
+        "maxMs": 945.4831,
+        "avgMs": 111.35348069999998,
+        "p50Ms": 80.0507,
+        "p95Ms": 286.1796,
+        "p99Ms": 472.6278,
+        "totalMs": 111353.48069999997
+      },
+      "registrar.issueCredential": {
+        "count": 1000,
+        "minMs": 7.6104,
+        "maxMs": 576.7378,
+        "avgMs": 52.18759529999994,
+        "p50Ms": 31.2522,
+        "p95Ms": 169.6315,
+        "p99Ms": 317.4465,
+        "totalMs": 52187.59529999994
+      },
+      "registrar.submitToRoot": {
+        "count": 1000,
+        "minMs": 327.4858,
+        "maxMs": 6768.0272,
+        "avgMs": 1667.0298062999987,
+        "p50Ms": 1432.9684,
+        "p95Ms": 3695.322,
+        "p99Ms": 4530.6529,
+        "totalMs": 1667029.8062999987
+      }
+    },
+    "cdnPublish": {
+      "root.publishCdnBatch": {
+        "count": 20,
+        "minMs": 1431.8038,
+        "maxMs": 2470.535,
+        "avgMs": 2009.548935,
+        "p50Ms": 2065.7644,
+        "p95Ms": 2448.8044,
+        "p99Ms": 2470.535,
+        "totalMs": 40190.9787
+      }
+    },
+    "discoverySync": {
+      "root.notifyDiscoveryBatch": {
+        "count": 1,
+        "minMs": 2521.0164,
+        "maxMs": 2521.0164,
+        "avgMs": 2521.0164,
+        "p50Ms": 2521.0164,
+        "p95Ms": 2521.0164,
+        "p99Ms": 2521.0164,
+        "totalMs": 2521.0164
+      },
+      "discovery.sync": {
+        "count": 2,
+        "minMs": 6519.7995,
+        "maxMs": 7841.369,
+        "avgMs": 7180.58425,
+        "p50Ms": 6519.7995,
+        "p95Ms": 7841.369,
+        "p99Ms": 7841.369,
+        "totalMs": 14361.1685
+      },
+      "discovery.query": {
+        "count": 1,
+        "minMs": 575.3503,
+        "maxMs": 575.3503,
+        "avgMs": 575.3503,
+        "p50Ms": 575.3503,
+        "p95Ms": 575.3503,
+        "p99Ms": 575.3503,
+        "totalMs": 575.3503
+      }
+    }
+  },
+  "rootStatus": {
+    "bulletinEventCount": 5,
+    "capabilityTreeVersion": 1,
+    "cdnQueueCount": 0,
+    "discoveryAuthorizationCount": 1,
+    "discoveryQueueCount": 0,
+    "latestVersionCount": 1500,
+    "registrarAuthorizationCount": 1,
+    "rootDid": "did:ans:AGRT:ef6acvLB7aJ2WZVGmzb5hy4hwpuNbyh2e1yjWugrQLyEAm",
+    "vcIssuerAuthorizationCount": 0
+  },
+  "discoveryStatuses": [
+    {
+      "cdnEndpoint": "http://localhost:8003",
+      "discoveryDid": "did:ans:AGDS:ef3hCVLAMjyvqjWFHzaFsB8hSCXJEA9ygXL1ewaEHuHbuu",
+      "indexedAgentCount": 1500,
+      "lastSync": {
+        "cdnManifestUrl": "http://localhost:8003/cdn/manifest",
+        "latestCursor": 1500,
+        "rejectedCount": 0,
+        "status": "synced",
+        "syncedAt": "2026-05-31T07:34:32.802785400Z",
+        "syncedCount": 400
+      },
+      "rootAuthorizationStatus": "active",
+      "rootEndpoint": "http://localhost:8000"
+    },
+    {
+      "cdnManifestUrl": "http://localhost:8003/cdn/manifest",
+      "latestCursor": 1100,
+      "rejectedCount": 0,
+      "status": "synced",
+      "syncedCount": 500
+    },
+    {
+      "cdnManifestUrl": "http://localhost:8003/cdn/manifest",
+      "latestCursor": 1500,
+      "rejectedCount": 0,
+      "status": "synced",
+      "syncedCount": 400
+    },
+    {
+      "cdnManifestUrl": "http://localhost:8003/cdn/manifest",
+      "latestCursor": 1500,
+      "rejectedCount": 0,
+      "status": "synced",
+      "syncedCount": 400
+    }
+  ]
+}

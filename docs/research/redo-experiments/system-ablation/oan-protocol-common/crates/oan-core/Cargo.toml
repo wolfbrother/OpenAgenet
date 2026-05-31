@@ -1,0 +1,16 @@
+[package]
+name = "oan-core"
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+version.workspace = true
+
+[dependencies]
+chrono.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+oan-storage = { path = "../oan-storage" }
+thiserror.workspace = true
+
+[dev-dependencies]
+tempfile.workspace = true

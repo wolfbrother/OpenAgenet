@@ -1,0 +1,56 @@
+{
+  "cases": [
+    {
+      "case": "stale_timestamp_0",
+      "degradedAccepted": true,
+      "fullAccepted": false,
+      "fullRejection": "trusted_upstream_timestamp_stale"
+    },
+    {
+      "case": "stale_timestamp_1",
+      "degradedAccepted": true,
+      "fullAccepted": false,
+      "fullRejection": "trusted_upstream_timestamp_stale"
+    },
+    {
+      "case": "stale_timestamp_2",
+      "degradedAccepted": true,
+      "fullAccepted": false,
+      "fullRejection": "trusted_upstream_timestamp_stale"
+    },
+    {
+      "case": "stale_timestamp_3",
+      "degradedAccepted": true,
+      "fullAccepted": false,
+      "fullRejection": "trusted_upstream_timestamp_stale"
+    },
+    {
+      "case": "replayed_nonce_4",
+      "degradedAccepted": true,
+      "fullAccepted": false,
+      "fullRejection": "trusted_upstream_nonce_replayed"
+    },
+    {
+      "case": "replayed_nonce_5",
+      "degradedAccepted": true,
+      "fullAccepted": false,
+      "fullRejection": "trusted_upstream_nonce_replayed"
+    },
+    {
+      "case": "replayed_nonce_6",
+      "degradedAccepted": true,
+      "fullAccepted": false,
+      "fullRejection": "trusted_upstream_nonce_replayed"
+    },
+    {
+      "case": "replayed_nonce_7",
+      "degradedAccepted": true,
+      "fullAccepted": false,
+      "fullRejection": "trusted_upstream_nonce_replayed"
+    }
+  ],
+  "degradedFalseAcceptanceOrExposure": 8,
+  "fullFalseAcceptanceOrExposure": 0,
+  "invalidCases": 8,
+  "mechanism": "pre-connection freshness validation"
+}
