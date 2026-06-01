@@ -1,0 +1,28 @@
+[server]
+host = "127.0.0.1"
+port = 8000
+endpoint = "http://localhost:8000"
+
+[cors]
+allowed_origins = [
+  "http://localhost:5173",
+  "http://127.0.0.1:5173",
+  "https://openagenet.github.io",
+  "https://openagenet.github.io/oan-site",
+]
+
+[node]
+name = "Root Node"
+role = "root"
+did_semantic_code = "AGRT"
+
+[security.admin]
+mode = "static-token"
+static_tokens = ["local-dev-admin-token"]
+
+[paths]
+data_dir = "../../data/root"
+keys_dir = "../../data/root/keys"
+bulletin_file = "../../data/root/bulletin.json"
+capability_tree_file = "../../docs/capability-tree-v1.json"
+database_url = "sqlite:../../data/root/root.db"

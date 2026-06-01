@@ -1,0 +1,25 @@
+# Multi Node End-to-End Benchmark
+
+- startedAt: 2026-05-31T07:05:52.693Z
+- finishedAt: 2026-05-31T07:09:12.403Z
+
+## Scales
+- scale=10, concurrency=30, totalWallMs=22403.96, registrationThroughput=2.09/s, endToEndThroughput=1.34/s, missing=0
+  - rootAccept: registrar.createDraft.8101:avg=315.62ms,p95=371.72ms | registrar.createDraft.8102:avg=374.41ms,p95=407.38ms | registrar.createDraft.8105:avg=439.13ms,p95=472.13ms | registrar.validateDraft.8101:avg=340.21ms,p95=367.17ms | registrar.validateDraft.8105:avg=349.25ms,p95=405.36ms | registrar.validateDraft.8102:avg=369.08ms,p95=484.91ms | registrar.controlChallenge.8105:avg=623.25ms,p95=1053.26ms | registrar.controlChallenge.8101:avg=271.58ms,p95=343.04ms | registrar.controlChallenge.8102:avg=410.87ms,p95=763.03ms | registrar.proveControl.8105:avg=488.08ms,p95=687.76ms | registrar.proveControl.8101:avg=804.20ms,p95=857.17ms | registrar.proveControl.8102:avg=688.91ms,p95=809.93ms | registrar.issueCredential.8105:avg=333.37ms,p95=415.79ms | registrar.issueCredential.8101:avg=306.59ms,p95=377.73ms | registrar.issueCredential.8102:avg=331.97ms,p95=376.75ms | registrar.submitToRoot.8105:avg=9402.54ms,p95=11907.45ms | registrar.submitToRoot.8101:avg=3096.27ms,p95=6453.31ms | registrar.submitToRoot.8102:avg=7380.11ms,p95=11952.58ms
+  - cdnPublish: root.publishCdnBatch:avg=1501.77ms,p95=1501.77ms
+  - discoverySync: root.notifyDiscoveryBatch:avg=5067.84ms,p95=5067.84ms | discovery.sync.8103:avg=348.15ms,p95=348.15ms | discovery.sync.8104:avg=334.89ms,p95=334.89ms | discovery.query.8103:avg=48.19ms,p95=48.19ms | discovery.query.8104:avg=75.23ms,p95=75.23ms
+- scale=50, concurrency=36, totalWallMs=39082.89, registrationThroughput=9.19/s, endToEndThroughput=3.84/s, missing=0
+  - rootAccept: registrar.createDraft.8101:avg=250.06ms,p95=365.35ms | registrar.validateDraft.8101:avg=232.78ms,p95=331.85ms | registrar.controlChallenge.8101:avg=270.50ms,p95=586.46ms | registrar.proveControl.8101:avg=402.44ms,p95=764.71ms | registrar.issueCredential.8101:avg=461.17ms,p95=858.32ms | registrar.submitToRoot.8101:avg=1731.94ms,p95=3468.81ms | registrar.createDraft.8102:avg=537.42ms,p95=1002.00ms | registrar.validateDraft.8102:avg=304.85ms,p95=484.19ms | registrar.controlChallenge.8102:avg=354.88ms,p95=986.17ms | registrar.proveControl.8102:avg=506.15ms,p95=1058.50ms | registrar.issueCredential.8102:avg=518.98ms,p95=1014.39ms | registrar.submitToRoot.8102:avg=1088.04ms,p95=2167.59ms | registrar.createDraft.8105:avg=480.18ms,p95=936.84ms | registrar.validateDraft.8105:avg=479.02ms,p95=871.27ms | registrar.controlChallenge.8105:avg=435.71ms,p95=824.92ms | registrar.proveControl.8105:avg=576.56ms,p95=1012.81ms | registrar.issueCredential.8105:avg=501.27ms,p95=911.12ms | registrar.submitToRoot.8105:avg=1384.24ms,p95=2585.12ms
+  - cdnPublish: root.publishCdnBatch:avg=2635.63ms,p95=2851.10ms
+  - discoverySync: root.notifyDiscoveryBatch:avg=9898.23ms,p95=9898.23ms | discovery.sync.8103:avg=1810.32ms,p95=1810.32ms | discovery.sync.8104:avg=1370.06ms,p95=1370.06ms | discovery.query.8103:avg=105.63ms,p95=105.63ms | discovery.query.8104:avg=106.74ms,p95=106.74ms
+- scale=100, concurrency=36, totalWallMs=38226.87, registrationThroughput=16.09/s, endToEndThroughput=7.85/s, missing=0
+  - rootAccept: registrar.createDraft.8101:avg=89.88ms,p95=216.42ms | registrar.validateDraft.8101:avg=87.22ms,p95=251.20ms | registrar.controlChallenge.8101:avg=102.26ms,p95=255.22ms | registrar.proveControl.8101:avg=141.88ms,p95=311.28ms | registrar.issueCredential.8101:avg=92.26ms,p95=186.22ms | registrar.submitToRoot.8101:avg=1967.55ms,p95=5197.79ms | registrar.createDraft.8102:avg=120.66ms,p95=287.46ms | registrar.validateDraft.8102:avg=86.87ms,p95=231.75ms | registrar.controlChallenge.8102:avg=108.73ms,p95=258.33ms | registrar.proveControl.8102:avg=204.00ms,p95=533.61ms | registrar.issueCredential.8102:avg=152.24ms,p95=415.94ms | registrar.submitToRoot.8102:avg=1803.55ms,p95=4125.13ms | registrar.createDraft.8105:avg=37.30ms,p95=112.49ms | registrar.validateDraft.8105:avg=36.28ms,p95=107.09ms | registrar.controlChallenge.8105:avg=42.96ms,p95=139.25ms | registrar.proveControl.8105:avg=83.01ms,p95=190.41ms | registrar.issueCredential.8105:avg=40.95ms,p95=128.43ms | registrar.submitToRoot.8105:avg=1231.37ms,p95=3211.90ms
+  - cdnPublish: root.publishCdnBatch:avg=1151.84ms,p95=1439.87ms
+  - discoverySync: root.notifyDiscoveryBatch:avg=3757.40ms,p95=3757.40ms | discovery.sync.8103:avg=3572.78ms,p95=3572.78ms | discovery.sync.8104:avg=3917.88ms,p95=3917.88ms | discovery.query.8103:avg=279.80ms,p95=279.80ms | discovery.query.8104:avg=293.27ms,p95=293.27ms
+
+## Observations
+- runtime={"hostname":"JINLIANGPC","platform":"win32","node":"v24.15.0"}
+- topology=1 root / 3 registrars / 2 discoveries / 1 cdn
+- multi-node scale=10 registrationThroughput=2.09/s endToEndThroughput=1.34/s missing=0
+- multi-node scale=50 registrationThroughput=9.19/s endToEndThroughput=3.84/s missing=0
+- multi-node scale=100 registrationThroughput=16.09/s endToEndThroughput=7.85/s missing=0

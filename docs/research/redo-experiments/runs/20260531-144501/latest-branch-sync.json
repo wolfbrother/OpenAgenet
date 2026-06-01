@@ -1,0 +1,11 @@
+﻿{
+    "multiNodeReport":  "benchmark-reports/multi-node-e2e",
+    "synchronizedLegacyAt":  "2026-05-31T15:11:45.4453764+08:00",
+    "legacyBranch":  "main",
+    "legacyHead":  "5195d41bb6eea5471267858dc26c87bfe4486fc9",
+    "singleNodeReport":  "benchmark-reports/single-node-e2e",
+    "notes":  [
+                  "Legacy repository was fast-forwarded to origin/main before paper updates.",
+                  "The run initially exposed two local execution issues and one benchmark client retry issue; fixes are in oan-examples working tree."
+              ]
+}

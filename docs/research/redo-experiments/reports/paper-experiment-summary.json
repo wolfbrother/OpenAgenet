@@ -1,0 +1,165 @@
+{
+  "singleNode": [
+    {
+      "scale": 10,
+      "registeredCount": 10,
+      "discoveredCount": 10,
+      "missingCount": 0,
+      "registrationThroughputPerSec": 4.888769494273907,
+      "endToEndThroughputPerSec": 2.523697901853086,
+      "registrationP95Ms": 1668.6438,
+      "publishLatencyMs": 483.9889,
+      "notifyLatencyMs": 1258.0403,
+      "syncLatencyMs": 89.9994,
+      "queryLatencyMs": 7.7183
+    },
+    {
+      "scale": 50,
+      "registeredCount": 50,
+      "discoveredCount": 50,
+      "missingCount": 0,
+      "registrationThroughputPerSec": 25.382182053396193,
+      "endToEndThroughputPerSec": 11.210072133226955,
+      "registrationP95Ms": 1086.4365,
+      "publishLatencyMs": 777.9096,
+      "notifyLatencyMs": 1392.6729,
+      "syncLatencyMs": 125.4655,
+      "queryLatencyMs": 32.7853
+    },
+    {
+      "scale": 100,
+      "registeredCount": 100,
+      "discoveredCount": 100,
+      "missingCount": 0,
+      "registrationThroughputPerSec": 25.213221914424814,
+      "endToEndThroughputPerSec": 11.826814607975216,
+      "registrationP95Ms": 689.1582,
+      "publishLatencyMs": 883.377,
+      "notifyLatencyMs": 2039.3117,
+      "syncLatencyMs": 154.4545,
+      "queryLatencyMs": 86.598
+    },
+    {
+      "scale": 200,
+      "registeredCount": 200,
+      "discoveredCount": 200,
+      "missingCount": 0,
+      "registrationThroughputPerSec": 15.900931093331009,
+      "endToEndThroughputPerSec": 6.926102873489093,
+      "registrationP95Ms": 5145.1174,
+      "publishLatencyMs": 1910.9515999999999,
+      "notifyLatencyMs": 3630.8378,
+      "syncLatencyMs": 3390.2886,
+      "queryLatencyMs": 429.0507
+    },
+    {
+      "scale": 500,
+      "registeredCount": 500,
+      "discoveredCount": 500,
+      "missingCount": 0,
+      "registrationThroughputPerSec": 17.432409241203242,
+      "endToEndThroughputPerSec": 9.236643133288666,
+      "registrationP95Ms": 3537.4477,
+      "publishLatencyMs": 1145.0838299999998,
+      "notifyLatencyMs": 2997.4185,
+      "syncLatencyMs": 8524.8631,
+      "queryLatencyMs": 444.1791
+    },
+    {
+      "scale": 1000,
+      "registeredCount": 1000,
+      "discoveredCount": 1000,
+      "missingCount": 0,
+      "registrationThroughputPerSec": 8.137811176085439,
+      "endToEndThroughputPerSec": 5.366288739950788,
+      "registrationP95Ms": 3695.322,
+      "publishLatencyMs": 2009.548935,
+      "notifyLatencyMs": 2521.0164,
+      "syncLatencyMs": 7180.58425,
+      "queryLatencyMs": 575.3503
+    },
+    {
+      "scale": 2000,
+      "registeredCount": 2000,
+      "discoveredCount": 2000,
+      "missingCount": 0,
+      "registrationThroughputPerSec": 6.402374285162547,
+      "endToEndThroughputPerSec": 3.0284345114464224,
+      "registrationP95Ms": 4972.7853,
+      "publishLatencyMs": 2247.9833037037033,
+      "notifyLatencyMs": 1419.779230769231,
+      "syncLatencyMs": 34441.934349999996,
+      "queryLatencyMs": 10170.6669
+    }
+  ],
+  "multiNode": [
+    {
+      "scalePerRegistrar": 10,
+      "registeredCount": 30,
+      "discoveredCount": 30,
+      "missingCount": 0,
+      "registrationThroughputPerSec": 2.0930820957590086,
+      "endToEndThroughputPerSec": 1.3390490433452005,
+      "perDiscoveryDiscoveredCount": {
+        "port-8103": 30,
+        "port-8104": 30
+      }
+    },
+    {
+      "scalePerRegistrar": 50,
+      "registeredCount": 150,
+      "discoveredCount": 150,
+      "missingCount": 0,
+      "registrationThroughputPerSec": 9.188082417613819,
+      "endToEndThroughputPerSec": 3.8379964405858105,
+      "perDiscoveryDiscoveredCount": {
+        "port-8103": 150,
+        "port-8104": 150
+      }
+    },
+    {
+      "scalePerRegistrar": 100,
+      "registeredCount": 300,
+      "discoveredCount": 300,
+      "missingCount": 0,
+      "registrationThroughputPerSec": 16.09255010090941,
+      "endToEndThroughputPerSec": 7.84788207414532,
+      "perDiscoveryDiscoveredCount": {
+        "port-8103": 300,
+        "port-8104": 300
+      }
+    },
+    {
+      "scalePerRegistrar": 200,
+      "registeredCount": 600,
+      "discoveredCount": 600,
+      "missingCount": 0,
+      "registrationThroughputPerSec": 19.427600777530145,
+      "endToEndThroughputPerSec": 5.4333903860755575,
+      "perDiscoveryDiscoveredCount": {
+        "port-8103": 600,
+        "port-8104": 600
+      }
+    },
+    {
+      "scalePerRegistrar": 400,
+      "registeredCount": 1200,
+      "discoveredCount": 1200,
+      "missingCount": 0,
+      "registrationThroughputPerSec": 7.008260263182355,
+      "endToEndThroughputPerSec": 3.50813056354755,
+      "perDiscoveryDiscoveredCount": {
+        "port-8103": 1200,
+        "port-8104": 1200
+      }
+    }
+  ],
+  "negativeCases": {
+    "invalidCases": 25,
+    "falseAcceptances": 0
+  },
+  "lifecycle": {
+    "e2eDemoPassed": true,
+    "trustedInvocationVerified": true
+  }
+}

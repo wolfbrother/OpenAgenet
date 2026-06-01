@@ -1,0 +1,68 @@
+{
+  "cases": [
+    {
+      "case": "unauthorized_shared_tag_0",
+      "degradedReturned": true,
+      "fullReturned": false
+    },
+    {
+      "case": "unauthorized_shared_tag_1",
+      "degradedReturned": true,
+      "fullReturned": false
+    },
+    {
+      "case": "unauthorized_shared_tag_2",
+      "degradedReturned": true,
+      "fullReturned": false
+    },
+    {
+      "case": "unauthorized_shared_tag_3",
+      "degradedReturned": true,
+      "fullReturned": false
+    },
+    {
+      "case": "unauthorized_shared_tag_4",
+      "degradedReturned": true,
+      "fullReturned": false
+    },
+    {
+      "case": "unauthorized_shared_tag_5",
+      "degradedReturned": true,
+      "fullReturned": false
+    },
+    {
+      "case": "unauthorized_shared_tag_6",
+      "degradedReturned": true,
+      "fullReturned": false
+    },
+    {
+      "case": "unauthorized_shared_tag_7",
+      "degradedReturned": true,
+      "fullReturned": false
+    },
+    {
+      "case": "unauthorized_shared_tag_8",
+      "degradedReturned": true,
+      "fullReturned": false
+    },
+    {
+      "case": "unauthorized_shared_tag_9",
+      "degradedReturned": true,
+      "fullReturned": false
+    },
+    {
+      "case": "unauthorized_shared_tag_10",
+      "degradedReturned": true,
+      "fullReturned": false
+    },
+    {
+      "case": "unauthorized_shared_tag_11",
+      "degradedReturned": true,
+      "fullReturned": false
+    }
+  ],
+  "degradedFalseAcceptanceOrExposure": 12,
+  "fullFalseAcceptanceOrExposure": 0,
+  "invalidCases": 12,
+  "mechanism": "authorization-aware discovery filtering"
+}

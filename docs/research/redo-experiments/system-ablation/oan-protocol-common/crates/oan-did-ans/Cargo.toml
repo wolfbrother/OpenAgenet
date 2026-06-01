@@ -1,0 +1,15 @@
+[package]
+name = "oan-did-ans"
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+version.workspace = true
+
+[dependencies]
+bs58.workspace = true
+ed25519-dalek.workspace = true
+oan-core = { path = "../oan-core" }
+oan-crypto = { path = "../oan-crypto" }
+regex.workspace = true
+serde.workspace = true
+thiserror.workspace = true
